@@ -10,7 +10,7 @@
 
 	<h3>test</h3>
 	
-	github 연동테스트
+	github 연동테스트!!
 
 </body>
 </html>
