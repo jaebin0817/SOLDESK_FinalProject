@@ -13,8 +13,8 @@ public class DBopen {
 		try {
 			
 			String url     ="jdbc:mariadb://localhost:3306";
-	        String user    ="root";
-	        String password="12341234";													
+	        String user    ="sol01";
+	        String password="1234";													
 	        String driver  ="org.mariadb.jdbc.Driver"; 
 	        Class.forName(driver);
 			con =DriverManager.getConnection(url, user, password);		
