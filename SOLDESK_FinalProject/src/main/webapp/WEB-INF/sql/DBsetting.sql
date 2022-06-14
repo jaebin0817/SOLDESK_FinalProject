@@ -8,7 +8,7 @@ CREATE USER 'sol01'@'localhost' IDENTIFIED BY '1234';
 GRANT ALL PRIVILEGES ON soldesk_final.* TO 'sol01'@'localhost';
 
 -- 사용자 권한 확인하기
-SHOW GRANTS FOR 'sol01'@'localhost';soldesk_final
+SHOW GRANTS FOR 'sol01'@'localhost';
 
 -- DB 사용
 USE soldesk_final;
