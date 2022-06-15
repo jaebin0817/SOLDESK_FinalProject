@@ -20,14 +20,14 @@
 <nav class="navbar navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-	      <a href="<%=request.getContextPath()%>">
+	      <a href="../home.do">
 	          <img src="/images/logo.png" alt="HOME" width="180px">
 	      </a>
     </div>
     <div>
       <ul class="nav navbar-nav navbar-right">
 	      	<li><a href="">컨텐츠</a></li>
-	        <li><a href="">파티매칭</a></li>
+	        <li><a href="../party/partyadd.do">파티매칭</a></li>
 	        <li><a href="">마이페이지</a></li>
       </ul>
     </div>
