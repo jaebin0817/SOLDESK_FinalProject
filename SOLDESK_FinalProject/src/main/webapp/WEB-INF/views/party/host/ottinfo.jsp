@@ -8,18 +8,19 @@
 	
 	<div class="container-fluid text-center">	
 	
-		<div>정산받을 계좌의 은행을 선택해주세요</div>
-	    <form name="frm" method="post" action="ottinfo.do">
+		<div>공유할 ${ ott_name } 계정을 등록해주세요</div>
+	    <form name="frm" method="post" action="checkout.do">
 			
 			<input type="hidden" id="ott_name" name="ott_name" value="${ ott_name }">
 			<input type="hidden" id="ott_price" name="ott_price" value="${ ott_price }">
 			<input type="hidden" id="payback_amount" name="payback_amount" value="${ payback_amount }">
+			<input type="hidden" id="bank_name" name="bank_name" value="${ bank_name }">
+			<input type="hidden" id="bank_account" name="bank_account" value="${ bank_account }">
 			
 			
-			<input type="text" id="bank_name" name="bank_name" placeholder="은행명">
-			<input type="text" id="bank_account" name="bank_account" placeholder="본인명의 계좌번호 입력">
-			
-			
+			<input type="text" id="ott_id" name="ott_id" placeholder='${ ott_name }아이디 입력'>
+			<input type="text" id="ott_pw" name="ott_pw" placeholder="OTT 비밀번호 입력">
+
 		    
 		    <div>
 		      <input type="submit" value="다음">

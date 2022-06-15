@@ -8,7 +8,7 @@
 	
 	<div class="container-fluid text-center">	
 	
-		<div>매월 정산받는 금액과 일자를 확인해주세요</div>
+		<div>계좌업데이트</div>
 
 	
 	</div>

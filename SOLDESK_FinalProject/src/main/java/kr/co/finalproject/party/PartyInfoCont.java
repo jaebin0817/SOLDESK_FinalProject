@@ -1,5 +1,8 @@
 package kr.co.finalproject.party;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -63,69 +66,125 @@ public class PartyInfoCont {
 	}//partyadd() end
 	
 	
-	
-	
-	
-	
-	
-	
-	@RequestMapping(value = "host/payback.do",  method = RequestMethod.POST)
+	@RequestMapping(value = "party/host/payback.do", method = RequestMethod.POST)
 	public ModelAndView payback(HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
 		
-		/*
 		String ott_name=req.getParameter("ott_name");
 		int ott_price=Integer.parseInt(req.getParameter("ott_price"));
 		
 		int service_fee=400; //파티장 수수료
 		
 		int payback_amount=0;
+		int payback_day=0;
+		int first_payback_month=0;
 		
 		payback_amount=(ott_price/4)*3-service_fee;
+		
+		GregorianCalendar now=new GregorianCalendar();
+		payback_day=now.get(Calendar.DATE);
+		first_payback_month=now.get(Calendar.MONTH)+2;
 		
 		mav.addObject("service_fee", service_fee);
 		mav.addObject("ott_name", ott_name);
 		mav.addObject("ott_price", ott_price);
 		mav.addObject("payback_amount", payback_amount);
-		*/
-		
-		mav.setViewName("redirect:/party/host/payback.jsp");
-		//mav.setViewName("party/host/payback");
-		//mav.setViewName("payback");
-		//mav.setViewName("../../party/host/payback");
-		
-		//return "/payback";
-		//return "host/payback";
+		mav.addObject("payback_day", payback_day);
+		mav.addObject("first_payback_month", first_payback_month);
+
+		mav.setViewName("party/host/payback");
 		
 		return mav;
-		
 		
 	}//payback() end
 	
 	
 	
 	
-	@RequestMapping(value = "host/account.do",  method = RequestMethod.POST)
+	@RequestMapping(value = "party/host/account.do",  method = RequestMethod.POST)
 	public ModelAndView account(HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
+		PartyInfoDTO dto=null;
 		
-		mav.setViewName("party/host/accountInsert");//등록된 계좌가 없으면 insert로
+		String s_mem_id="";//실제로는 session정보 받아올것
 		
-		//mav.setViewName("party/host/accountUpdate"); //등록된 계좌가 있으면 update로
-	
+		dto=dao.readBank(s_mem_id);
+		
+		if(dto==null) {	
+			mav.setViewName("party/host/accountInsert");//등록된 계좌가 없으면 insert로
+			
+		}else {
+			mav.setViewName("party/host/accountUpdate");//등록된 계좌가 있으면 update로
+		}
+		
+		String ott_name=req.getParameter("ott_name");
+		int ott_price=Integer.parseInt(req.getParameter("ott_price"));
+		int payback_amount=Integer.parseInt(req.getParameter("payback_amount"));
+		
+		mav.addObject("ott_name", ott_name);
+		mav.addObject("ott_price", ott_price);
+		mav.addObject("payback_amount", payback_amount);
+		
 		return mav;
 		
-	}//payback() end
+	}//account() end
 	
 	
 	
+	@RequestMapping(value = "party/host/ottinfo.do",  method = RequestMethod.POST)
+	public ModelAndView ottinfo(HttpServletRequest req) {
+		ModelAndView mav=new ModelAndView();
+		
+		String ott_name=req.getParameter("ott_name");
+		int ott_price=Integer.parseInt(req.getParameter("ott_price"));
+		int payback_amount=Integer.parseInt(req.getParameter("payback_amount"));
+		String bank_name=req.getParameter("bank_name").trim();
+		String bank_account=req.getParameter("bank_account").trim();
+		
+		mav.addObject("ott_name", ott_name);
+		mav.addObject("ott_price", ott_price);
+		mav.addObject("payback_amount", payback_amount);
+		mav.addObject("bank_name", bank_name);
+		mav.addObject("bank_account", bank_account);
+		
+		mav.setViewName("party/host/ottinfo");
+		
+		return mav;
+		
+	}//ottinfo() end
 	
 	
+	@RequestMapping(value = "party/host/checkout.do",  method = RequestMethod.POST)
+	public ModelAndView checkout(HttpServletRequest req) {
+		ModelAndView mav=new ModelAndView();
+		
+		String s_mem_id="";//실제로는 session정보 받아올것
+		
+		String ott_name=req.getParameter("ott_name");
+		int ott_price=Integer.parseInt(req.getParameter("ott_price"));
+		int payback_amount=Integer.parseInt(req.getParameter("payback_amount"));
+		String bank_name=req.getParameter("bank_name").trim();
+		String bank_account=req.getParameter("bank_account").trim();
+		String ott_id=req.getParameter("ott_id").trim();
+		String ott_pw=req.getParameter("ott_pw").trim();
+
+		
+		mav.addObject("ott_name", ott_name);
+		mav.addObject("ott_price", ott_price);
+		mav.addObject("payback_amount", payback_amount);
+		mav.addObject("bank_name", bank_name);
+		mav.addObject("bank_account", bank_account);
+		mav.addObject("ott_id", ott_id);
+		mav.addObject("ott_pw", ott_pw);
+		mav.addObject("s_mem_id", s_mem_id);
+		
+		mav.setViewName("party/host/checkout");
+		
+		return mav;
+		
+	}//checkout() end
 	
-	
-	
-	
-	
+
 	
 	//결과확인 http://localhost:9090/party/host/checkoutTest.do
 	@RequestMapping("party/host/checkoutTest.do")
