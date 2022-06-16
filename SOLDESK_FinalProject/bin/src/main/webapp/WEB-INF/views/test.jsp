@@ -1,16 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>test.jsp</title>
-</head>
-<body>
+<%@ include file="header.jsp"%>
 
-	<h3>test</h3>
-	
-	github 연동테스트!!
+<!-- 본문시작 test.jsp -->
 
-</body>
-</html>
+
+
+
+
+<!-- 본문끝 -->
+<%@ include file="footer.jsp"%>

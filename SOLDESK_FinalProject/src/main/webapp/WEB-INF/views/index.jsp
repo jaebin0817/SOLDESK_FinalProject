@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>index.jsp</title>
+  <title>OPOT</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="/css/layout.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,12 +27,15 @@
     <div>
       <ul class="nav navbar-nav navbar-right">
 	      	<li><a href="">컨텐츠</a></li>
-	        <li><a href="">파티매칭</a></li>
-	        <li><a href="">마이페이지</a></li>
+	        <li><a href="party/partyadd.do">파티매칭</a></li>
+	        <li><a href="m_manage/mypage.do">마이페이지</a></li>
       </ul>
     </div>
   </div>
 </nav><!-- 메인카테고리 끝 -->
+
+
+
 
 <!-- 본문 시작 -->
 
@@ -113,6 +116,8 @@
 	  <div class="container-fluid bg-3 text-center">
 	    <a href="">공지사항</a> &nbsp;&nbsp;
 	    <a href="">문의사항</a>
+	    <!-- 세션이용해서 webmaster일때만 접근 허용 -->
+	    <br><a href="webmaster/webmaster.do">관리자페이지</a>
 	  </div>
 	  
 	  <div class="container-fluid bg-4 text-center">

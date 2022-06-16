@@ -13,6 +13,8 @@
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="../js/jquery-3.6.0.min.js"></script>
+  <script src="../js/jquery.cookie.js"></script>
 </head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
 
@@ -20,15 +22,15 @@
 <nav class="navbar navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-	      <a href="<%=request.getContextPath()%>">
+	      <a href="<%=request.getContextPath()%>/home.do">
 	          <img src="/images/logo.png" alt="HOME" width="180px">
 	      </a>
     </div>
     <div>
       <ul class="nav navbar-nav navbar-right">
 	      	<li><a href="">컨텐츠</a></li>
-	        <li><a href="">파티매칭</a></li>
-	        <li><a href="">마이페이지</a></li>
+	        <li><a href="<%=request.getContextPath()%>/party/partyadd.do">파티매칭</a></li>
+	        <li><a href="<%=request.getContextPath()%>/m_manage/mypage.do">마이페이지</a></li>
       </ul>
     </div>
   </div>

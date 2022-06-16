@@ -50,7 +50,7 @@
     margin-bottom: 30px;
   }
   .jumbotron {
-    background-color: #f4511e;
+    background-color: #D9534F;
     color: #fff;
     padding: 150px 50px;
     font-family: Montserrat, sans-serif;
@@ -108,7 +108,7 @@
     box-shadow: 5px 0px 40px rgba(0,0,0, .2);
   }
   .panel-footer .btn:hover {
-    border: 1px solid #f4511e;
+    border: 1px solid #D9534F;
     background-color: #fff !important;
     color: #D9534F;
   }
@@ -179,6 +179,11 @@
     -webkit-animation-duration: 1s;
     visibility: visible;
   }
+  
+  .table {
+  	width: 70%;
+  }
+  
   @keyframes slide {
     0% {
       opacity: 0;

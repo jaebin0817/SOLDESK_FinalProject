@@ -29,4 +29,13 @@ public class HomeController {
 	}//home() end
 	
 	
+	//결과확인 http://localhost:9090/home3.do
+	@RequestMapping("home3.do")
+	public ModelAndView home3() {
+		ModelAndView mav=new ModelAndView();
+		mav.setViewName("index_v3");
+		return mav;
+	}//home() end
+	
+	
 }//class end
