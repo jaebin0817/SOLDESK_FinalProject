@@ -30,7 +30,7 @@
       <ul class="nav navbar-nav navbar-right">
 	      	<li><a href="">컨텐츠</a></li>
 	        <li><a href="<%=request.getContextPath()%>/party/partyadd.do">파티매칭</a></li>
-	        <li><a href="">마이페이지</a></li>
+	        <li><a href="<%=request.getContextPath()%>/m_manage/mypage.do">마이페이지</a></li>
       </ul>
     </div>
   </div>
