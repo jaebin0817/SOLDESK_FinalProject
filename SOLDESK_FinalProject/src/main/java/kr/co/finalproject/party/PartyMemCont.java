@@ -13,10 +13,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class PartyMemCont {
 
-	PartyMemDAO dao=null;
+	PartyMemDAO dao=null ;
 
 
 	public PartyMemCont() {
+		dao=new PartyMemDAO();
 		System.out.println("-----PartyMemCont() 객체 생성");
 	}//end
 

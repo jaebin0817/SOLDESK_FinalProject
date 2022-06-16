@@ -26,20 +26,20 @@ public class memberDAO {
 			sql = new StringBuilder();
 			sql.append(" INSERT INTO member_info(mem_id, mem_pw, mem_phone, mem_email, mem_lv, mem_reg, mem_birth) ");
 			sql.append(" values(?, ?, ?, ?, ?, ?, ?) ");
-
+			
 			pstmt=con.prepareStatement(sql.toString());
-			pstmt.setString(1, dto.getMemID());
-			pstmt.setString(2, dto.getMemPW());
-			pstmt.setString(3, dto.getMemPhone());
-			pstmt.setString(4, dto.getMemEmail());
-
+			pstmt.setString(1, dto.getMem_id());
+			pstmt.setString(2, dto.getMem_pw());
+			pstmt.setString(3, dto.getMem_phone());
+			pstmt.setString(4, dto.getMem_email());
+			
 			cnt = pstmt.executeUpdate();
 		}catch(Exception e) {
 			System.out.println("회원 가입 실패: "+ e);
 		}
 		return cnt;
 	}
-
+	
 	public memberDTO read(String mem_id){
 		memberDTO dto = null;
 		try {
@@ -47,23 +47,23 @@ public class memberDAO {
 			sql = new StringBuilder();
 			sql.append(" SELECT * " );
 			sql.append(" FROM member_info ");
-			sql.append(" WHERE mem_lv like 'B' ");
-
+			sql.append(" WHERE mem_lv = 'B' ");
+			
 			pstmt=con.prepareStatement(sql.toString());
 			pstmt.setString(1, mem_id);
-
+			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				dto = new memberDTO();
-				dto.setMemID(rs.getString("mem_id"));
-				dto.setMemPW(rs.getString("mem_pw"));
-				dto.setMemPhone(rs.getString("mem_phone"));
-				dto.setMemEmail(rs.getString("mem_email"));
-				dto.setMemLv(rs.getString("mem_lv"));
-				dto.setMemReg(rs.getString("mem_reg"));
-				dto.setMemBirth(rs.getString("mem_birth"));
+				dto.setMem_id(rs.getString("mem_id"));
+				dto.setMem_pw(rs.getString("mem_pw"));
+				dto.setMem_phone(rs.getString("mem_phone"));
+				dto.setMem_email(rs.getString("mem_email"));
+				dto.setMem_lv(rs.getString("mem_lv"));
+				dto.setMem_reg(rs.getString("mem_reg"));
+				dto.setMem_birth(rs.getString("mem_birth"));
 			}
-
+			
 		}catch(Exception e) {
 			System.out.println("회원 조회 실패: "+ e);
 		}finally {
@@ -71,8 +71,8 @@ public class memberDAO {
 		}
 		return dto;
 	}
-
-
+	
+	
 	public int update(memberDTO dto) {
 		int cnt=0;
 		try {
@@ -81,8 +81,8 @@ public class memberDAO {
 			sql.append(" UPDATE member_info" );
 			sql.append(" SET mem_pw=?, mem_phone=?, mem_email=? ");
 			pstmt = con.prepareStatement(sql.toString());
-            pstmt.setString(1, dto.getMemID());
-
+            pstmt.setString(1, dto.getMem_id());
+            
             cnt = pstmt.executeUpdate();
 		}catch(Exception e) {
 			System.out.println("회원정보 수정 실패: "+ e);
@@ -91,8 +91,8 @@ public class memberDAO {
 		}
 		return cnt;
 	}
-
-
+	
+	
 	public int delete(String mem_id) {
 		int cnt=0;
 		try {
@@ -100,17 +100,50 @@ public class memberDAO {
 			sql = new StringBuilder();
 			sql.append(" DELETE FROM member_info ");
 			sql.append(" WHERE mem_id = ? ");
-
+			
 			pstmt = con.prepareStatement(sql.toString());
             pstmt.setString(1, mem_id);
-
+            
             cnt = pstmt.executeUpdate();
 		}catch(Exception e) {
 			System.out.println("회원 탈퇴 실패: " + e);
 		}finally {
 			DBclose.close(con, pstmt);
 		}
-
+		
 		return cnt;
 	}
+	
+	
+	public String loginRead(String mem_id, String mem_pw) {
+		String mem_lv=null;
+		try {
+			con=dbopen.getConnection();//DB연결
+
+			sql=new StringBuilder();
+			sql.append(" SELECT mem_lv ");
+			sql.append(" FROM member_info ");
+			sql.append(" WHERE mem_id=? AND mem_pw=? ");
+			sql.append(" AND mem_lv IN ('A', 'B') ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, mem_id);
+			pstmt.setString(2, mem_pw);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				mem_lv=rs.getString("mem_lv");
+			}//if end
+			
+		} catch (Exception e) {
+			System.out.println("로그인 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);;
+		}//try end
+		return mem_lv;
+	}//loginProc() end
+	
+	
+	
+	
 }

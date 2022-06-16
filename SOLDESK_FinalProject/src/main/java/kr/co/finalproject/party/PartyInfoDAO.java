@@ -3,6 +3,7 @@ package kr.co.finalproject.party;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import net.utility.DBclose;
 import net.utility.DBopen;
@@ -83,7 +84,42 @@ public class PartyInfoDAO {
 	}
 	
 	
-	
+	public ArrayList<PartyInfoDTO> partylist() {
+		PartyInfoDTO dto=null;
+		
+		ArrayList<PartyInfoDTO> list=null;
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" SELECT party_id, mem_id, ott_name, ott_cdate, matching_no ");
+			sql.append(" FROM party_info ");
+			sql.append(" ORDER BY party_id ");
+			pstmt = con.prepareStatement(sql.toString());
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				list=new ArrayList<PartyInfoDTO>();				
+				do {
+					dto = new PartyInfoDTO();//커서가 가리키는 한 줄 저장
+					dto.setParty_id(rs.getInt("party_id"));
+					dto.setMem_id(rs.getString("mem_id"));
+					dto.setOtt_name(rs.getString("ott_name"));
+					dto.setOtt_cdate(rs.getString("ott_cdate"));
+					dto.setMatching_no(rs.getInt("matching_no"));
+					list.add(dto);
+				}while(rs.next());
+			}//if end
+			
+		}catch (Exception e) {
+			System.out.println("계좌 불러오기 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);
+		}//try end
+		
+		return list;
+		
+	}
 	
 	
 }//class end
