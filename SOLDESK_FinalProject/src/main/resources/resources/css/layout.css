@@ -179,6 +179,11 @@
     -webkit-animation-duration: 1s;
     visibility: visible;
   }
+  
+  .table {
+  	width: 70%;
+  }
+  
   @keyframes slide {
     0% {
       opacity: 0;

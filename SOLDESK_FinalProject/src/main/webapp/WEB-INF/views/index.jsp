@@ -116,6 +116,8 @@
 	  <div class="container-fluid bg-3 text-center">
 	    <a href="">공지사항</a> &nbsp;&nbsp;
 	    <a href="">문의사항</a>
+	    <!-- 세션이용해서 webmaster일때만 접근 허용 -->
+	    <br><a href="webmaster/webmaster.do">관리자페이지</a>
 	  </div>
 	  
 	  <div class="container-fluid bg-4 text-center">
