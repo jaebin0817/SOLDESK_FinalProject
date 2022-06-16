@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.utility.DBclose;
 import net.utility.DBopen;
 
@@ -39,8 +41,8 @@ public class PartyMemDAO {
             DBclose.close(con, pstmt);
         }//end
         return cnt;
-
     }//cardIns() end
+    
 
 
 }//class end

@@ -9,8 +9,10 @@
 	<div class="container-fluid text-center">	
 	
 		<form name="cardfrm" id="cardfrm" method="post" action="member.do">
+		<input type="hidden" id="ott_name" name="ott_name" value="${ ott_name }">
+		<input type="hidden" id="ott_price" name="ott_price" value="${ ott_price }">
 			<div class="container text-center">
-				<input name="c_num" id="c_num" type="number" class="form-control" size="20" maxlength="16" placeholder="카드 번호를 입력 해 주세요" required>
+				<input name="card_no" id="card_no" type="number" class="form-control" size="20" maxlength="16" placeholder="카드 번호를 입력 해 주세요" required>
 				카드 년 월 입력
 				<select name="card_m" id="card_m">
 		                <option value="01">01</option>
