@@ -24,10 +24,10 @@ public class PartyMemDAO {
             con = dbopen.getConnection();
             sql = new StringBuilder();
             sql.append(" INSERT INTO payment_card(mem_id, card_exp, card_no, card_pw, card_com) ");
-            sql.append(" VALUES( 'kimkim12', '12/34', ?, ?, ?) "); 
+            sql.append(" VALUES( 'kimkim12', ?, ?, ?, ?) "); 
             
             pstmt = con.prepareStatement(sql.toString());
-            //pstmt.setString(1, dto.getCard_exp()); 
+            pstmt.setString(1, dto.getCard_exp()); 
             pstmt.setString(2, dto.getCard_no());
             pstmt.setInt(3, dto.getCard_pw());
             pstmt.setString(4, dto.getCard_com());
