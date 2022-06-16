@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,8 +32,15 @@
       <ul class="nav navbar-nav navbar-right">
 	      	<li><a href="">컨텐츠</a></li>
 	        <li><a href="<%=request.getContextPath()%>/party/partyadd.do">파티매칭</a></li>
-	        <li><a href="<%=request.getContextPath()%>/m_manage/mypage.do">마이페이지</a></li>
-      </ul>
+	        <c:choose>
+	          <c:when test="${ s_mem_id==null || s_mem_pw==null || s_mem_lv==null }">
+	            <li><a href="<%=request.getContextPath()%>/login.do">로그인</a></li>	            
+	          </c:when>
+	          <c:otherwise>
+	            <li><a href="<%=request.getContextPath()%>/login.do">마이페이지</a></li>
+	          </c:otherwise>
+	        </c:choose>
+	  </ul>
     </div>
   </div>
 </nav><br><br><br><br><br>
