@@ -6,14 +6,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.finalproject.party.PartyInfoDAO;
 import kr.co.finalproject.party.PartyInfoDTO;
+import kr.co.finalproject.party.PartyMemberDAO;
 
 @Controller
 public class WebmasterCont {
 
 	private PartyInfoDAO partydao = null;
+	private PartyMemberDAO partymemdao = null;
 	
 	public WebmasterCont() {
 		partydao = new PartyInfoDAO();
+		partymemdao = new PartyMemberDAO();
 		System.out.println("-----WebmasterCont() 객체 생성");
 	}
 	
@@ -34,6 +37,21 @@ public class WebmasterCont {
 		return mav;
 	}
 	
+	
+	@RequestMapping("/partyread.do")
+	public ModelAndView partyread(int party_id) {
+		ModelAndView mav=new ModelAndView();
+				
+		PartyInfoDTO partyDTO=null;
+		
+		partyDTO=partydao.partyread(party_id);
+		
+		mav.setViewName("webmaster/partymanage/partyread");
+		mav.addObject("partyDTO", partyDTO);
+		mav.addObject("list", partymemdao.readParty(party_id));
+		
+		return mav;
+	}
 	
 	
 	
