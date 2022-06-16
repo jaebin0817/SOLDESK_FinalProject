@@ -28,5 +28,10 @@ public class HomeController {
 		return mav;
 	}//home() end
 	
+	//결과확인 http://localhost:9090/m_manage/mypage.do
+	@RequestMapping("/m_manage/mypage.do")
+	public String mypage() {
+		return "m_manage/mypage";
+	}
 	
 }//class end
