@@ -112,12 +112,54 @@ public class PartyInfoDAO {
 			}//if end
 			
 		}catch (Exception e) {
-			System.out.println("계좌 불러오기 실패: " + e);
+			System.out.println("파티 리스트 불러오기 실패: " + e);
 		}finally{
 			DBclose.close(con, pstmt, rs);
 		}//try end
 		
 		return list;
+		
+	}
+	
+	
+	
+	
+	public PartyInfoDTO partyread(int party_id) {
+		PartyInfoDTO dto=null;
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" SELECT party_id, mem_id, ott_name, ott_price, ott_id, ott_pw, ott_cdate, bank_name, bank_account, payback_amount, payback_result, matching_no ");
+			sql.append(" FROM party_info ");
+			sql.append(" WHERE party_id=? ");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, party_id);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+					dto = new PartyInfoDTO();
+					dto.setParty_id(rs.getInt("party_id"));
+					dto.setMem_id(rs.getString("mem_id"));
+					dto.setOtt_name(rs.getString("ott_name"));
+					dto.setOtt_price(rs.getInt("ott_price"));
+					dto.setOtt_id(rs.getString("ott_id"));
+					dto.setOtt_pw(rs.getString("ott_pw"));
+					dto.setOtt_cdate(rs.getString("ott_cdate"));
+					dto.setBank_name(rs.getString("bank_name"));
+					dto.setBank_account(rs.getString("bank_account"));
+					dto.setPayback_amount(rs.getInt("payback_amount"));
+					dto.setPayback_result(rs.getString("payback_result"));
+					dto.setMatching_no(rs.getInt("matching_no"));
+			}//if end
+			
+		}catch (Exception e) {
+			System.out.println("파티 상세보기 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);
+		}//try end
+		
+		return dto;
 		
 	}
 	

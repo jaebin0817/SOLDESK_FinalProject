@@ -25,11 +25,11 @@
 		<c:forEach var="dto" items="${list}"> 	
 			<tr>
 				<td>${dto.party_id }</td>
-				<td><a href="">${dto.mem_id }</a></td>				
+				<td><a href="partyread.do?party_id=${dto.party_id }">${dto.mem_id }</a></td>				
 				<td>${dto.ott_name }</td>
 				<td>${dto.ott_cdate }</td>
 				<td>${dto.matching_no }</td>
-			</tr>
+			</tr>	
 		</c:forEach>
 		
 	</table>
