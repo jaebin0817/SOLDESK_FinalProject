@@ -17,6 +17,9 @@
 	  </div>
 	  
 	  <div class="container-fluid bg-4 text-center">
+	  	  <a href="<%=request.getContextPath()%>/home.do">
+	          <img src="/images/logo_white_grey.png" alt="HOME" width="100px">
+	      </a>
 		  <p>Copyright &copy; OPOT</p> 
 		  <p>SOLDESK 1조</p>
 		  <p>조원들 Contact Info</p>
