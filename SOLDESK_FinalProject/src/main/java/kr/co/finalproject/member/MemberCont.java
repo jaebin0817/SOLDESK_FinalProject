@@ -53,7 +53,7 @@ public class MemberCont {
 			
 			session.setAttribute("s_mem_id", mem_id);
 			session.setAttribute("s_mem_pw", mem_pw);
-			session.setAttribute("s_mem_lv ", mem_lv);
+			session.setAttribute("s_mem_lv", mem_lv);
 			
 			String msg="<h2>로그인 결과</h2><p>로그인 성공</p>";
 			mav.addObject("msg", msg);
@@ -66,5 +66,23 @@ public class MemberCont {
 	}
 
 	
+	@RequestMapping(value = "/logout.do", method = RequestMethod.POST)
+	public ModelAndView logout(HttpServletRequest req, HttpServletResponse resp) {
+		
+		ModelAndView mav =new ModelAndView();
+		HttpSession session = req.getSession();
+		
+		session.removeAttribute("s_mem_id");
+		session.removeAttribute("s_mem_pw");
+		session.removeAttribute("s_mem_lv");
+		
+		mav.setViewName("index");
+		
+		return mav;
+	}
+
+		
+		
+		
 	
-}
+}//class end
