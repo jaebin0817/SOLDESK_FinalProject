@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>OPOT</title>
+  <title>index.jsp</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="/css/layout.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,6 +15,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+
+
 
 <!-- 메인카테고리 시작 -->
 <nav class="navbar navbar-fixed-top">
@@ -32,9 +34,23 @@
       </ul>
     </div>
   </div>
+  <div class="collapse">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+  </div>
 </nav><!-- 메인카테고리 끝 -->
 
+<script>
 
+	$(document).ready(function(){
+	  $(".contentToggle").click(function(){
+	    $(".collapse").collapse('toggle');
+	  });
+	});
+
+
+</script>
 
 
 <!-- 본문 시작 -->

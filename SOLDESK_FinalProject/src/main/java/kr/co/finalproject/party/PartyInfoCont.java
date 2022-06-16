@@ -57,7 +57,7 @@ public class PartyInfoCont {
 			
 		}else if(party_role.equals("party_member")) {
 			
-			mav.setViewName("party/member");
+			mav.setViewName("party/member/memberIns");
 			
 		}
 		
