@@ -6,7 +6,6 @@ public class PartyMemberDTO {
     private int party_id;
     private int party_pcost;
     private String party_pdate;
-    private int waiting_no;
     private String party_ordnumber;
 	
     public PartyMemberDTO() {}
@@ -43,13 +42,7 @@ public class PartyMemberDTO {
 		this.party_pdate = party_pdate;
 	}
 
-	public int getWaiting_no() {
-		return waiting_no;
-	}
 
-	public void setWaiting_no(int waiting_no) {
-		this.waiting_no = waiting_no;
-	}
 
 	public String getParty_ordnumber() {
 		return party_ordnumber;
@@ -62,9 +55,10 @@ public class PartyMemberDTO {
 	@Override
 	public String toString() {
 		return "PartyMemberDTO [mem_id=" + mem_id + ", party_id=" + party_id + ", party_pcost=" + party_pcost
-				+ ", party_pdate=" + party_pdate + ", waiting_no=" + waiting_no + ", party_ordnumber=" + party_ordnumber
-				+ "]";
+				+ ", party_pdate=" + party_pdate + ", party_ordnumber=" + party_ordnumber + "]";
 	}
+
+
     
     
     

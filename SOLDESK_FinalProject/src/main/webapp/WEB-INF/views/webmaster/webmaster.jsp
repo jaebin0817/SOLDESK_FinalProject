@@ -12,6 +12,7 @@
 		<input type="button" value="게시글관리" onclick="location.href=''">
 		<input type="button" value="회원관리" onclick="location.href=''">
 		<input type="button" value="파티목록관리" onclick="location.href='/partylist.do'">
+		<input type="button" value="파티매칭대기목록" onclick="">
 
   </div>	
 	
