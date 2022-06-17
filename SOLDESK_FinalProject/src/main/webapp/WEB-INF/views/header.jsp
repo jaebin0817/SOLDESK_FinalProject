@@ -30,14 +30,14 @@
     </div>
     <div>
       <ul class="nav navbar-nav navbar-right">
-	      	<li><a href="">컨텐츠</a></li>
+	      	<li><a href="<%=request.getContextPath()%>/contlist/contlist.do">컨텐츠</a></li>
 	        <li><a href="<%=request.getContextPath()%>/party/partyadd.do">파티매칭</a></li>
 	        <c:choose>
 	          <c:when test="${ s_mem_id==null || s_mem_pw==null || s_mem_lv==null }">
 	            <li><a href="<%=request.getContextPath()%>/login.do">로그인</a></li>	            
 	          </c:when>
 	          <c:otherwise>
-	            <li><a href="<%=request.getContextPath()%>/login.do">마이페이지</a></li>
+	            <li><a href="<%=request.getContextPath()%>/m_manage/mypage.do">마이페이지</a></li>
 	          </c:otherwise>
 	        </c:choose>
 	  </ul>
