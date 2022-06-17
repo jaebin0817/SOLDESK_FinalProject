@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.finalproject.contlist.ContlistDAO;
+
 @Controller
 public class HomeController {
 
@@ -15,6 +17,9 @@ public class HomeController {
 	@RequestMapping("home.do")
 	public ModelAndView home() {
 		ModelAndView mav=new ModelAndView();
+		ContlistDAO dao=new ContlistDAO();
+		
+		mav.addObject("list", dao.contlistAll());
 		mav.setViewName("index");
 		return mav;
 	}//home() end

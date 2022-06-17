@@ -30,7 +30,7 @@
     </div>
     <div>
       <ul class="nav navbar-nav navbar-right">
-	      	<li><a href="">컨텐츠</a></li>
+	      	<li><a href="contlist/contlist.do">컨텐츠</a></li>
 	        <li><a href="party/partyadd.do">파티매칭</a></li>
 	        	
 	        <c:choose>
@@ -38,7 +38,7 @@
 	            <li><a href="login.do">로그인</a></li>	            
 	          </c:when>
 	          <c:otherwise>
-	            <li><a href="login.do">마이페이지</a></li>
+	            <li><a href="m_manage/mypage.do">마이페이지</a></li>
 	          </c:otherwise>
 	        </c:choose>
       </ul>
@@ -63,7 +63,7 @@
 	</div>
 	<!-- 컨텐츠 검색 끝 -->
 	
-	<!-- OTT랭킹 -->
+	<!-- OTT랭킹 / 시청목록 count해서 가장 많은 top3 -->
 	<div id="cont_rank" class="container-fluid text-center">
 		<h3>오늘의 통합 랭킹</h3><br>
 		<div>
@@ -82,37 +82,36 @@
 	<!-- OTT랭킹 끝 -->
 	
 	<!-- 추천 컨텐츠 -->
+		
 	<div id="cont_list" class="container-fluid text-center">
 		<h3>오늘 이거 볼까요? 👀</h3><br>
-	    <div class="col-sm-3">
-	      <div class="thumbnail">
-	        <a href=""><img src="/images/movie_greenbook.jpg" alt="movie" width="280"></a>
-            <p><strong>그린북</strong></p>
-	        <p>★★★★★</p>
-	      </div>
-	    </div>
-	    <div class="col-sm-3">
-	      <div class="thumbnail">
-	        <a href=""><img src="/images/movie_soul.jpg" alt="movie" width="280"></a>
-            <p><strong>소울</strong></p>
-	        <p>★★★★★</p>
-	      </div>
-	    </div>
-	    <div class="col-sm-3">
-	      <div class="thumbnail">
-	        <a href=""><img src="/images/movie_jujutsuKaisen.jpg" alt="movie" width="280"></a>
-            <p><strong>주술회전</strong></p>
-	        <p>★★★★★</p>
-	      </div>
-	    </div>
-	    <div class="col-sm-3">
-	      <div class="thumbnail">
-	        <a href=""><img src="/images/movie_dune.jpg" alt="movie" width="280"></a>
-            <p><strong>듄</strong></p>
-	        <p>★★★★☆</p>
-	      </div>
-	    </div>
+	        
+	      <c:set var="maxcontent" value="${ 8 }"></c:set><!-- 노출할 최대 컨텐츠 수 -->
+	        
+	          <c:choose>
+	          	<c:when test="${ fn:length(list)<maxcontent }">
+	          	  <c:set var="end" value="${ fn:length(list) }"></c:set>
+	          	</c:when>
+	          	<c:otherwise>
+	          	  <c:set var="end" value="${ maxcontent }"></c:set>
+	          	</c:otherwise>
+	          </c:choose>
 
+	          	
+	      <c:forEach var="dto" items="${ list }" begin="0" end="${ end }" step="1">
+			
+				<div class="col-sm-3">
+			      <div class="thumbnail">
+			        <a href=""><img src="../storage/${dto.mthum }" alt="movie" width="280"></a>
+		            <p><strong>${dto.mtitle }</strong></p>
+			        <p>
+			        	<!-- 평점 별로 바꿔서 출력 -->
+			        	<c:forEach begin="1" end="${ dto.mrate }">★</c:forEach><c:forEach begin="${ dto.mrate+1 }" end="5">☆</c:forEach>
+			        	${ dto.mrate }
+			        </p>
+	        	  </div>
+	    		</div>
+	      </c:forEach>
 	</div>
 	<!-- 추천 컨텐츠 끝 -->
 
