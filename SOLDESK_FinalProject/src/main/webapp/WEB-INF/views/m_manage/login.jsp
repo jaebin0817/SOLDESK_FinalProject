@@ -16,7 +16,7 @@
   <c:choose>
 	<c:when test="${ s_mem_id==null || s_mem_pw==null || s_mem_lv==null }">
 		${ msg }
-		${ fn:length(msg) }
+		<!-- ${ fn:length(msg) } -->
 				
 		<!-- 게스트일 때, 로그인 폼 출력 -->
 		<img src="../images/login.png" style="margin: auto; width: 300px" >
