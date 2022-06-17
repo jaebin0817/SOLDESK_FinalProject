@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ include file="ssi.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>mypage.jsp</title>
+  <title>member_join.jsp</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="/css/layout.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +14,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+<body id="member_join" data-spy="scroll" data-target=".navbar" data-offset="60">
+
 
 <!-- 메인카테고리 시작 -->
 <nav class="navbar navbar-fixed-top">
@@ -35,29 +36,58 @@
 </nav><br><br><br><br><br>
 <!-- 메인카테고리 끝 -->
 
-<!-- 마이 페이지 바디 -->
-<div class="container" style="text-align: center;" >
-	<% 
-	   String mem_id = request.getParameter("mem_id");
-	   String mem_phone = request.getParameter("mem_phone");
-	%>
-		<h3> 아이디</h3>
-		<h4> 전화번호</h4>
-		<ul>
-	    	<li>
-	    		<input type="button" value="개인정보수정" onclick="location.href='member_info.do'">
-	    	</li>
-	    	<br>
-	    	<li>
-	    		<input type="button" value="구독관리/마이파티" onclick="location.href='member_subandpa.do'">
-	    	</li>
-	    	<br>
-	    	<li>
-	    		<input type="button" value="계좌등록 및 변경" onclick="location.href='member_bank.do'">
-	    	</li>
-		</ul>
+<!-- 회원 가입 시작 -->
+<h1 align="center"> 회원 가입</h1>
+<div class = "container">
+	<h1>회원 가입</h1>
+	<form name="member_join" id="mem_info" method = "get">
+	<table class="table">
+	  <tr>
+		<th>아이디 : </th> 
+		<td style="text-align: left;">
+				<input type="text" name="mem_id" id="mem_id">
+		</td>
+	  </tr>
+	  <tr>
+	  	<th>비밀번호 : </th>
+	  	<td style="text-align: left;">
+	  			<input type="password" name="mem_pw" id="mem_pw"  >
+	  	</td>
+	  </tr>
+	  <tr>
+	  	<th>연락처 : </th>
+	  	<td style="text-align: left;">
+	  			<input type="tel" name="mem_phone" id="mem_phone" >
+	  	</td>
+	  </tr>
+	  <tr>
+	  	<th>이메일 : </th>
+	  	<td style="text-align: left;">
+	  			<input type="email" name="mem_email" id="mem_email" >
+	  	</td>
+	  </tr>
+	  <tr>
+	  	<th>생년월일: </th>
+	  	<td style="text-align: left;">
+	  		<input type="text" name="birth_year" id="birth_year">
+	  		-
+	  		<input type="text" name="gender_code" id="gender_code" style="width:100px;">
+	  	</td>
+	  </tr>
+	  <tr>
+		 <td colspan="2">
+		    <input type="submit" value="회원가입"  class="btn btn-primary"/>
+		    <input type="reset"  value="취소"        class="btn btn-primary"/>
+		 </td>
+	  </tr>
+	</table>
+	</form>
+
+	
 </div>
-<!-- 마이 페이지 끝 -->
+<!-- 회원 가입 끝 -->
+
+<!-- 본문 끝 -->
 
 	<!-- Footer -->
 	<footer >
