@@ -162,6 +162,41 @@ public class PartyInfoDAO {
 		return dto;
 		
 	}
+
+	
+	public PartyInfoDTO read(String ott_name) {
+	      PartyInfoDTO dto=null;
+	      try {
+	         con=dbopen.getConnection();
+	         
+	         sql=new StringBuilder();
+	         sql.append(" SELECT party_id, mem_id, ott_name, ott_cdate, matching_no ");
+	         sql.append(" FROM party_info ");
+	         sql.append(" WHERE ott_name=? && ott_cdate=(SELECT MIN(ott_cdate) FROM party_info) && matching_no<=4 ");
+	         
+	         pstmt=con.prepareStatement(sql.toString());
+	         pstmt.setString(1, ott_name);
+	         
+	         rs=pstmt.executeQuery();
+	         if(rs.next()) {
+	            dto=new PartyInfoDTO();
+	            dto.setParty_id(rs.getInt("party_id"));
+	            dto.setMem_id(rs.getString("mem_id"));
+	            dto.setOtt_name(ott_name);
+	            dto.setOtt_cdate(rs.getString("ott_cdate"));
+	            dto.setMatching_no(rs.getInt("matching_no"));
+	         }//if end
+	         
+	      } catch (Exception e) {
+	         System.out.println("읽기 실패 : " + e);
+	      }finally {
+	         DBclose.close(con,pstmt,rs);
+	      }//end
+	      return dto;
+	   }//end
+	
+	
+	
 	
 	
 }//class end

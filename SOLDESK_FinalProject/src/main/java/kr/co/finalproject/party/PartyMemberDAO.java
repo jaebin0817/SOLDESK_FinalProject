@@ -31,7 +31,7 @@ public class PartyMemberDAO {
 		try {
 			con=dbopen.getConnection();//DB연결
 			sql=new StringBuilder();
-			sql.append(" SELECT mem_id, party_id, party_pcost, party_pdate, waiting_no, party_ordnumber ");
+			sql.append(" SELECT mem_id, party_id, party_pcost, party_pdate, party_ordnumber ");
 			sql.append(" FROM party_member ");
 			sql.append(" WHERE party_id=? ");
 			pstmt = con.prepareStatement(sql.toString());
@@ -46,7 +46,6 @@ public class PartyMemberDAO {
 					dto.setParty_id(rs.getInt("party_id"));
 					dto.setParty_pcost(rs.getInt("party_pcost"));
 					dto.setParty_pdate(rs.getString("party_pdate"));
-					dto.setWaiting_no(rs.getInt("waiting_no"));
 					dto.setParty_ordnumber(rs.getString("party_ordnumber"));
 					list.add(dto);
 				}while(rs.next());
