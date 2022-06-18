@@ -43,4 +43,3 @@ public class PartyMemDTO {
 
 
 }//class end
-

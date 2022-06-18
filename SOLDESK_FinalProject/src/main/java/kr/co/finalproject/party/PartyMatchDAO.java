@@ -36,6 +36,39 @@ public class PartyMatchDAO {
             DBclose.close(con, pstmt);
         }//end
         return cnt;
-    }//class end
+    }//end
+    
+    public PartyMatchDTO read(String ott_name) {
+		PartyMatchDTO dto=null;
+		try {
+			con=dbopen.getConnection();
+					
+			sql=new StringBuilder();
+			sql.append(" SELECT mem_id, ott_name, waiting_date, waiting_no ");
+			sql.append(" FROM party_waiting  ");
+			sql.append(" WHERE ott_name=? ");
+			
+			
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setString(1, ott_name);
+			
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				dto=new PartyMatchDTO();
+				dto.setMem_id(rs.getString("mem_id"));
+				dto.setOtt_name(ott_name);
+				dto.setWaiting_date(rs.getString("waiting_date"));
+				dto.setWaiting_no(rs.getInt("waiting_no"));
+			}//if end
+			
+		} catch (Exception e) {
+			System.out.println("읽기 실패 : " + e);
+		}finally {
+			DBclose.close(con,pstmt,rs);
+		}//end
+		return dto;
+	}//end
+    
+    
 
 }//class end

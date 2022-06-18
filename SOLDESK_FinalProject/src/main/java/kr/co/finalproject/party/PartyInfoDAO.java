@@ -118,8 +118,66 @@ public class PartyInfoDAO {
 		}//try end
 		
 		return list;
-		
 	}
+	
+	public PartyInfoDTO read(String ott_name) {
+		PartyInfoDTO dto=null;
+		try {
+			con=dbopen.getConnection();
+			
+			sql=new StringBuilder();
+			sql.append(" SELECT party_id, mem_id, ott_name, ott_cdate, matching_no ");
+			sql.append(" FROM party_info ");
+			sql.append(" WHERE ott_cdate =(SELECT MIN(ott_cdate) FROM party_info WHERE ott_name=? && matching_no<4  ) ");
+			
+			
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setString(1, ott_name);
+			
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				dto=new PartyInfoDTO();
+				dto.setParty_id(rs.getInt("party_id"));
+				dto.setMem_id(rs.getString("mem_id"));
+				dto.setOtt_name(ott_name);
+				dto.setOtt_cdate(rs.getString("ott_cdate"));
+				dto.setMatching_no(rs.getInt("matching_no"));
+			}//if end
+			
+		} catch (Exception e) {
+			System.out.println("읽기 실패 : " + e);
+		}finally {
+			DBclose.close(con,pstmt,rs);
+		}//end
+		return dto;
+	}//end
+	
+	
+	public int match(PartyInfoDTO dto2) {
+    	int cntmatch=0; //성공 또는 실패 여부 반환
+		try {
+			con=dbopen.getConnection();
+						
+	        sql=new StringBuilder();
+			sql.append(" UPDATE party_info ");
+			sql.append(" SET matching_no=? ");
+			sql.append(" WHERE party_id=? ");
+			
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setInt(1, dto2.getMatching_no()+1);
+			pstmt.setInt(2, dto2.getParty_id());
+
+			
+			cntmatch=pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("행수정 실패 : " + e);
+		}finally {
+			DBclose.close(con,pstmt);
+		}//end
+		return cntmatch;
+    }//end
+	
 	
 	
 }//class end

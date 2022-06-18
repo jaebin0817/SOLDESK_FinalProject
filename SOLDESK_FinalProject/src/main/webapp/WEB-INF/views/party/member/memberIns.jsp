@@ -7,7 +7,7 @@
 	<!-- 파티원 정보 입력 -->
 	
 	<div class="container-fluid text-center">	
-	
+	<h1>${ ott_name }</h1>
 		<form name="cardfrm" id="cardfrm" method="post" action="member.do">
 		<input type="hidden" id="ott_name" name="ott_name" value="${ ott_name }">
 		<input type="hidden" id="ott_price" name="ott_price" value="${ ott_price }">
@@ -68,4 +68,5 @@
 
 
 <!-- 본문끝 -->
+
 <%@ include file="../../footer.jsp"%>
