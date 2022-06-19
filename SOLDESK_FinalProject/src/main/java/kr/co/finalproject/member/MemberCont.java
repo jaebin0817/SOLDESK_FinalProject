@@ -94,13 +94,17 @@ public class MemberCont {
 	
 	
 	@RequestMapping(value = "/m_manage/member_info.do", method = RequestMethod.GET)
-	public ModelAndView member_info(String mem_id) {
+	public ModelAndView member_info(HttpServletRequest req) {
 		ModelAndView mav = new ModelAndView();
+		
+		HttpSession session = req.getSession();
+		String mem_id=session.getAttribute("s_mem_id").toString();
+		
 		mav.setViewName("m_manage/member_info");
-		memberDTO dto = dao.read(mem_id);
-		mav.addObject("dto", dto);
+		mav.addObject("dto", dao.read(mem_id));
 		return mav;	
 	}
+	
 	
 	@RequestMapping(value = "/m_manage/member_info.do", method = RequestMethod.POST)
 	public ModelAndView member_infoProc(@ModelAttribute memberDTO dto,  HttpServletRequest req) {
@@ -135,14 +139,25 @@ public class MemberCont {
 		ModelAndView mav = new ModelAndView();
 		
 		HttpSession session = req.getSession();
-
+		
 		String mem_id=(String) session.getAttribute("s_mem_id");
 		
-		mav.addObject("list", subdao.subread(mem_id));
+		mav.addObject("totalOttFee", subdao.totalPay(mem_id));
+		mav.addObject("list", subdao.mySubread(mem_id));
 		mav.setViewName("m_manage/mysubscribe");
 		return mav;
 	}
 	
+	
+	@RequestMapping("/agreement.do")
+	public String agreement() {
+		return "m_manage/agreement";
+	}
+	
+	@RequestMapping(value = "/memberjoin.do", method = RequestMethod.POST)
+	public String memberjoin() {
+		return "m_manage/member_join";
+	}
 		
 		
 		

@@ -179,6 +179,21 @@
     -webkit-animation-duration: 1s;
     visibility: visible;
   }
+  .pagetitle {
+  	font-size: xx-large;
+  	vertical-align: bottom;
+  	font-weight: 500;
+  }
+  .memTable  {
+    width: 60%;
+    margin: auto;
+    text-align: left;
+  }
+	
+	td {
+	text-align: left;
+	
+	}
 
   @keyframes slide {
     0% {

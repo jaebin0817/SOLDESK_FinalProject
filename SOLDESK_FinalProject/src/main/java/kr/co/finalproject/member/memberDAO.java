@@ -45,9 +45,9 @@ public class memberDAO {
 		try {
 			con = dbopen.getConnection();
 			sql = new StringBuilder();
-			sql.append(" SELECT * " );
+			sql.append(" SELECT mem_id, mem_pw, mem_phone, mem_email, mem_lv, mem_reg, mem_birth " );
 			sql.append(" FROM member_info ");
-			sql.append(" WHERE mem_lv = 'B' ");
+			sql.append(" WHERE mem_id=? ");
 			
 			pstmt=con.prepareStatement(sql.toString());
 			pstmt.setString(1, mem_id);
