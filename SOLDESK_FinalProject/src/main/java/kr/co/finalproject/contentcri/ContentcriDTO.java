@@ -1,6 +1,6 @@
 package kr.co.finalproject.contentcri;
 
-public class ContcriDTO {
+public class ContentcriDTO {
 	private int mcode;
 	private String cri_like;
 	private int cri_watch;
@@ -8,7 +8,7 @@ public class ContcriDTO {
 	private String mem_id;
 	private int cri_code;
 	
-	public ContcriDTO() {}
+	public ContentcriDTO() {}
 	
 	public int getMcode() {
 		return mcode;

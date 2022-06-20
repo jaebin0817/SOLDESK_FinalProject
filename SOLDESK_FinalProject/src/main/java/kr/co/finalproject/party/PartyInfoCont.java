@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -51,16 +52,20 @@ public class PartyInfoCont {
 		mav.addObject("ott_name", ott_name);
 		mav.addObject("ott_price", ott_price);
 		
-		if(party_role.equals("party_host")) {
-			
-			mav.setViewName("party/host/intro");
-			
-		}else if(party_role.equals("party_member")) {
-			
-			mav.setViewName("party/member/memberIns");
-			
+		HttpSession session = req.getSession();
+
+		if(session.getAttribute("s_mem_id")==null || session.getAttribute("s_mem_pw")==null || session.getAttribute("s_mem_lv")==null ) {
+			mav.setViewName("m_manage/login");
+			String msg="<p>파티 매칭을 위해 로그인해주세요</p>";
+			mav.addObject("msg", msg);
+		}else {
+			if(party_role.equals("party_host")) {
+				mav.setViewName("party/host/intro");
+			}else if(party_role.equals("party_member")) {
+				mav.setViewName("party/member/memberIns");
+			}
 		}
-		
+			
 		return mav;
 		
 	}//partyadd() end
@@ -106,7 +111,10 @@ public class PartyInfoCont {
 		ModelAndView mav=new ModelAndView();
 		PartyInfoDTO dto=null;
 		
-		String s_mem_id="";//실제로는 session정보 받아올것
+		//String s_mem_id="";//실제로는 session정보 받아올것
+		
+		HttpSession session = req.getSession();
+		String s_mem_id=session.getAttribute("s_mem_id").toString();
 		
 		dto=dao.readBank(s_mem_id);
 		
@@ -158,7 +166,8 @@ public class PartyInfoCont {
 	public ModelAndView checkout(HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
 		
-		String s_mem_id="";//실제로는 session정보 받아올것
+		HttpSession session = req.getSession();
+		String s_mem_id=session.getAttribute("s_mem_id").toString();
 		
 		String ott_name=req.getParameter("ott_name");
 		int ott_price=Integer.parseInt(req.getParameter("ott_price"));
@@ -190,7 +199,7 @@ public class PartyInfoCont {
 	@RequestMapping("party/host/checkoutTest.do")
 	public String checkoutTest() {
 		return "party/host/checkout";
-	}//partyadd() end
+	}//checkoutTest() end
 	
 	
 	
@@ -217,7 +226,7 @@ public class PartyInfoCont {
 		
 		return mav;
 	
-	}//partyadd() end
+	}//create() end
 	
 	
 	

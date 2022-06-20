@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import net.utility.DBclose;
 import net.utility.DBopen;
 
-public class ContcriDAO {
+public class ContentcriDAO {
 	
 	private DBopen dbopen=null;
 	private Connection con=null;
@@ -15,12 +15,12 @@ public class ContcriDAO {
 	private ResultSet rs=null;
     private StringBuilder sql=null;
     
-    public ContcriDAO() {
+    public ContentcriDAO() {
 	
 		dbopen = new DBopen();
 	}
     
-    public int insert(ContcriDTO dto) {
+    public int insert(ContentcriDTO dto) {
     	int cnt = 0;
     	try {
     		con = dbopen.getConnection();

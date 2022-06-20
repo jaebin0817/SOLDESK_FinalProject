@@ -37,6 +37,8 @@ public class memberDAO {
 			cnt = pstmt.executeUpdate();
 		}catch(Exception e) {
 			System.out.println("회원 가입 실패: "+ e);
+		}finally {
+			DBclose.close(con, pstmt);
 		}
 		return cnt;
 	}
