@@ -24,18 +24,21 @@ public class memberDAO {
 		try {
 			con = dbopen.getConnection();
 			sql = new StringBuilder();
-			sql.append(" INSERT INTO member_info(mem_id, mem_pw, mem_phone, mem_email, mem_lv, mem_reg, mem_birth) ");
-			sql.append(" values(?, ?, ?, ?, ?, ?, ?) ");
+			sql.append(" INSERT INTO member_info(mem_id, mem_pw, mem_phone, mem_email, mem_reg, mem_birth) ");
+			sql.append(" VALUES(?, ?, ?, ?, now(), ?) ");
 			
 			pstmt=con.prepareStatement(sql.toString());
 			pstmt.setString(1, dto.getMem_id());
 			pstmt.setString(2, dto.getMem_pw());
 			pstmt.setString(3, dto.getMem_phone());
 			pstmt.setString(4, dto.getMem_email());
+			pstmt.setString(5, dto.getMem_birth());
 			
 			cnt = pstmt.executeUpdate();
 		}catch(Exception e) {
 			System.out.println("회원 가입 실패: "+ e);
+		}finally {
+			DBclose.close(con, pstmt);
 		}
 		return cnt;
 	}
@@ -80,8 +83,18 @@ public class memberDAO {
 			sql = new StringBuilder();
 			sql.append(" UPDATE member_info" );
 			sql.append(" SET mem_pw=?, mem_phone=?, mem_email=? ");
+			sql.append(" WHERE mem_pw = ? AND mem_id=? ");	
 			pstmt = con.prepareStatement(sql.toString());
-            pstmt.setString(1, dto.getMem_id());
+			
+			if(dto.getNew_pw() != null) {
+            	pstmt.setString(1, dto.getNew_pw());
+            } else {
+            	pstmt.setString(1, dto.getMem_pw());
+            }
+            pstmt.setString(2, dto.getMem_phone());
+            pstmt.setString(3, dto.getMem_email());
+            pstmt.setString(4, dto.getMem_pw());
+            pstmt.setString(5, dto.getMem_id());
             
             cnt = pstmt.executeUpdate();
 		}catch(Exception e) {
@@ -93,16 +106,20 @@ public class memberDAO {
 	}
 	
 	
-	public int delete(String mem_id) {
+	
+	public int delete(String mem_id, String mem_pw) {
 		int cnt=0;
 		try {
 			con = dbopen.getConnection();
 			sql = new StringBuilder();
-			sql.append(" DELETE FROM member_info ");
-			sql.append(" WHERE mem_id = ? ");
+			sql.append(" UPDATE member_info ");
+			sql.append(" SET mem_lv = 'F' ");
+			sql.append(" WHERE mem_id = ? AND mem_pw=? ");
 			
 			pstmt = con.prepareStatement(sql.toString());
-            pstmt.setString(1, mem_id);
+			
+			pstmt.setString(1, mem_id);
+            pstmt.setString(2, mem_pw);
             
             cnt = pstmt.executeUpdate();
 		}catch(Exception e) {

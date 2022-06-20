@@ -145,16 +145,32 @@ public class MemberCont {
 	}
 	
 	
-	@RequestMapping(value = "/m_manage/member_info.do", method = RequestMethod.POST)
-	public ModelAndView member_infoProc(@ModelAttribute memberDTO dto,  HttpServletRequest req) {
+	@RequestMapping(value = "member_info.do", method = RequestMethod.POST)
+	public ModelAndView member_infoProc(@ModelAttribute memberDTO dto, HttpServletRequest req) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("m_manage/member_info");
-		
+		mav.setViewName("m_manage/msgView");
+
+		String mem_id = req.getParameter("mem_id");
+		String mem_pw = req.getParameter("mem_pw").trim();
+		String new_pw = req.getParameter("new_pw").trim();
+
+		String mem_phone = req.getParameter("mem_phone").trim();
+		String mem_email = req.getParameter("mem_email");
+		String mem_birth = req.getParameter("mem_birth");
+
+		dto.setMem_id(mem_id);
+		dto.setMem_pw(mem_pw);
+		dto.setNew_pw(new_pw);
+		dto.setMem_phone(mem_phone);
+		dto.setMem_email(mem_email);
+		dto.setMem_birth(mem_birth);
+
 		int cnt = dao.update(dto);
+
 		if(cnt==0) {
 			String msg="<p>회원 정보 수정 실패</p>";
 			String link1="<input type='button' value='다시시도' onclick='javascript:history.back()'>";
-            String link2="<input type='button' value='마이페이지' onclick='location.href=\"mypage.do\"'>";
+            String link2="<input type='button' value='마이페이지' onclick='location.href=\"member_info.do\"'>";
             mav.addObject(msg);
             mav.addObject(link1);
             mav.addObject(link2);
@@ -166,6 +182,7 @@ public class MemberCont {
 		}
 		return mav;
 	}
+	
 	
 	@RequestMapping("/m_manage/member_bank.do")
 	public String member_bank() {
@@ -205,6 +222,84 @@ public class MemberCont {
 	}
 	
 	
+	@RequestMapping(value = "/member_join.do", method = RequestMethod.GET)
+	public String member_join() {
+		return "m_manage/member_join";
+	}
+
+	@RequestMapping(value = "/member_join.do", method = RequestMethod.POST)
+	public ModelAndView member_joinProc(@ModelAttribute memberDTO dto, HttpServletRequest req) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("m_manage/msgView");
+
+		String mem_id = req.getParameter("mem_id").trim();
+		String mem_pw = req.getParameter("mem_pw").trim();
+		String mem_phone = req.getParameter("mem_phone").trim();
+		String mem_email = req.getParameter("mem_email").trim();
+		String mem_birth = req.getParameter("mem_birth").trim();
+
+		dto.setMem_id(mem_id);
+		dto.setMem_pw(mem_pw);
+		dto.setMem_phone(mem_phone);
+		dto.setMem_email(mem_email);
+		dto.setMem_birth(mem_birth);
+
+
+		int cnt=dao.insert(dto);
+
+		if(cnt==0) {
+			String msg="<p>회원 가입 실패</p>";
+			String link1="<input type='button' value='다시시도' onclick='javascript:history.back()'>";
+            String link2="<input type='button' value='홈' onclick='location.href=\"home.do\"'>";
+            mav.addObject(msg);
+            mav.addObject(link1);
+            mav.addObject(link2);
+		}else {
+			String msg="<p>회원 가입 성공</p>";
+			String link2="<input type='button' value='홈' onclick='location.href=\"home.do\"'>";
+			mav.addObject("msg", msg);
+			mav.addObject("link2", link2);   
+		}
+		return mav;
+	}
+	
+	
+	@RequestMapping(value = "/member_retire.do", method = RequestMethod.GET)
+	public String member_retire() {
+		return "m_manage/member_retire";
+	}
+
+	@RequestMapping(value = "/member_retire.do", method = RequestMethod.POST)
+	public ModelAndView mem_reitreProc(HttpServletRequest req) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("m_manage/msgView");
+		 HttpSession session = req.getSession();
+	     String mem_id=session.getAttribute("s_mem_id").toString();
+	     String mem_pw = req.getParameter("mem_pw");
+
+		int cnt = dao.delete(mem_id, mem_pw);
+
+		if(cnt==0) {
+			String msg="<p>회원 탈퇴 실패</p>";
+			String link1="<input type='button' value='다시시도' onclick='javascript:history.back()'>";
+            String link2="<input type='button' value='홈' onclick='location.href=\"mem_retire.do\"'>";
+            mav.addObject(msg);
+            mav.addObject(link1);
+            mav.addObject(link2);
+		}else {
+			String msg="<p>회원 탈퇴 성공</p>";
+			String link2="<input type='button' value='홈' onclick='location.href=\"home.do\"'>";
+			mav.addObject("msg", msg);
+			mav.addObject("link2", link2);   
+
+			session.removeAttribute("s_mem_id");
+			session.removeAttribute("s_mem_pw");
+			session.removeAttribute("s_mem_lv");
+		}
+
+		return mav;
+	}
+
 		
 		
 	

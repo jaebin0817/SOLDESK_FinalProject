@@ -9,6 +9,8 @@ public class memberDTO {
 	private String mem_lv;
 	private String mem_reg;
 	private String mem_birth;
+	private String new_pw;
+
 	
 	public memberDTO() {}
 
@@ -67,5 +69,16 @@ public class memberDTO {
 	public void setMem_birth(String mem_birth) {
 		this.mem_birth = mem_birth;
 	}
+
+	public String getNew_pw() {
+		return new_pw;
+	}
+
+	public void setNew_pw(String new_pw) {
+		this.new_pw = new_pw;
+	}
 	
-}
+	
+	
+	
+}//class end
