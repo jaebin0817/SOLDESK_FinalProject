@@ -57,33 +57,44 @@ public class PartyMemberDAO {
 		}//try end
 		
 		return list;
-	}
+	}//readParty() end
 	
 	
-	   public int ordersheet(PartyInfoDTO dto2, PartyMemberDTO dto3) {
-		   	int result=0; //성공 또는 실패 여부 반환
-				try {
-					con=dbopen.getConnection();
-					
-					sql=new StringBuilder();
-					sql.append(" INSERT INTO party_member(mem_id, party_id, party_pcost, party_pdate ,party_ordnumber) ");
-			        sql.append(" VALUES(?, ?, ?, now(), ? ) ");
-			        
-			        pstmt=con.prepareStatement(sql.toString());
-			        pstmt.setString(1, dto3.getMem_id()); 
-			        pstmt.setString(2, dto2.getParty_id()); 
-			        pstmt.setInt(3, dto3.getParty_pcost());
-			        pstmt.setString(4, dto3.getParty_ordnumber());
+    public int ordersheet(PartyInfoDTO partyInfoDTO, PartyMemberDTO PartyMemberDTO) {
+	   	int result=0; //성공 또는 실패 여부 반환
+		try {
+			con=dbopen.getConnection();
+			
+			sql=new StringBuilder();
+			sql.append(" INSERT INTO party_member(mem_id, party_id, party_pcost, party_pdate ,party_ordnumber) ");
+	        sql.append(" VALUES(?, ?, ?, now(), ? ) ");
+	        
+	        pstmt=con.prepareStatement(sql.toString());
+	        pstmt.setString(1, PartyMemberDTO.getMem_id()); 
+	        pstmt.setString(2, partyInfoDTO.getParty_id()); 
+	        pstmt.setInt(3, PartyMemberDTO.getParty_pcost());
+	        pstmt.setString(4, PartyMemberDTO.getParty_ordnumber());
+		
+			result=pstmt.executeUpdate();
+			
+			if(result==1) {
 				
-					result=pstmt.executeUpdate();
-					
-				} catch (Exception e) {
-					System.out.println("행수정 실패 : " + e);
-				}finally {
-					DBclose.close(con,pstmt);
-				}//end
-				return result;
-		   }//end
+				//주문서가 만들어지면 기존의 대기리스트에서는 삭제한다
+				
+				
+				
+			}else {
+				System.out.println("파티매칭(주문서 생성) 실패");
+			}
+			
+			
+		} catch (Exception e) {
+			System.out.println("행 수정 실패 : " + e);
+		}finally {
+			DBclose.close(con,pstmt);
+		}//end
+		return result;
+	}//end
 	
 	
 	

@@ -196,10 +196,10 @@ public class SubscribeInfoDAO {
 				subscribe_no += nowStr + "_" + "10000";
 				
 			}else {
+				int underbar=lastsubno.lastIndexOf("_");
+				lastsubno.substring(underbar+1);
 				
-				lastsubno.substring(9);
-				
-				int lastidxsubno = Integer.parseInt(lastsubno.substring(9));
+				int lastidxsubno = Integer.parseInt(lastsubno.substring(underbar+1));
 				lastidxsubno++;
 				
 				subscribe_no += nowStr + "_" + lastidxsubno;

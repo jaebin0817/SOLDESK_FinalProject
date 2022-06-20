@@ -220,7 +220,7 @@ public class PartyInfoCont {
 	
 	
 	@RequestMapping("party/host/create.do")
-	public ModelAndView create(@ModelAttribute PartyInfoDTO dto, SubscribeInfoDTO subdto) {
+	public ModelAndView create(@ModelAttribute PartyInfoDTO dto, SubscribeInfoDTO subdto, PartyWaitingDTO waitdto) {
 
 		ModelAndView mav=new ModelAndView();
 		mav.setViewName("party/host/msgView");
@@ -258,6 +258,19 @@ public class PartyInfoCont {
 				System.out.println("구독정보 등록 성공");
 			}
 			
+			//대기리스트에 현재 파티장이 만든 ott를 희망하는 파티원이 있을 시 매칭시키기
+			//파티원 매칭이 성공하면 파티정보의 매칭인원은 1명 증가시키고 대기리스트에서는 삭제함
+			//매칭인원이 4명이 될 때까지 반복
+			int matching_no = dao.matchingNoRead(dto);
+			
+			System.out.println("매칭인원 : "+matching_no);
+			
+			while(matching_no<4) {
+				int waiting_no=dao.autoMatching(dto, waitdto);
+				if(waiting_no==0) {
+					break;
+				}
+			}
 			
 		}//if end
 		
