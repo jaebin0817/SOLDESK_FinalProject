@@ -16,10 +16,13 @@
 <c:forEach var="dto" items="${list}">
 		<div class="col-sm-3">
 			<div class="thumbnall">
-				<a href="contlist/contlistread.do?mcode=${ dto.mcode }"><img src="../../storage/${dto.mthum }" alt="movie"
-					width="300px"></a>
-				<div class="mtitle">${dto.mtitle }</div>
+				<a href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode=${ dto.mcode }">
+					<img src="../../storage/${dto.mthum}" alt="movie"
+					width="300px">
+				</a>
+				<div class="mtitle">${dto.mtitle}</div>
 				<div class="mrate">평점 : ${dto.mrate}</div>
+				
 			
 				<c:if test="${dto.netflix eq 'O' }" >
 					<img src="../../images/Netflix.png" width="50px">
