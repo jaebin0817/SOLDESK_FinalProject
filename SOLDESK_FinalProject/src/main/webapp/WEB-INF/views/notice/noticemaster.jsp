@@ -6,6 +6,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>  
 
 <!-- 본문시작 notice.jsp -->
+	
   	<div class="container-fluid text-center">
 	<h3>공지사항입니다</h3>
 		<div class="container-fluid text-center">
@@ -19,7 +20,7 @@
 		<c:forEach var="dto" items="${list}">
 			<tr>
 				<td>${dto.n_num}</td>	
-				<td><a href="../notice/noticeread.do?n_num=${dto.n_num}">${dto.n_title}</a></td>
+				<td><a href="../notice/noticemasterread.do?n_num=${dto.n_num}">${dto.n_title}</a></td>
 				<td>${dto.n_date}</td>
 				<td>${dto.n_readcnt}</td>
 			</tr>
@@ -28,6 +29,9 @@
 		</table>
 		</div>
 	</div>
+	<form name="frm" method="post" action="<%=request.getContextPath()%>/notice/noticewrite.do">
+		<input type="submit" value="공지사항등록"  class="btn btn-success">
+	</form>
 
 <!-- 본문끝 -->
 <%@ include file="../footer.jsp"%>

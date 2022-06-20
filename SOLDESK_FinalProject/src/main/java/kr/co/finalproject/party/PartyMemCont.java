@@ -28,12 +28,6 @@ public class PartyMemCont {
 		System.out.println("-----PartyMemCont() 객체 생성");
 	}//end
 
-	//결과확인 http://localhost:9090/party/member.do
-	/*
-	@RequestMapping(value = "party/member.do" , method = RequestMethod.GET)
-	public String memberCard() {
-		return "party/member/memberIns";
-	}//memberCard()*/
 
 	@RequestMapping(value = "party/member.do" , method = RequestMethod.POST)
 	public ModelAndView memberaccount(@ModelAttribute PartyMemDTO dto, HttpServletRequest req) {
