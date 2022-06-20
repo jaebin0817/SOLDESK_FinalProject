@@ -14,7 +14,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+<body id="member_bank" data-spy="scroll" data-target=".navbar" data-offset="60">
 
 <!-- 메인카테고리 시작 -->
 <nav class="navbar navbar-fixed-top">
@@ -33,27 +33,27 @@
     </div>
   </div>
 </nav><br><br><br><br><br>
-<!-- 계좌등록/변경 시작 -->
+<!-- 계좌변경 시작 -->
 <div class="container" align="center">
-	<h1>계좌등록</h1>
+	<h1>계좌</h1>
 	<form name="bankfrm">
 	<table>
 	  <tr>
 	     <td>계좌번호: <input type="text" id="bank_num" name="bank_num">
 	     <td>은행 :  
 	     	<select id="bankname" name="bankname">
-	     		<option>국민</option>
-	     		<option>신한</option>
-	     		<option>우리</option>
+	     		<option value="국민">국민</option>
+	     		<option value="신한">신한</option>
+	     		<option value="우리">우리</option>
 	     	</select>
 	  </tr>
 	</table>
 	</form>
 	
-	<input type="submit" value="등록">
+	<input type="submit" value="변경">
 	<input type="reset" value="취소">
 </div>
-<!-- 계좌등록/변경 끝 -->
+<!-- 계좌 변경 끝 -->
 
 	<!-- Footer -->
 	<footer >

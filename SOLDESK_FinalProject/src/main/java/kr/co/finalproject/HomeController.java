@@ -6,7 +6,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
-
+	
 	public HomeController() {
 		System.out.println("-----HomeController() 객체 생성");
 	}//constructor end
@@ -29,7 +29,7 @@ public class HomeController {
 	}//home() end
 	
 	//결과확인 http://localhost:9090/m_manage/mypage.do
-	@RequestMapping("/m_manage/mypage.do")
+	@RequestMapping("mypage.do")
 	public String mypage() {
 		return "m_manage/mypage";
 	}

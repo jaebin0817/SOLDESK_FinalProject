@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>index.jsp</title>
+  <title>OPOT</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="/css/layout.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,12 +29,21 @@
     <div>
       <ul class="nav navbar-nav navbar-right">
 	      	<li><a href="">컨텐츠</a></li>
-	        <li><a href="">파티매칭</a></li>
-	        <li><a href="m_manage/mypage.do">마이페이지</a></li>
+	        <li><a href="party/partyadd.do">파티매칭</a></li>
+	        	
+	        <c:choose>
+	          <c:when test="${ s_mem_id==null || s_mem_pw==null || s_mem_lv==null }">
+	            <li><a href="login.do">로그인</a></li>	            
+	          </c:when>
+	          <c:otherwise>
+	            <li><a href="login.do">마이페이지</a></li>
+	          </c:otherwise>
+	        </c:choose>
       </ul>
     </div>
   </div>
 </nav><!-- 메인카테고리 끝 -->
+
 
 <!-- 본문 시작 -->
 
@@ -113,9 +124,16 @@
 	  <div class="container-fluid bg-3 text-center">
 	    <a href="">공지사항</a> &nbsp;&nbsp;
 	    <a href="">문의사항</a>
+	    <!-- 세션이용해서 회원등급 A(webmaster)일때만 접근 허용 -->
+	    <c:if test="${ s_mem_lv=='A' }">
+	      <br><a href="webmaster/webmaster.do">관리자페이지</a>
+	    </c:if>
 	  </div>
 	  
 	  <div class="container-fluid bg-4 text-center">
+	  	  <a href="<%=request.getContextPath()%>">
+	          <img src="/images/logo_white_grey.png" alt="HOME" width="100px">
+	      </a>
 		  <p>Copyright &copy; OPOT</p> 
 		  <p>SOLDESK 1조</p>
 		  <p>조원들 Contact Info</p>

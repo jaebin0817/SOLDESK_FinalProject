@@ -20,6 +20,7 @@ public class memberDAO {
 		dbopen = new DBopen();
 	}
 	
+	//가입 기능
 	public int insert(memberDTO dto) {
 		int cnt=0;
 		try {
@@ -27,15 +28,15 @@ public class memberDAO {
 			sql = new StringBuilder();
 			sql.append(" INSERT INTO member_info(mem_id, mem_pw, mem_phone, mem_email, mem_reg, mem_birth) ");
 			sql.append(" VALUES(?, ?, ?, ?, now(), ?) ");
-			
 			pstmt=con.prepareStatement(sql.toString());
+			
 			pstmt.setString(1, dto.getMem_id());
 			pstmt.setString(2, dto.getMem_pw());
 			pstmt.setString(3, dto.getMem_phone());
 			pstmt.setString(4, dto.getMem_email());
-			pstmt.setString(5, dto.getMem_lv());
-			pstmt.setString(6, dto.getMem_reg());
-			pstmt.setString(7, dto.getMem_birth());
+			//pstmt.setString(5, dto.getMem_lv());
+			//pstmt.setString(6, dto.getMem_reg());
+			pstmt.setString(5, dto.getMem_birth());
 			
 			cnt = pstmt.executeUpdate();
 		}catch(Exception e) {
@@ -44,14 +45,15 @@ public class memberDAO {
 		return cnt;
 	}
 	
+	//읽기 기능 
 	public memberDTO read(String mem_id){
 		memberDTO dto = null;
 		try {
 			con = dbopen.getConnection();
 			sql = new StringBuilder();
-			sql.append(" SELECT * " );
+			sql.append(" SELECT mem_id, mem_pw, mem_phone, mem_email, mem_reg, mem_birth " );
 			sql.append(" FROM member_info ");
-			sql.append(" where mem_lv IN ('A', 'B') and mem_id=? ");
+			sql.append(" where mem_id=? ");
 			
 			pstmt=con.prepareStatement(sql.toString());
 			pstmt.setString(1, mem_id);
@@ -59,10 +61,10 @@ public class memberDAO {
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				dto = new memberDTO();
+				dto.setMem_id(rs.getString("mem_id"));
 				dto.setMem_pw(rs.getString("mem_pw"));
 				dto.setMem_phone(rs.getString("mem_phone"));
 				dto.setMem_email(rs.getString("mem_email"));
-				dto.setMem_lv(rs.getString("mem_lv"));
 				dto.setMem_reg(rs.getString("mem_reg"));
 				dto.setMem_birth(rs.getString("mem_birth"));
 			}
@@ -75,7 +77,7 @@ public class memberDAO {
 		return dto;
 	}
 	
-	
+	//수정 기능
 	public int update(memberDTO dto) {
 		int cnt=0;
 		try {
@@ -96,12 +98,14 @@ public class memberDAO {
 	}
 	
 	
-	public int delete(String mem_id) {
+	//탈퇴 기능
+	public int retire(String mem_id) {
 		int cnt=0;
 		try {
 			con = dbopen.getConnection();
 			sql = new StringBuilder();
-			sql.append(" DELETE FROM member_info ");
+			sql.append(" UPDATE member_info ");
+			sql.append(" SET mem_lv = 'F' ");
 			sql.append(" WHERE mem_id = ? ");
 			
 			pstmt = con.prepareStatement(sql.toString());

@@ -29,23 +29,25 @@ public class MemberCont {
 	public ModelAndView mypage(HttpServletRequest req, HttpServletResponse resp) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("mypage");
-		
+
 		
 		return mav;
 	}
 	
 	@RequestMapping(value = "member_info.do", method = RequestMethod.GET)
-	public ModelAndView member_info(String mem_id) {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("m_manage/member_info");
-		memberDTO dto = dao.read(mem_id);
-		mav.addObject("dto", dto);
-		return mav;	
-	
-	}
+	   public ModelAndView member_info(HttpServletRequest req) {
+	      ModelAndView mav = new ModelAndView();
+	      
+	      HttpSession session = req.getSession();
+	      String mem_id=session.getAttribute("s_mem_id").toString();
+	      
+	      mav.setViewName("m_manage/member_info");
+	      mav.addObject("dto", dao.read(mem_id));
+	      return mav;   
+	   }
 	
 	@RequestMapping(value = "member_info.do", method = RequestMethod.POST)
-	public ModelAndView member_infoProc(@ModelAttribute memberDTO dto,  HttpServletRequest req) {
+	public ModelAndView member_infoProc(@ModelAttribute memberDTO dto) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("m_manage/member_info");
 		
@@ -72,26 +74,22 @@ public class MemberCont {
 	}
 	
 	@RequestMapping(value = "/member_join.do", method = RequestMethod.POST)
-	public ModelAndView member_joinProc(@ModelAttribute memberDTO dto, HttpServletRequest req, HttpServletResponse resp) {
+	public ModelAndView member_joinProc(@ModelAttribute memberDTO dto, HttpServletRequest req) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("member_join");
+		mav.setViewName("m_manage/msgView");
 		
 		String mem_id = req.getParameter("mem_id").trim();
 		String mem_pw = req.getParameter("mem_pw").trim();
 		String mem_phone = req.getParameter("mem_phone").trim();
-		String mem_ph1 = mem_phone.substring(3, 6);
-		String mem_ph2 = mem_phone.substring(7, 10);
 		String mem_email = req.getParameter("mem_email").trim();
-		String mem_reg = req.getParameter("mem_reg").trim();
 		String mem_birth = req.getParameter("mem_birth").trim();
-		String mem_gender = mem_birth.substring(6);
 		
 		dto.setMem_id(mem_id);
 		dto.setMem_pw(mem_pw);
-		dto.setMem_phone(mem_phone+"-"+mem_ph1+"-"+mem_ph2);
+		dto.setMem_phone(mem_phone);
 		dto.setMem_email(mem_email);
-		dto.setMem_reg(mem_reg);
-		dto.setMem_birth(mem_birth.substring(0,5)+"-"+mem_gender);
+		dto.setMem_birth(mem_birth);
+
 		
 		int cnt=dao.insert(dto);
 

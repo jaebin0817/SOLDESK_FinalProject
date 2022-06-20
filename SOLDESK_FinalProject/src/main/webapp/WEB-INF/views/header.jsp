@@ -28,7 +28,7 @@
       <ul class="nav navbar-nav navbar-right">
 	      	<li><a href="">컨텐츠</a></li>
 	        <li><a href="">파티매칭</a></li>
-	        <li><a href="">마이페이지</a></li>
+	        <li><a href="login.do">로그인</a></li>
       </ul>
     </div>
   </div>
