@@ -24,7 +24,7 @@
 			<table class="table table-bordered" id="login_table">
 			<tr>
 			    <td>
-				   <input type="text" name="id" id="id" class="form-control" placeholder="아이디" maxlength="10" required>
+				   <input type="text" name="id" id="id" class="form-control" placeholder="아이디" maxlength="10" value="${ c_id }" required>
 			    </td>
 	
 			    <td rowspan="2" width="90px">
@@ -39,7 +39,13 @@
 			</tr>
 			<tr>
 			   <td colspan="2">
-			      <label><input type="checkbox" name="c_id" value="SAVE">아이디 저장</label>	<!-- label로 감싸면 글씨 클릭해도 체크박스 체크됨 -->		  
+			   	  	<c:choose>
+			   	  		<c:when test="${ c_id=='' }"><c:set var="check"></c:set></c:when>
+			   	  		<c:otherwise><c:set var="check">checked</c:set></c:otherwise>
+			   	  	</c:choose>
+			   	  
+			   	  
+			      <label><input type="checkbox" name="c_id" value="SAVE" ${ check } >아이디 저장</label>	<!-- label로 감싸면 글씨 클릭해도 체크박스 체크됨 -->		  
 				  &nbsp;&nbsp;&nbsp;
 				  <a href="agreement.do">회원가입</a>
 				  &nbsp;&nbsp;&nbsp;

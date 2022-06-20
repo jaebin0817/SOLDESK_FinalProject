@@ -26,6 +26,8 @@
 	    	<br><br>
 	    	<input type="button" value="구독관리/마이파티" onclick="location.href='mysubscribe.do'">
 	    	<br><br>
+	    	<input type="button" value="나의 컨텐츠" onclick="location.href='mycontent.do'">
+	    	<br><br>
 	    	<input type="button" value="계좌등록 및 변경" onclick="location.href='member_bank.do'">
 	    	<hr>
 	    	<input type="submit" value="로그아웃">

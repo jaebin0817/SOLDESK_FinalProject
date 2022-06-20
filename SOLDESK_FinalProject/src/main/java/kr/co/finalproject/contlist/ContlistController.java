@@ -14,7 +14,7 @@ public class ContlistController {
 	public ContlistController() {
 		
 		dao = new ContlistDAO();
-		System.out.println("----ContlistController() 객체 생성");
+		System.out.println("-----ContlistCont() 객체 생성");
 	}// constructor end
 
 

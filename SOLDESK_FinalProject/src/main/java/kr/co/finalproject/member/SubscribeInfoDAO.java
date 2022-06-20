@@ -42,7 +42,7 @@ public class SubscribeInfoDAO {
 					dto = new SubscribeInfoDTO();
 					dto.setSubscribe_no(rs.getString("subscribe_no"));	
 					dto.setMem_id(rs.getString("mem_id"));
-					dto.setParty_id(rs.getInt("party_id"));
+					dto.setParty_id(rs.getString("party_id"));
 					dto.setParty_role(rs.getString("party_role"));
 					dto.setSubscribe_start(rs.getString("subscribe_start"));
 					dto.setSubscribe_end(rs.getString("subscribe_end"));
@@ -85,7 +85,7 @@ public class SubscribeInfoDAO {
 					dto = new SubscribeInfoDTO();
 					dto.setSubscribe_no(rs.getString("subscribe_no"));	
 					dto.setMem_id(rs.getString("A.mem_id"));
-					dto.setParty_id(rs.getInt("A.party_id"));
+					dto.setParty_id(rs.getString("A.party_id"));
 					dto.setParty_role(rs.getString("party_role"));
 					dto.setSubscribe_start(rs.getString("subscribe_start"));
 					dto.setSubscribe_end(rs.getString("subscribe_end"));
@@ -139,6 +139,84 @@ public class SubscribeInfoDAO {
 		
 		return totalOttFee;
 	}
+	
+	
+	public int subinsert(SubscribeInfoDTO dto) {
+		
+		int cnt=0;
+
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" INSERT INTO subscribe_info( ");
+			sql.append("     subscribe_no, mem_id, party_id, party_role, subscribe_start, subscribe_end) ");
+			sql.append(" VALUES(?, ?, ?, '파티장', now(), adddate(now(), interval 1 month)) ");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, dto.getSubscribe_no());
+			pstmt.setString(2, dto.getMem_id());
+			pstmt.setString(3, dto.getParty_id());
+
+			cnt=pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("파티장 구독 정보 생성 실패: " + e);
+		} finally {
+			DBclose.close(con, pstmt);
+		}//try end
+		
+		
+		return cnt;
+		
+	}//subinsert() end
+
+	
+	public String subnoCreate(String nowStr){
+		
+		String subscribe_no="";
+		String lastsubno="";
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" SELECT subscribe_no ");
+			sql.append(" FROM subscribe_info ");
+			sql.append(" WHERE subscribe_start=(SELECT MAX(subscribe_start) ");
+			sql.append(" FROM subscribe_info ");
+			sql.append(" WHERE subscribe_no LIKE '" + nowStr + "%') ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				lastsubno=rs.getString("subscribe_no");
+			}//if end
+			
+			if(lastsubno=="") {//오늘 만들어진 주문번호가 없음
+
+				subscribe_no += nowStr + "_" + "10000";
+				
+			}else {
+				
+				lastsubno.substring(9);
+				
+				int lastidxsubno = Integer.parseInt(lastsubno.substring(9));
+				lastidxsubno++;
+				
+				subscribe_no += nowStr + "_" + lastidxsubno;
+				
+			}
+			
+		}catch (Exception e) {
+			System.out.println("구독번호 불러오기 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);
+		}//try end		
+		
+		
+		return subscribe_no;
+	}//subnoCreate() end
+	
+	
 	
 	
 	
