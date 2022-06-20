@@ -60,6 +60,32 @@ public class PartyMemberDAO {
 	}
 	
 	
+	   public int ordersheet(PartyInfoDTO dto2, PartyMemberDTO dto3) {
+		   	int result=0; //성공 또는 실패 여부 반환
+				try {
+					con=dbopen.getConnection();
+					
+					sql=new StringBuilder();
+					sql.append(" INSERT INTO party_member(mem_id, party_id, party_pcost, party_pdate ,party_ordnumber) ");
+			        sql.append(" VALUES(?, ?, ?, now(), ? ) ");
+			        
+			        pstmt=con.prepareStatement(sql.toString());
+			        pstmt.setString(1, dto3.getMem_id()); 
+			        pstmt.setString(2, dto2.getParty_id()); 
+			        pstmt.setInt(3, dto3.getParty_pcost());
+			        pstmt.setString(4, dto3.getParty_ordnumber());
+				
+					result=pstmt.executeUpdate();
+					
+				} catch (Exception e) {
+					System.out.println("행수정 실패 : " + e);
+				}finally {
+					DBclose.close(con,pstmt);
+				}//end
+				return result;
+		   }//end
 	
 	
-}
+	
+	
+}//class end

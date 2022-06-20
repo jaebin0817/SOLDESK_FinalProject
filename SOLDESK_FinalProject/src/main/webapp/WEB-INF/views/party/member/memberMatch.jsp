@@ -1,71 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="../../header.jsp"%>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>index.jsp</title>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="/css/layout.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
-
-<!-- 메인카테고리 시작 -->
-<nav class="navbar navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-	      <a href="<%=request.getContextPath()%>">
-	          <img src="/images/logo.png" alt="HOME" width="180px">
-	      </a>
-    </div>
-    <div>
-      <ul class="nav navbar-nav navbar-right">
-	      	<li><a href="">컨텐츠</a></li>
-	        <li><a href="">파티매칭</a></li>
-	        <li><a href="">마이페이지</a></li>
-      </ul>
-    </div>
-  </div>
-</nav><br><br><br><br><br>
-<!-- 메인카테고리 끝 -->
-
-<!-- 본문 시작 -->
-	파티 매칭을 시작합니다
-	<div class="title">알림</div>
-	<div class="content">
-		<dl>
-			<dd>${msg}</dd>
-		</dl>
-		<p>
-			${link1}
-			${link2}			
-		</p>	
+<!-- 본문시작 memberMatch.jsp -->
+	
+	<!-- 파티원 정보 입력 -->
+	
+	<div class="container-fluid text-center">
+	<form name="frm" method="post" action="membermatch.do">
+		<input type="hidden" id="ott_name" name="ott_name" value="${ ott_name }">
+		<input type="hidden" id="mem_id" name="mem_id" placeholder="회원아이디" value="${ mem_id }"><!-- 세션정보에서 가져오기 -->
+		<input type="hidden" id="ott_price" name="ott_price" value="${ ott_price }">
+		<input type="hidden" id="party_pcost" name="party_pcost" value="${ party_pcost }">
+		<h1>${ ott_name }</h1>
+		
+		<h3>${ ott_name } 기존 프리미엄 서비스 이용가격 ${ott_price} 에서</h3> <br>
+		<h3>${payback_amount} 원 절약하여</h3>
+		<h3>${party_pcost} 원 으로 절약하시게 됩니다~</h3>
+		
+		<br>
+		파티 매칭을 시작하시겠습니까?
+		<br>
+		<input type="submit" value="시작하기"  class="btn btn-success">
+	</form>
 	</div>
-<!-- 본문 끝 -->
-
-	<!-- Footer -->
-	<footer >
-
-	  <div class="container-fluid bg-3 text-center">
-	    <a href="">공지사항</a> &nbsp;&nbsp;
-	    <a href="">문의사항</a>
-	  </div>
-	  
-	  <div class="container-fluid bg-4 text-center">
-		  <p>Copyright &copy; OPOT</p> 
-		  <p>SOLDESK 1조</p>
-		  <p>조원들 Contact Info</p>
-	  </div>
-	  
-
-	</footer>
 
 
-</body>
-</html>
+
+
+<!-- 본문끝 -->
+<%@ include file="../../footer.jsp"%>

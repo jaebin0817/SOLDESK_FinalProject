@@ -27,8 +27,8 @@ public class PartyInfoDAO {
 		try {
 			con=dbopen.getConnection();//DB연결
 			sql=new StringBuilder();
-			sql.append(" INSERT INTO party_info(mem_id, ott_name, ott_price, ott_id, ott_pw, ott_cdate, bank_name, bank_account, payback_amount) ");
-			sql.append(" VALUES(?, ?, ?, ?, ?, now(), ?, ?, ? ) ");
+			sql.append(" INSERT INTO party_info(mem_id, ott_name, ott_price, ott_id, ott_pw, ott_cdate, bank_name, bank_account, payback_amount, party_id) ");
+			sql.append(" VALUES(?, ?, ?, ?, ?, now(), ?, ?, ?, ? ) ");
 			pstmt = con.prepareStatement(sql.toString());
 			pstmt.setString(1, dto.getMem_id());
 			pstmt.setString(2, dto.getOtt_name());
@@ -38,6 +38,7 @@ public class PartyInfoDAO {
 			pstmt.setString(6, dto.getBank_name());
 			pstmt.setString(7, dto.getBank_account());
 			pstmt.setInt(8, dto.getPayback_amount());
+			pstmt.setString(9, dto.getParty_id());
 
 			cnt=pstmt.executeUpdate();
 			
@@ -102,7 +103,7 @@ public class PartyInfoDAO {
 				list=new ArrayList<PartyInfoDTO>();				
 				do {
 					dto = new PartyInfoDTO();//커서가 가리키는 한 줄 저장
-					dto.setParty_id(rs.getInt("party_id"));
+					dto.setParty_id(rs.getString("party_id"));
 					dto.setMem_id(rs.getString("mem_id"));
 					dto.setOtt_name(rs.getString("ott_name"));
 					dto.setOtt_cdate(rs.getString("ott_cdate"));
@@ -139,7 +140,7 @@ public class PartyInfoDAO {
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 					dto = new PartyInfoDTO();
-					dto.setParty_id(rs.getInt("party_id"));
+					dto.setParty_id(rs.getString("party_id"));
 					dto.setMem_id(rs.getString("mem_id"));
 					dto.setOtt_name(rs.getString("ott_name"));
 					dto.setOtt_price(rs.getInt("ott_price"));
@@ -169,10 +170,10 @@ public class PartyInfoDAO {
 	      try {
 	         con=dbopen.getConnection();
 	         
-	         sql=new StringBuilder();
-	         sql.append(" SELECT party_id, mem_id, ott_name, ott_cdate, matching_no ");
-	         sql.append(" FROM party_info ");
-	         sql.append(" WHERE ott_name=? && ott_cdate=(SELECT MIN(ott_cdate) FROM party_info) && matching_no<=4 ");
+			sql=new StringBuilder();
+			sql.append(" SELECT party_id, mem_id, ott_name, ott_cdate, matching_no ");
+			sql.append(" FROM party_info ");
+			sql.append(" WHERE ott_cdate =(SELECT MIN(ott_cdate) FROM party_info WHERE ott_name=? AND matching_no<4  ) ");
 	         
 	         pstmt=con.prepareStatement(sql.toString());
 	         pstmt.setString(1, ott_name);
@@ -180,7 +181,7 @@ public class PartyInfoDAO {
 	         rs=pstmt.executeQuery();
 	         if(rs.next()) {
 	            dto=new PartyInfoDTO();
-	            dto.setParty_id(rs.getInt("party_id"));
+				dto.setParty_id(rs.getString("party_id"));
 	            dto.setMem_id(rs.getString("mem_id"));
 	            dto.setOtt_name(ott_name);
 	            dto.setOtt_cdate(rs.getString("ott_cdate"));
@@ -195,7 +196,32 @@ public class PartyInfoDAO {
 	      return dto;
 	   }//end
 	
+		
 	
+		public int match(PartyInfoDTO dto2) {
+	    	int cntmatch=0; //성공 또는 실패 여부 반환
+			try {
+				con=dbopen.getConnection();
+							
+		        sql=new StringBuilder();
+				sql.append(" UPDATE party_info ");
+				sql.append(" SET matching_no=? ");
+				sql.append(" WHERE party_id=? ");
+				
+				pstmt=con.prepareStatement(sql.toString());
+				pstmt.setInt(1, dto2.getMatching_no()+1);
+				pstmt.setString(2, dto2.getParty_id());
+	
+				
+				cntmatch=pstmt.executeUpdate();
+				
+			} catch (Exception e) {
+				System.out.println("행수정 실패 : " + e);
+			}finally {
+				DBclose.close(con,pstmt);
+			}//end
+			return cntmatch;
+	    }//end
 	
 	
 	

@@ -2,7 +2,7 @@ package kr.co.finalproject.party;
 
 public class PartyInfoDTO {
 
-	private int party_id;
+	private String party_id;
 	private String mem_id;
 	private String ott_name;
     private int ott_price;
@@ -17,13 +17,16 @@ public class PartyInfoDTO {
 	
     public PartyInfoDTO() {}
 
-	public int getParty_id() {
+
+	public String getParty_id() {
 		return party_id;
 	}
 
-	public void setParty_id(int party_id) {
+
+	public void setParty_id(String party_id) {
 		this.party_id = party_id;
 	}
+
 
 	public String getMem_id() {
 		return mem_id;

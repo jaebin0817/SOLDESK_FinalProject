@@ -123,7 +123,7 @@
 	<footer >
 
 	  <div class="container-fluid bg-3 text-center">
-	    <a href="">공지사항</a> &nbsp;&nbsp;
+	    <a href="notice/notice.do">공지사항</a> &nbsp;&nbsp;
 	    <a href="">문의사항</a>
 	    <!-- 세션이용해서 회원등급 A(webmaster)일때만 접근 허용 -->
 	    <c:if test="${ s_mem_lv=='A' }">
