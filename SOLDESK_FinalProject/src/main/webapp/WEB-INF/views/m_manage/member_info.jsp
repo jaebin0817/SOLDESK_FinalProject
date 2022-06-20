@@ -70,7 +70,7 @@
       <tr>
           <th>이메일*</th>
           <td>
-              <input type="text" class="form-control" name="mem_phone" id="mem_phone"  value="${ dto.mem_email }" required>
+              <input type="text" class="form-control" name="mem_email" id="mem_email"  value="${ dto.mem_email }" required>
           </td>
           <td>
             <input type="button" class="btn" value="Email 중복확인" onclick="">

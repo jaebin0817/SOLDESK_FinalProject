@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,6 +15,8 @@
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="../js/jquery-3.6.0.min.js"></script>
+  <script src="../js/jquery.cookie.js"></script>
 </head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
 
@@ -20,16 +24,23 @@
 <nav class="navbar navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-	      <a href="<%=request.getContextPath()%>">
+	      <a href="<%=request.getContextPath()%>/home.do">
 	          <img src="/images/logo.png" alt="HOME" width="180px">
 	      </a>
     </div>
     <div>
       <ul class="nav navbar-nav navbar-right">
-	      	<li><a href="">컨텐츠</a></li>
-	        <li><a href="">파티매칭</a></li>
-	        <li><a href="login.do">로그인</a></li>
-      </ul>
+	      	<li><a href="<%=request.getContextPath()%>/contlist/contlist.do">컨텐츠</a></li>
+	        <li><a href="<%=request.getContextPath()%>/party/partyadd.do">파티매칭</a></li>
+	        <c:choose>
+	          <c:when test="${ s_mem_id==null || s_mem_pw==null || s_mem_lv==null }">
+	            <li><a href="<%=request.getContextPath()%>/login.do">로그인</a></li>	            
+	          </c:when>
+	          <c:otherwise>
+	            <li><a href="<%=request.getContextPath()%>/mypage.do">마이페이지</a></li>
+	          </c:otherwise>
+	        </c:choose>
+	  </ul>
     </div>
   </div>
 </nav><br><br><br><br><br>

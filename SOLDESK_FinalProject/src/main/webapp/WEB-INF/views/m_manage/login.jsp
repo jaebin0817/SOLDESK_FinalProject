@@ -41,9 +41,9 @@
 			   <td colspan="2">
 			      <label><input type="checkbox" name="c_id" value="SAVE">아이디 저장</label>	<!-- label로 감싸면 글씨 클릭해도 체크박스 체크됨 -->		  
 				  &nbsp;&nbsp;&nbsp;
-				  <a href="member_join.do">회원가입</a>
+				  <a href="agreement.do">회원가입</a>
 				  &nbsp;&nbsp;&nbsp;
-				  <a href="findID.jsp">아이디/비밀번호찾기</a>
+				  <a href="">아이디/비밀번호찾기</a>
 			   </td>
 			</tr>		  
 			</table>
@@ -61,7 +61,7 @@
 			<br><br>
 			<a href='member_info.do'>[회원정보수정]</a>
 			&nbsp;&nbsp;
-			<a href=''>[회원탈퇴]</a>
+			<a href='member_retire.do'>[회원탈퇴]</a>
 			<br><br>
 		</form>
 		

@@ -1,7 +1,7 @@
 package kr.co.finalproject.member;
 
 public class memberDTO {
-	
+
 	private String mem_id;
 	private String mem_pw;
 	private String mem_phone;
@@ -9,6 +9,8 @@ public class memberDTO {
 	private String mem_lv;
 	private String mem_reg;
 	private String mem_birth;
+	private String new_pw;
+
 	
 	public memberDTO() {}
 
@@ -68,4 +70,12 @@ public class memberDTO {
 		this.mem_birth = mem_birth;
 	}
 
+	public String getNew_pw() {
+		return new_pw;
+	}
+
+	public void setNew_pw(String new_pw) {
+		this.new_pw = new_pw;
+	}
+	
 }

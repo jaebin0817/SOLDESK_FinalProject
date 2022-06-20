@@ -29,6 +29,7 @@
           <input type="button" value="계좌등록 및 변경" onclick="location.href='member_bank.do'">
           <hr>
           <input type="submit" value="로그아웃">
+          <input type="button" value="회원탈퇴" onclick="location.href='member_retire.do'">
          <br><br>
          
       </form>
