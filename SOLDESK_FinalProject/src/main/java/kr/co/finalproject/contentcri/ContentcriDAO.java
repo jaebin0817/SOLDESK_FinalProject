@@ -26,11 +26,14 @@ public class ContentcriDAO {
     		con = dbopen.getConnection();
     		sql = new StringBuilder();
     		sql.append(" INSERT INTO content_critic(mcode, cri_like, cri_watch, cri_point, mem_id) ");
-    		sql.append(" VALUES(?, ?) ");
+    		sql.append(" VALUES(?, ?, ?, ?, ?) ");
     		
     		pstmt= con.prepareStatement(sql.toString());
     		pstmt.setInt(1, dto.getMcode());
-    		pstmt.setString(2, dto.getMem_id());
+    		pstmt.setString(2, dto.getCri_like());
+    		pstmt.setInt(3, dto.getCri_watch());
+    		pstmt.setInt(4, dto.getCri_point());
+    		pstmt.setString(5, dto.getMem_id());
     		
     		cnt = pstmt.executeUpdate();
     	}catch(Exception e) {
@@ -38,7 +41,5 @@ public class ContentcriDAO {
 		}
 		return cnt;
     		
-    }//insert() end
-    
-    
+    }//insert() end    
 }

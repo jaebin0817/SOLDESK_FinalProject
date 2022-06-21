@@ -46,6 +46,4 @@ public class ContentcriDTO {
 	public void setCri_code(int cri_code) {
 		this.cri_code = cri_code;
 	}
-	
-	
 }
