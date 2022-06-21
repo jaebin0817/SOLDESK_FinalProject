@@ -101,7 +101,7 @@ public class PartyWaitingDAO {
 			sql=new StringBuilder();
 			sql.append(" SELECT party_ordnumber ");
 			sql.append(" FROM party_member ");
-			sql.append(" WHERE party_pdate=(SELECT MAX(party_pdate) ");
+			sql.append(" WHERE party_ordnumber=(SELECT MAX(party_ordnumber) ");
 			sql.append(" FROM party_member ");
 			sql.append(" WHERE party_ordnumber LIKE '" + nowStr + "%') ");
 
@@ -121,6 +121,7 @@ public class PartyWaitingDAO {
 				
 				int newindex = Integer.parseInt(index.substring(underbar+1));
 				newindex++;
+				
 				
 				party_ordnumber += nowStr + "_" + newindex;
 				

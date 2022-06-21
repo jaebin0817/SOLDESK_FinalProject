@@ -281,9 +281,9 @@ public class PartyInfoDAO {
 	        		
 	        		//6)파티원 관련 정보를 구독OTT정보에 저장
 	    			//구독 OTT정보 행추가
-	        		/*
-	        		 1) 파티원과 파티장이 같이 등록될 경우 subscribe_no이 중복되는 문제 발생!
-	        		 2) 파티역할=파티장 으로만 들어감 (쿼리 수정해야함) 
+	        		
+	        		// 1) 파티원과 파티장이 같이 등록될 경우 subscribe_no이 중복되는 문제 발생!
+	        		// 2) 파티역할=파티장 으로만 들어감 (쿼리 수정해야함) 
 	        		 
 	        		SubscribeInfoDAO subdao=new SubscribeInfoDAO();
 	        		SubscribeInfoDTO subdto=new SubscribeInfoDTO();
@@ -293,15 +293,14 @@ public class PartyInfoDAO {
 	    			subscribe_no=subdao.subnoCreate(nowStr);
 	    			subdto.setSubscribe_no(subscribe_no);
 	    			subdto.setMem_id(mem_id);
-	    			subdto.setParty_role(party_role);
 	    			subdto.setParty_id(party_id);
-	    			int subcnt=subdao.subinsert(subdto);
+	    			int subcnt=subdao.subinsert(subdto, party_role);
 	    			if(subcnt==0) {
 	    				System.out.println("파티원 구독정보 등록 실패");
 	    			}else{
 	    				System.out.println("파티원 구독정보 등록 성공");
 	    			}
-	    			*/
+	    			
 		        	
 		        }else {
 		        	System.out.println("파티원 추가 실패");
