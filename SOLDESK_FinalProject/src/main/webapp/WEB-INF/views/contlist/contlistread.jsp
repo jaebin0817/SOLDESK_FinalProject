@@ -5,15 +5,36 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+
+<nav class="navbar navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<a href="../../index.do"> <img
+				src="/images/logo.png" alt="HOME" width="180px">
+			</a>
+		</div>
+
+		<div>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="/contlist/contlist.do">컨텐츠</a></li>
+				<li><a href="">파티매칭</a></li>
+				<li><a href="m_manage/mypage.do">마이페이지</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
 <!-- 메인카테고리 끝 -->
 
 <!-- 본문 시작 -->
 <div id="cont_list" class="container-fluid text-center">
 	<h3>영화 상세정보와 리뷰</h3>
+
+
 	<br> <a
 		href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode=${ dto.mcode }">
 		<img src="../../storage/${dto.mthum}" alt="movie" width="300px">
-	</a>
+	</a> <br>
 	<c:if test="${dto.netflix eq 'O' }">
 		<img src="../../images/Netflix.png" width="50px">
 	</c:if>
@@ -26,7 +47,7 @@
 	<c:if test="${dto.diseny eq 'O'  }">
 		<img src="../../images/Diseny.png" width="50px">
 	</c:if>
-
+	<br>
 	<div class="mtitle">${dto.mtitle}</div>
 	<div class="mrate">영화 평점 : ${dto.mrate}</div>
 	<hr>
