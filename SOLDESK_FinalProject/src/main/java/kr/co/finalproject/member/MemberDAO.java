@@ -3,11 +3,12 @@ package kr.co.finalproject.member;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import net.utility.DBclose;
 import net.utility.DBopen;
 
-public class memberDAO {
+public class MemberDAO {
 
 	private DBopen dbopen=null;
 	private Connection con=null;
@@ -15,11 +16,11 @@ public class memberDAO {
 	private ResultSet rs=null;
     private StringBuilder sql=null;
 
-	public memberDAO() {
+	public MemberDAO() {
 		dbopen = new DBopen();
 	}
 
-	public int insert(memberDTO dto) {
+	public int insert(MemberDTO dto) {
 		int cnt=0;
 		try {
 			con = dbopen.getConnection();
@@ -43,8 +44,8 @@ public class memberDAO {
 		return cnt;
 	}
 	
-	public memberDTO read(String mem_id){
-		memberDTO dto = null;
+	public MemberDTO read(String mem_id){
+		MemberDTO dto = null;
 		try {
 			con = dbopen.getConnection();
 			sql = new StringBuilder();
@@ -57,7 +58,7 @@ public class memberDAO {
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				dto = new memberDTO();
+				dto = new MemberDTO();
 				dto.setMem_id(rs.getString("mem_id"));
 				dto.setMem_pw(rs.getString("mem_pw"));
 				dto.setMem_phone(rs.getString("mem_phone"));
@@ -76,7 +77,7 @@ public class memberDAO {
 	}
 	
 	
-	public int update(memberDTO dto) {
+	public int update(MemberDTO dto) {
 		int cnt=0;
 		try {
 			con = dbopen.getConnection();
@@ -162,5 +163,45 @@ public class memberDAO {
 	
 	
 	
+	public ArrayList<MemberDTO> memberlist(){
+		ArrayList<MemberDTO> list=null;
+		MemberDTO dto = null;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT mem_id, mem_pw, mem_phone, mem_email, mem_lv, mem_reg, mem_birth " );
+			sql.append(" FROM member_info ");
+			sql.append(" ORDER BY mem_lv, mem_id  ");
+
+			
+			pstmt=con.prepareStatement(sql.toString());
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				list=new ArrayList<MemberDTO>();
+				do {
+					dto = new MemberDTO();
+					dto.setMem_id(rs.getString("mem_id"));
+					dto.setMem_pw(rs.getString("mem_pw"));
+					dto.setMem_phone(rs.getString("mem_phone"));
+					dto.setMem_email(rs.getString("mem_email"));
+					dto.setMem_lv(rs.getString("mem_lv"));
+					dto.setMem_reg(rs.getString("mem_reg"));
+					dto.setMem_birth(rs.getString("mem_birth"));
+					list.add(dto);
+				}while(rs.next());
+			}
+			
+		}catch(Exception e) {
+			System.out.println("회원 목록 조회 실패: "+ e);
+		}finally {
+			DBclose.close(con, pstmt, rs);
+		}
+		return list;
+	}
+
 	
-}
+	
+	
+	
+}//class end

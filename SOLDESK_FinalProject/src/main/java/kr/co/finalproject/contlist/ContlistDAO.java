@@ -111,43 +111,6 @@ public class ContlistDAO {
 	
 	
 	
-	public ArrayList<ContlistDTO> rankRead() {
-		ContlistDTO dto=null;
-		
-		ArrayList<ContlistDTO> rank=null;
-
-		try {
-			con=dbopen.getConnection();//DB연결
-			sql=new StringBuilder();
-			sql.append("  ");
-			sql.append("  ");
-			sql.append("  ");
-			pstmt = con.prepareStatement(sql.toString());
-			
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				rank=new ArrayList<ContlistDTO>();				
-				do {
-					dto = new ContlistDTO();//커서가 가리키는 한 줄 저장
-					dto.setMtitle(rs.getString("mtitle"));
-
-					
-					
-					rank.add(dto);
-				}while(rs.next());
-			}//if end
-			
-		}catch (Exception e) {
-			System.out.println("랭킹 불러오기 실패: " + e);
-		}finally{
-			DBclose.close(con, pstmt, rs);
-		}//try end
-
-		
-	
-		return rank;
-		
-	}
 	
 	
 	

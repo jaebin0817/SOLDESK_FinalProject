@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.finalproject.contlist.ContlistDAO;
+import kr.co.finalproject.contlist.WatchListDAO;
 
 @Controller
 public class HomeController {
@@ -18,8 +19,10 @@ public class HomeController {
 	public ModelAndView home() {
 		ModelAndView mav=new ModelAndView();
 		ContlistDAO dao=new ContlistDAO();
+		WatchListDAO watchdao=new WatchListDAO(); 
 		
 		mav.addObject("list", dao.contlistAll());
+		mav.addObject("rank", watchdao.rankRead());
 		mav.setViewName("index");
 		return mav;
 	}//home() end

@@ -17,7 +17,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="../js/jquery-3.6.0.min.js"></script>
   <script src="../js/jquery.cookie.js"></script>
-</head>
+  <script src="../js/moment-with-locales.js"></script>
+ /head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
 
 <!-- 메인카테고리 시작 -->

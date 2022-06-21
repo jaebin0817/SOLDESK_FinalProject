@@ -65,19 +65,26 @@
 	
 	<!-- OTT랭킹 / 시청목록 count해서 가장 많은 top3 -->
 	<div id="cont_rank" class="container-fluid text-center">
-		<h3>오늘의 통합 랭킹</h3><br>
-		<div>
-			<a href=""><img src="/images/movie_whyHer.jpeg" alt="movie" width="40"></a>
-			<p>1. 왜 오수재인가?</p>
-		</div>
-		<div>
-			<a href=""><img src="/images/movie_topGun.jpg" alt="movie" width="40"></a>
-			<p>2. 탑 건</p>
-		</div>
-		<div>
-			<a href=""><img src="/images/movie_theRoundup.jpg" alt="movie" width="40"></a>
-			<p>3. 범죄도시2</p>
-		</div>
+	  <h3>오늘의 통합 랭킹</h3><br>
+ 	  <c:set var="no" value="1"></c:set>
+	  <ul>
+		<c:forEach var="dto" items="${ rank }" begin="0" end="${ fn:length(rank) }" step="1">
+			<dl class="ranklist">
+			<a href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode=${ dto.mcode }">
+			  <span class="cont-poster">
+				<img src="../storage/${ dto.mthum }" class="img-circle" alt="movie" width="80" height="80">
+			  </span>
+			  <span class="cont-rank">
+			    ${ no }
+			  </span>
+			  <span class="cont-title">
+			    ${ dto.mtitle }
+			  </span>
+			  <span class="hide">${ no=no+1 }</span>
+			</a>
+			</dl>
+		</c:forEach>
+	  </ul>
 	</div>
 	<!-- OTT랭킹 끝 -->
 	
@@ -102,7 +109,7 @@
 			
 				<div class="col-sm-3">
 			      <div class="thumbnail">
-			        <a href=""><img src="../storage/${dto.mthum }" alt="movie" width="280"></a>
+			        <a href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode=${ dto.mcode }"><img src="../storage/${dto.mthum }" alt="movie" width="280"></a>
 		            <p><strong>${dto.mtitle }</strong></p>
 			        <p>
 			        	<!-- 평점 별로 바꿔서 출력 -->
