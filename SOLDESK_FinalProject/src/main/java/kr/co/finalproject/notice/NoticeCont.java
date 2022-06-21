@@ -36,10 +36,10 @@ public class NoticeCont {
 		return mav;
 	}//master() end
 	
-	@RequestMapping(value = "notice/noticewrite.do", method = RequestMethod.POST)
+	@RequestMapping(value = "notice/noticeForm.do", method = RequestMethod.POST)
 	public ModelAndView write() {
 		ModelAndView mav=new ModelAndView();
-		mav.setViewName("notice/noticewrite");
+		mav.setViewName("notice/noticeForm");
 		return mav;
 	}//write() end
 	

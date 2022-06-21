@@ -36,7 +36,7 @@
 		</table>
 		</div>
 		
-	<form name="frm" method="post" action="<%=request.getContextPath()%>/notice/noticewrite.do">
+	<form name="frm" method="post" action="<%=request.getContextPath()%>/notice/noticeForm.do">
 		<input type="submit" value="공지사항등록"  class="btn btn-success">
 	</form>
 		

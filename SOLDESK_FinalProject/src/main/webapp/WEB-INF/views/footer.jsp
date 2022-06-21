@@ -9,7 +9,7 @@
 
 	  <div class="container-fluid bg-3 text-center">
 	    <a href="<%=request.getContextPath()%>/notice/notice.do">공지사항</a> &nbsp;&nbsp;
-	    <a href="">문의사항</a>
+	    <a href="<%=request.getContextPath()%>/qna/qna.do">문의사항</a>
 	    <!-- 회원등급 A(webmaster)일때만 접근 허용 -->
 	    <c:if test="${ s_mem_lv=='A' }">
 	      <br><a href="<%=request.getContextPath()%>/webmaster/webmaster.do">관리자페이지</a>

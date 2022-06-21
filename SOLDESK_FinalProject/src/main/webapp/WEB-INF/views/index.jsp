@@ -124,7 +124,7 @@
 
 	  <div class="container-fluid bg-3 text-center">
 	    <a href="notice/notice.do">공지사항</a> &nbsp;&nbsp;
-	    <a href="">문의사항</a>
+	    <a href="qna/qna.do">문의사항</a>
 	    <!-- 세션이용해서 회원등급 A(webmaster)일때만 접근 허용 -->
 	    <c:if test="${ s_mem_lv=='A' }">
 	      <br><a href="webmaster/webmaster.do">관리자페이지</a>
