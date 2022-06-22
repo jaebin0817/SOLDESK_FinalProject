@@ -10,6 +10,7 @@
 	<!-- 본문 시작 -->
 	<div id="cont_list" class="container-fluid text-center">
 		<h3>컨텐츠들을 구경해보세요 !</h3>
+		<h5>${ msg }</h5>
 		<br>
 
 

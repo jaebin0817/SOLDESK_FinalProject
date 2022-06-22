@@ -36,8 +36,10 @@ public class ContlistController {
 
       list = dao.contlistAll();
 
+      
       mav.setViewName("contlist/contlist");
       mav.addObject("list", list);
+
 
       return mav;
    }
@@ -85,11 +87,14 @@ public class ContlistController {
       ArrayList<ContlistDTO> list = null;
       
       String key_code=dao3.SearchKeyCode(key_name);
+      String msg=key_name+" : 검색 결과";
       
       list = dao.searchPart(key_code);
 
       mav.setViewName("contlist/contlist");
       mav.addObject("list", list);
+      mav.addObject("msg", msg);
+
 
       return mav;
    }

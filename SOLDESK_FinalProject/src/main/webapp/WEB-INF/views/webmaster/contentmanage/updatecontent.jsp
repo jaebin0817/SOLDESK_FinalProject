@@ -18,7 +18,7 @@
 	<tr>
 		<th>서비스 중인 OTT</th>
 	    <th>
-	    	<label><input type="checkbox" name="netflix" id="netflix" value="O"> 넷플릭스 &nbsp;</label>
+	    	<label><input type="checkbox" name="netflix" id="netflix" value="O"> 넷플릭스 &nbsp;</label>${ dto.netflix }
 	    	<label><input type="checkbox" name="watcha" id="watcha" value="O"> 왓챠 &nbsp;</label>	
 	    	<label><input type="checkbox" name="tving" id="tving" value="O"> 티빙 &nbsp;</label>
 	    	<label><input type="checkbox" name="diseny" id="diseny" value="O"> 디즈니 &nbsp;</label>
@@ -86,6 +86,7 @@
 
         }//createYear() end
 
+        
         
         $(".key_word").change(function(){
         	

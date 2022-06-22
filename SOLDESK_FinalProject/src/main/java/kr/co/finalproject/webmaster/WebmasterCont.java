@@ -194,7 +194,9 @@ public class WebmasterCont {
 	    int mcode = Integer.parseInt(req.getParameter("mcode"));
 	    
 		contdao = new ContlistDAO();
+		skeydao = new SearchKeyDAO();
 		
+		mav.addObject("list", skeydao.readall());
 		mav.addObject("dto", contdao.contlist(mcode));
 		mav.setViewName("webmaster/contentmanage/updatecontent");
 		
