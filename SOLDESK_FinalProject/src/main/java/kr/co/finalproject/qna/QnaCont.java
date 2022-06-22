@@ -1,6 +1,5 @@
 package kr.co.finalproject.qna;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -46,6 +45,7 @@ public class QnaCont {
 		mav.setViewName("qna/qnaread");
 		int qna_num=Integer.parseInt(req.getParameter("qna_num"));
 		
+
 		dto=dao.read(qna_num); 
 		if(dto==null){
 			String msg="<p>해당 글 없음</p>";
