@@ -37,6 +37,9 @@
 	          <c:when test="${ s_mem_id==null || s_mem_pw==null || s_mem_lv==null }">
 	            <li><a href="login.do">로그인</a></li>	            
 	          </c:when>
+	          <c:when test="${ s_mem_lv=='A' }">
+	            <li><a href="webmaster/webmaster.do">관리자페이지</a></li>	            
+	          </c:when>
 	          <c:otherwise>
 	            <li><a href="m_manage/mypage.do">마이페이지</a></li>
 	          </c:otherwise>
@@ -65,19 +68,26 @@
 	
 	<!-- OTT랭킹 / 시청목록 count해서 가장 많은 top3 -->
 	<div id="cont_rank" class="container-fluid text-center">
-		<h3>오늘의 통합 랭킹</h3><br>
-		<div>
-			<a href=""><img src="/images/movie_whyHer.jpeg" alt="movie" width="40"></a>
-			<p>1. 왜 오수재인가?</p>
-		</div>
-		<div>
-			<a href=""><img src="/images/movie_topGun.jpg" alt="movie" width="40"></a>
-			<p>2. 탑 건</p>
-		</div>
-		<div>
-			<a href=""><img src="/images/movie_theRoundup.jpg" alt="movie" width="40"></a>
-			<p>3. 범죄도시2</p>
-		</div>
+	  <h3>오늘의 통합 랭킹</h3><br>
+ 	  <c:set var="no" value="1"></c:set>
+	  <ul>
+		<c:forEach var="dto" items="${ rank }" begin="0" end="${ fn:length(rank) }" step="1">
+			<dl class="ranklist">
+			<a href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode=${ dto.mcode }">
+			  <span class="cont-poster">
+				<img src="../storage/${ dto.mthum }" class="img-circle" alt="movie" width="80" height="80">
+			  </span>
+			  <span class="cont-rank">
+			    ${ no }
+			  </span>
+			  <span class="cont-title">
+			    ${ dto.mtitle }
+			  </span>
+			  <span class="hide">${ no=no+1 }</span>
+			</a>
+			</dl>
+		</c:forEach>
+	  </ul>
 	</div>
 	<!-- OTT랭킹 끝 -->
 	
@@ -93,7 +103,7 @@
 	          	  <c:set var="end" value="${ fn:length(list) }"></c:set>
 	          	</c:when>
 	          	<c:otherwise>
-	          	  <c:set var="end" value="${ maxcontent }"></c:set>
+	          	  <c:set var="end" value="${ maxcontent-1 }"></c:set>
 	          	</c:otherwise>
 	          </c:choose>
 
@@ -102,7 +112,7 @@
 			
 				<div class="col-sm-3">
 			      <div class="thumbnail">
-			        <a href=""><img src="../storage/${dto.mthum }" alt="movie" width="280"></a>
+			        <a href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode=${ dto.mcode }"><img src="../storage/${dto.mthum }" alt="movie" width="280"></a>
 		            <p><strong>${dto.mtitle }</strong></p>
 			        <p>
 			        	<!-- 평점 별로 바꿔서 출력 -->
@@ -124,11 +134,7 @@
 
 	  <div class="container-fluid bg-3 text-center">
 	    <a href="notice/notice.do">공지사항</a> &nbsp;&nbsp;
-	    <a href="qna/qna.do">문의사항</a>
-	    <!-- 세션이용해서 회원등급 A(webmaster)일때만 접근 허용 -->
-	    <c:if test="${ s_mem_lv=='A' }">
-	      <br><a href="webmaster/webmaster.do">관리자페이지</a>
-	    </c:if>
+	    <a href="">문의사항</a>
 	  </div>
 	  
 	  <div class="container-fluid bg-4 text-center">

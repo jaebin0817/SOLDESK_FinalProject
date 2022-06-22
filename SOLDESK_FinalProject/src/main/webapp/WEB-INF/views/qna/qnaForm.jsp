@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp"%>
 
-<!-- 본문시작 noticewrite.jsp -->
+<!-- 본문시작 qnaform.jsp -->
 <!-- 스마트 에디터 넣기 !! -->	
 	
 	<div class="container-fluid text-center">	

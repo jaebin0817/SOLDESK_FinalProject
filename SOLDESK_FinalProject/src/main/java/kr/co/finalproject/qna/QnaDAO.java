@@ -110,7 +110,6 @@ public class QnaDAO {
 			sql=new StringBuilder();
 			sql.append(" INSERT INTO tb_qna(qna_title, qna_date, qna_content, mem_id, qna_pw, qna_grpno, ip) ");
 			sql.append(" values( ?, now(), ?, ?, ?, (select ifnull(max(qna_num),0)+1 from tb_qna as TB) ,?) ");
-
 			
 			pstmt=con.prepareStatement(sql.toString());
 			pstmt.setString(1, dto.getQna_title());	
@@ -133,4 +132,3 @@ public class QnaDAO {
 	
 
 }//class end
-

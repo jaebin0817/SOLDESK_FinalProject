@@ -6,6 +6,9 @@ public class WatchListDTO {
 	private int mcode;
 	private String watch_time;
 	private String watch_reg;
+	private String mtitle;
+	private String mthum;
+
 
 	public WatchListDTO () {}
 
@@ -41,11 +44,30 @@ public class WatchListDTO {
 		this.watch_reg = watch_reg;
 	}
 
+	public String getMtitle() {
+		return mtitle;
+	}
+
+	public void setMtitle(String mtitle) {
+		this.mtitle = mtitle;
+	}
+
+	public String getMthum() {
+		return mthum;
+	}
+
+	public void setMthum(String mthum) {
+		this.mthum = mthum;
+	}
+
 	@Override
 	public String toString() {
 		return "WatchListDTO [mem_id=" + mem_id + ", mcode=" + mcode + ", watch_time=" + watch_time + ", watch_reg="
-				+ watch_reg + "]";
+				+ watch_reg + ", mtitle=" + mtitle + ", mthum=" + mthum + "]";
 	}
+
+
+	
 	
 	
 	

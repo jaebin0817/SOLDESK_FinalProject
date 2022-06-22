@@ -1,6 +1,6 @@
 package kr.co.finalproject.member;
 
-public class memberDTO {
+public class MemberDTO {
 
 	private String mem_id;
 	private String mem_pw;
@@ -12,7 +12,7 @@ public class memberDTO {
 	private String new_pw;
 
 	
-	public memberDTO() {}
+	public MemberDTO() {}
 
 	public String getMem_id() {
 		return mem_id;

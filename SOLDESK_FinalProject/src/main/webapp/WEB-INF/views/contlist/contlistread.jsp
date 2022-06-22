@@ -28,7 +28,31 @@
 	</c:if>
 
 	<div class="mtitle">${dto.mtitle}</div>
-	<div class="mrate">영화 평점 : ${dto.mrate}</div>
+
+	<div class="key_code">
+		장르 :
+			<c:forEach items="${keylist}" var="list">
+				<a href="search.do?key_name=${list}"> 
+			<c:forEach items="${list}" var="map">
+	   			${map}
+	   		</c:forEach>
+				</a>
+			</c:forEach>
+	</div>
+
+	<!-- 
+	  <c:forEach items="${keycodelist}" var="list" >
+	  
+	 	<a href="codesearch.do?key_code=${ list }"> 
+	   <c:forEach items="${keylist}" var="list" >
+	   	<c:forEach items="${list}" var="map">
+	   		${map}
+	   	</c:forEach>
+	   </c:forEach>
+	   </a>
+	 </c:forEach>
+ -->
+	<div class="mrate">컨텐츠 평점 : ${dto.mrate}</div>
 	<hr>
 	<div class="mem_id">ID : ${dto2.mem_id}</div>
 	<div class="rev_title">후기 제목 : ${dto2.rev_title}</div>
@@ -38,13 +62,8 @@
 	<div class="rev_rate">개인 평점 : ${dto2.rev_rate}</div>
 	<div class="rev_spo">스포 여부 : ${dto2.rev_spo }</div>
 
-
-
-
-
-
-
 </div>
+
 
 
 <!-- 본문끝 -->

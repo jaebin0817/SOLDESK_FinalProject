@@ -47,7 +47,7 @@
 			   	  
 			      <label><input type="checkbox" name="c_id" value="SAVE" ${ check } >아이디 저장</label>	<!-- label로 감싸면 글씨 클릭해도 체크박스 체크됨 -->		  
 				  &nbsp;&nbsp;&nbsp;
-				  <a href="agreement.do">회원가입</a>
+				  <a href="<%=request.getContextPath()%>/agreement.do">회원가입</a>
 				  &nbsp;&nbsp;&nbsp;
 				  <a href="">아이디/비밀번호찾기</a>
 			   </td>

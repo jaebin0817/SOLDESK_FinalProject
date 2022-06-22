@@ -17,7 +17,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="../js/jquery-3.6.0.min.js"></script>
   <script src="../js/jquery.cookie.js"></script>
-</head>
+  <script src="../js/moment-with-locales.js"></script>
+ /head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
 
 <!-- 메인카테고리 시작 -->
@@ -35,6 +36,9 @@
 	        <c:choose>
 	          <c:when test="${ s_mem_id==null || s_mem_pw==null || s_mem_lv==null }">
 	            <li><a href="<%=request.getContextPath()%>/login.do">로그인</a></li>	            
+	          </c:when>
+	          <c:when test="${ s_mem_lv=='A' }">
+	            <li><a href="<%=request.getContextPath()%>/webmaster/webmaster.do">관리자페이지</a></li>	            
 	          </c:when>
 	          <c:otherwise>
 	            <li><a href="<%=request.getContextPath()%>/m_manage/mypage.do">마이페이지</a></li>

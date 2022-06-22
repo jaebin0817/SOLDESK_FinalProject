@@ -9,7 +9,7 @@
 
 	<!-- 본문 시작 -->
 	<div id="cont_list" class="container-fluid text-center">
-		<h3>↓ 원하는 영화나 드라마를 마음껏! ↓</h3>
+		<h3>컨텐츠들을 구경해보세요 !</h3>
 		<br>
 
 

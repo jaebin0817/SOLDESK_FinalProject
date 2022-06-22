@@ -168,6 +168,37 @@ public class SubscribeInfoDAO {
 		return cnt;
 		
 	}//subinsert() end
+	
+	
+	public int subinsert(SubscribeInfoDTO dto, String party_role) {
+		
+		int cnt=0;
+
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" INSERT INTO subscribe_info( ");
+			sql.append("     subscribe_no, mem_id, party_id, party_role, subscribe_start, subscribe_end) ");
+			sql.append(" VALUES(?, ?, ?, ?, now(), adddate(now(), interval 1 month)) ");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, dto.getSubscribe_no());
+			pstmt.setString(2, dto.getMem_id());
+			pstmt.setString(3, dto.getParty_id());
+			pstmt.setString(4, party_role);
+
+
+			cnt=pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("파티원 구독 정보 생성 실패: " + e);
+		} finally {
+			DBclose.close(con, pstmt);
+		}//try end
+		
+		
+		return cnt;
+		
+	}//subinsert() end
 
 	
 	public String subnoCreate(String nowStr){
@@ -180,7 +211,7 @@ public class SubscribeInfoDAO {
 			sql=new StringBuilder();
 			sql.append(" SELECT subscribe_no ");
 			sql.append(" FROM subscribe_info ");
-			sql.append(" WHERE subscribe_start=(SELECT MAX(subscribe_start) ");
+			sql.append(" WHERE subscribe_no=(SELECT MAX(subscribe_no) ");
 			sql.append(" FROM subscribe_info ");
 			sql.append(" WHERE subscribe_no LIKE '" + nowStr + "%') ");
 
@@ -191,7 +222,7 @@ public class SubscribeInfoDAO {
 				lastsubno=rs.getString("subscribe_no");
 			}//if end
 			
-			if(lastsubno=="") {//오늘 만들어진 주문번호가 없음
+			if(lastsubno=="") {//오늘 만들어진 구독번호가 없음
 
 				subscribe_no += nowStr + "_" + "10000";
 				
@@ -215,6 +246,54 @@ public class SubscribeInfoDAO {
 		
 		return subscribe_no;
 	}//subnoCreate() end
+	
+	
+	
+	public String autosubnoCreate(String nowStr, int fixno){//자동매칭시 파티원 구독번호 생성
+		
+		String subscribe_no="";
+		String lastsubno="";
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" SELECT subscribe_no ");
+			sql.append(" FROM subscribe_info ");
+			sql.append(" WHERE subscribe_no=(SELECT MAX(subscribe_no) ");
+			sql.append(" FROM subscribe_info ");
+			sql.append(" WHERE subscribe_no LIKE '" + nowStr + "%') ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				lastsubno=rs.getString("subscribe_no");
+			}//if end
+			
+			if(lastsubno=="") {//오늘 만들어진 구독번호가 없음
+
+				subscribe_no += nowStr + "_" + (10000 + fixno);
+				
+			}else {
+				int underbar=lastsubno.lastIndexOf("_");
+				lastsubno.substring(underbar+1);
+				
+				int lastidxsubno = Integer.parseInt(lastsubno.substring(underbar+1));
+				
+				subscribe_no += nowStr + "_" + (lastidxsubno + fixno);
+				
+			}
+			
+		}catch (Exception e) {
+			System.out.println("구독번호 불러오기 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);
+		}//try end		
+		
+		
+		return subscribe_no;
+	}//subnoCreate() end
+
 	
 	
 	

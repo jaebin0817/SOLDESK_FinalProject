@@ -11,17 +11,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.finalproject.contlist.WatchListDAO;
 import net.utility.Utility;
 
 
 @Controller
 public class MemberCont {
 
-	private memberDAO dao = null;
+	private MemberDAO dao = null;
 	private SubscribeInfoDAO subdao =null;
+	private WatchListDAO watchdao=null;
 
 	public MemberCont() {
-		dao = new memberDAO();
+		dao = new MemberDAO();
 		subdao = new SubscribeInfoDAO();
 		System.out.println("-----MemberCont() 객체 생성");
 	}
@@ -125,7 +127,7 @@ public class MemberCont {
 		session.removeAttribute("s_mem_pw");
 		session.removeAttribute("s_mem_lv");
 		
-		mav.setViewName("index");
+		mav.setViewName("redirect:/home.do");
 		
 		return mav;
 	}
@@ -146,7 +148,7 @@ public class MemberCont {
 	
 	
 	@RequestMapping(value = "member_info.do", method = RequestMethod.POST)
-	public ModelAndView member_infoProc(@ModelAttribute memberDTO dto, HttpServletRequest req) {
+	public ModelAndView member_infoProc(@ModelAttribute MemberDTO dto, HttpServletRequest req) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("m_manage/msgView");
 
@@ -228,7 +230,7 @@ public class MemberCont {
 	}
 
 	@RequestMapping(value = "/member_join.do", method = RequestMethod.POST)
-	public ModelAndView member_joinProc(@ModelAttribute memberDTO dto, HttpServletRequest req) {
+	public ModelAndView member_joinProc(@ModelAttribute MemberDTO dto, HttpServletRequest req) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("m_manage/msgView");
 
@@ -300,6 +302,26 @@ public class MemberCont {
 		return mav;
 	}
 
+	
+	@RequestMapping(value = "/watchlist.do", method = RequestMethod.GET)
+	public ModelAndView watchlist(HttpServletRequest req) {
+		
+		watchdao = new WatchListDAO();
+		
+		ModelAndView mav=new ModelAndView();
+	    HttpSession session = req.getSession();
+        String mem_id=session.getAttribute("s_mem_id").toString();
+
+		mav.setViewName("m_manage/content/watchlist");
+		mav.addObject("mem_id", mem_id);
+		mav.addObject("watchlist", watchdao.watchread(mem_id));
+
+		return mav;
+		
+	}
+	
+	
+	
 		
 		
 	

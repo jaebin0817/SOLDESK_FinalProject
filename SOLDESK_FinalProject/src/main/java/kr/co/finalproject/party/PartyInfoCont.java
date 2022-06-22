@@ -270,6 +270,7 @@ public class PartyInfoCont {
 				if(waiting_no==0) {
 					break;
 				}
+				matching_no++;
 			}
 			
 		}//if end

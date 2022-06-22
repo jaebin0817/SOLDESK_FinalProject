@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp"%>
 
-<!-- 본문시작 noticeread.jsp -->
+<!-- 본문시작 qnaread.jsp -->
 	
 	
 	<div class="container-fluid text-center">	
