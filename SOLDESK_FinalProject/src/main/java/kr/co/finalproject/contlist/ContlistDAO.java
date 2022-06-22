@@ -78,9 +78,6 @@ public class ContlistDAO {
 	           sql.append("  WHERE contlist.mcode=? ");
 	           sql.append(" ORDER BY contlist.mcode; ");
 	           
-
-	           
-	           
 	           pstmt=con.prepareStatement(sql.toString());
 	           pstmt.setInt(1, mcode);
 	           
@@ -107,7 +104,82 @@ public class ContlistDAO {
 	       }//end
 	       return dto;
 	   }// read() end
-	
+
+	   
+	    public ContlistDTO KeywordRead(String key_code) {
+	        ContlistDTO dto=null;
+	        try {
+	            con=dbopen.getConnection();
+	            
+	            sql=new StringBuilder();
+	            sql.append(" SELECT key_name ");
+	            sql.append(" FROM search_key ");
+	            sql.append(" WHERE key_code=? ");
+	            
+	            pstmt=con.prepareStatement(sql.toString());
+	            pstmt.setString(1, key_code);
+	            
+	            rs=pstmt.executeQuery();
+	            if(rs.next()) {
+	               dto=new ContlistDTO(); // dto 생성 후  값 넣어주기.
+	               dto.setKey_code(rs.getString("key_code"));
+
+
+	            }//end
+	            
+	        }catch (Exception e) {
+	            System.out.println("컨텐츠 키워드 불러오기 실패:"+e);
+	        }finally {
+	            DBclose.close(con, pstmt, rs);
+	        }//end
+	        return dto;
+	    }// read() end
+		
+	    
+	    public ArrayList<ContlistDTO> searchPart(String key_code) {
+			ContlistDTO dto=null;
+			ArrayList<ContlistDTO> list=null;
+			
+			try {
+				con=dbopen.getConnection();//DB연결
+				sql=new StringBuilder();
+				sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, diseny, mdate, cri_like, key_code, mcode ");
+				sql.append(" FROM contlist ");
+				sql.append(" WHERE key_code LIKE '%"+key_code+"%' ");
+				sql.append(" ORDER BY mcode DESC ");
+				pstmt = con.prepareStatement(sql.toString());
+				
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					list=new ArrayList<ContlistDTO>();				
+					do {
+						dto = new ContlistDTO();//커서가 가리키는 한 줄 저장
+						dto.setMtitle(rs.getString("mtitle"));
+						dto.setMthum(rs.getString("mthum"));
+						dto.setMrate(rs.getInt("mrate"));
+						dto.setNetflix(rs.getString("netflix"));
+						dto.setWatcha(rs.getString("watcha"));
+						dto.setTving(rs.getString("tving"));
+						dto.setDiseny(rs.getString("diseny"));
+						dto.setMdate(rs.getString("mdate"));
+						dto.setCri_like(rs.getString("cri_like"));
+						dto.setKey_code(rs.getString("key_code"));
+						dto.setMcode(rs.getInt("mcode"));
+						list.add(dto);
+					}while(rs.next());
+				}//if end
+				
+			}catch (Exception e) {
+				System.out.println("컨텐츠리스트 불러오기 실패: " + e);
+			}finally{
+				DBclose.close(con, pstmt, rs);
+			}//try end
+			
+			return list;
+			
+		}
+	   
+	   
 	   
 		public int insert(ContlistDTO dto) {
 			int cnt=0;

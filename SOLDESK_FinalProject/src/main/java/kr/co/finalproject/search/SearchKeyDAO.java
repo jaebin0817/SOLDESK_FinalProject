@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import kr.co.finalproject.contlist.ContlistDTO;
 import net.utility.DBclose;
 import net.utility.DBopen;
 
@@ -54,7 +55,57 @@ public class SearchKeyDAO {
 
 	
 	
+	public String SearchKeyAll(String key_code) {
+		String key_name = null;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT key_name ");
+			sql.append(" FROM search_key ");
+			sql.append(" WHERE key_code=? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, key_code);
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				key_name = rs.getString("key_name");
+			}
+
+		} catch (Exception e) {
+			System.out.println("키워드 불러오기 실패 : " + e);
+		} finally {
+			DBclose.close(con, pstmt, rs);
+		} // end
+		return key_name;
+	} // SearchKeyAll() 끝
+
 	
+	
+	public String SearchKeyCode(String key_name) {
+		String key_code = null;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT key_code ");
+			sql.append(" FROM search_key ");
+			sql.append(" WHERE key_name=? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, key_name);
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				key_code = rs.getString("key_code");
+			}
+
+		} catch (Exception e) {
+			System.out.println("키워드 불러오기 실패 : " + e);
+		} finally {
+			DBclose.close(con, pstmt, rs);
+		} // end
+		return key_code;
+	} // SearchKeyAll() 끝
 	
 	
 	
