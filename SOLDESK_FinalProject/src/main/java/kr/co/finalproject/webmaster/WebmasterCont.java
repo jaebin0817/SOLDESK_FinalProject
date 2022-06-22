@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -171,19 +172,34 @@ public class WebmasterCont {
 
 	
 	
-	@RequestMapping("/contupdate.do")
-	public ModelAndView contupdate(ContlistDTO dto, int mcode) {
+	@RequestMapping(value = "/contupdate.do", method = RequestMethod.GET)
+	public ModelAndView contupdate(ContlistDTO dto, HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
 		
+	    int mcode = Integer.parseInt(req.getParameter("mcode"));
+	    
 		contdao = new ContlistDAO();
 		
-		mav.addObject("list", contdao.contlistAll());
-		mav.setViewName("webmaster/contentmanage/contmanage");
+		mav.addObject("dto", contdao.contlist(mcode));
+		mav.setViewName("webmaster/contentmanage/updatecontent");
+		
+		return mav;
+	}
+	
+
+	@RequestMapping(value = "/contupdate.do", method = RequestMethod.POST)
+	public ModelAndView contupdateproc(ContlistDTO dto, HttpServletRequest req) {
+		ModelAndView mav=new ModelAndView();
+		
+	    int mcode = Integer.parseInt(req.getParameter("mcode"));
+	    
+		contdao = new ContlistDAO();
+		
+		mav.addObject("dto", contdao.contlist(mcode));
+		mav.setViewName("webmaster/contentmanage/updatecontent");
 		
 		return mav;
 
 	}
-	
-	
 	
 }//class end

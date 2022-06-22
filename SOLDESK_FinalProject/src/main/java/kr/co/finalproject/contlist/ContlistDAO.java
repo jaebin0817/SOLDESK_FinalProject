@@ -65,6 +65,43 @@ public class ContlistDAO {
 	}
 	
 	
+	public ContlistDTO contlist(int mcode) {
+		ContlistDTO dto=null;
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, diseny, mdate, cri_like, key_code, mcode ");
+			sql.append(" FROM contlist ");
+			sql.append(" WHERE mcode=? ");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, mcode);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+					dto = new ContlistDTO();//커서가 가리키는 한 줄 저장
+					dto.setMtitle(rs.getString("mtitle"));
+					dto.setMthum(rs.getString("mthum"));
+					dto.setMrate(rs.getInt("mrate"));
+					dto.setNetflix(rs.getString("netflix"));
+					dto.setWatcha(rs.getString("watcha"));
+					dto.setTving(rs.getString("tving"));
+					dto.setDiseny(rs.getString("diseny"));
+					dto.setMdate(rs.getString("mdate"));
+					dto.setCri_like(rs.getString("cri_like"));
+					dto.setKey_code(rs.getString("key_code"));
+					dto.setMcode(rs.getInt("mcode"));
+			}//if end
+			
+		}catch (Exception e) {
+			System.out.println("컨텐츠리스트 불러오기 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);
+		}//try end
+		return dto;
+	}
+	
+	
 	   public ContlistDTO contlistread(int mcode) {
 	    	ContlistDTO dto=null;
 	       try {
@@ -94,7 +131,8 @@ public class ContlistDAO {
 	        	   dto.setDiseny(rs.getString("diseny"));
 	        	   dto.setMdate(rs.getString("mdate"));
 	        	   dto.setCri_like(rs.getString("cri_like"));
-
+	        	   dto.setKey_code(rs.getString("key_code"));
+	        	   
 	           }//end
 	           
 	       }catch (Exception e) {

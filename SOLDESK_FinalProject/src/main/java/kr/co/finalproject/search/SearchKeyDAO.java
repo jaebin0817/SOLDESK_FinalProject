@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import kr.co.finalproject.contlist.ContlistDTO;
 import net.utility.DBclose;
 import net.utility.DBopen;
 

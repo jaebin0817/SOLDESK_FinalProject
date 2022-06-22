@@ -4,16 +4,16 @@
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>        
     
-<%@ include file="../header.jsp"%>
+<%@ include file="../../header.jsp"%>
 
-<!-- 본문시작 addcontent.jsp -->
+<!-- 본문시작 updatecontent.jsp -->
 
 <div class="container text-center">
-<form name="contfrm" id="contfrm" method="post" action="contins.do" enctype="multipart/form-data" onsubmit="">
+<form name="contfrm" id="contfrm" method="post" action="contupdate.do" enctype="multipart/form-data" onsubmit="">
 	<table class="table">
 	<tr>
 	    <th>영화제목</th>
-	    <td colspan="4"><input type="text" name="mtitle" id="mtitle" class="form-control" size="20" maxlength="20" required autofocus></td>
+	    <td colspan="4"><input type="text" name="mtitle" id="mtitle" class="form-control" size="20" maxlength="20" required value="${ dto.mtitle }"></td>
 	</tr>
 	<tr>
 		<th>서비스 중인 OTT</th>
@@ -50,8 +50,11 @@
 	</tr>
 	<tr>
 	    <th>영화포스터</th>
-	    <td colspan="4">
+	    <td colspan="2">
 	    	<input type="file" name="mthumMF" id="mthumMF" class="form-control">
+	    </td>
+	    <td colspan="2">
+			현재파일명: ${ dto.mthum }
 	    </td>
 	</tr>
 	<tr>
@@ -104,4 +107,4 @@
     </script>
 
 <!-- 본문끝 -->
-<%@ include file="../footer.jsp"%>
+<%@ include file="../../footer.jsp"%>

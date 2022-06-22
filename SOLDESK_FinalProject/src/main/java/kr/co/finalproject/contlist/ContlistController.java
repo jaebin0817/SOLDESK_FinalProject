@@ -26,8 +26,6 @@ public class ContlistController {
       dao2 = new ReviewDAO();
       dao3 = new SearchKeyDAO();
       System.out.println("-----ContlistCont() 객체 생성");
-      System.out.println("-----ReviewDAO() 객체 생성");
-      System.out.println("-----SearchKeyDAO() 객체 생성");
    }// constructor end
 
    @RequestMapping("/contlist/contlist.do")
