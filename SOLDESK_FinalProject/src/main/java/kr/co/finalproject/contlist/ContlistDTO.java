@@ -1,5 +1,7 @@
 package kr.co.finalproject.contlist;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class ContlistDTO {
 	   
 	   private String mtitle;
@@ -13,6 +15,8 @@ public class ContlistDTO {
 	   private String cri_like   ;
 	   private String key_code;
 	   private int mcode;
+	   
+	   private MultipartFile mthumMF;
 
 	   
 	   public ContlistDTO() {}
@@ -126,6 +130,24 @@ public class ContlistDTO {
 	   public void setMcode(int mcode) {
 	      this.mcode = mcode;
 	   }
+
+
+	public MultipartFile getMthumMF() {
+		return mthumMF;
+	}
+
+
+	public void setMthumMF(MultipartFile mthumMF) {
+		this.mthumMF = mthumMF;
+	}
+
+
+	@Override
+	public String toString() {
+		return "ContlistDTO [mtitle=" + mtitle + ", mthum=" + mthum + ", mrate=" + mrate + ", netflix=" + netflix
+				+ ", watcha=" + watcha + ", tving=" + tving + ", diseny=" + diseny + ", mdate=" + mdate + ", cri_like="
+				+ cri_like + ", key_code=" + key_code + ", mcode=" + mcode + ", mthumMF=" + mthumMF + "]";
+	}
 
 	   
 	   

@@ -108,7 +108,38 @@ public class ContlistDAO {
 	       return dto;
 	   }// read() end
 	
-	
+	   
+		public int insert(ContlistDTO dto) {
+			int cnt=0;
+			
+			try {
+				con=dbopen.getConnection();//DB연결
+				sql=new StringBuilder();
+				sql.append(" INSERT INTO contlist (mtitle, mthum, netflix, watcha, tving, diseny, mdate, key_code) ");
+				sql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
+				pstmt = con.prepareStatement(sql.toString());
+				pstmt.setString(1, dto.getMtitle());
+				pstmt.setString(2, dto.getMthum());
+				pstmt.setString(3, dto.getNetflix());
+				pstmt.setString(4, dto.getWatcha());
+				pstmt.setString(5, dto.getTving());
+				pstmt.setString(6, dto.getDiseny());
+				pstmt.setString(7, dto.getMdate());
+				pstmt.setString(8, dto.getKey_code());
+
+				cnt=pstmt.executeUpdate();
+				
+			} catch (Exception e) {
+				System.out.println("컨텐츠 추가 실패: " + e);
+			} finally {
+				DBclose.close(con, pstmt);
+			}//try end
+			
+			
+			return cnt;
+			
+		}//insert() end
+	   
 	
 	
 	

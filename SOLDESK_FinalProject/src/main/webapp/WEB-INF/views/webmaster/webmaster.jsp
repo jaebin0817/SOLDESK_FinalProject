@@ -9,13 +9,15 @@
 	
   <div class="container-fluid text-center">	
 
-	<form name="frm" method="post" action="<%=request.getContextPath()%>/notice/noticemaster.do">		
-		<input type="button" value="콘텐츠추가" onclick="location.href='/addcontent.do'">
+	<form name="frm" method="post" action="<%=request.getContextPath()%>/logout.do">		
+		<input type="button" value="콘텐츠관리" onclick="location.href='/contmanage.do'">
 		<input type="button" value="게시글관리" onclick="location.href=''">
 		<input type="button" value="회원관리" onclick="location.href=location.href='/memberlist.do'">
 		<input type="button" value="파티목록관리" onclick="location.href='/partylist.do'">
 		<input type="button" value="파티매칭대기목록" onclick="">
-		<input type="submit" value="공지사항관리">
+		<input type="button" value="공지사항관리" onclick="location.href='/notice/noticemaster.do'">
+		<hr>
+		<input type="submit" value="로그아웃">
 	</form>
   
   </div>	

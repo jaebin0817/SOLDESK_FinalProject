@@ -129,7 +129,7 @@ public class PartyInfoDAO {
 	
 	
 	
-	public PartyInfoDTO partyread(int party_id) {
+	public PartyInfoDTO partyread(String party_id) {
 		PartyInfoDTO dto=null;
 		
 		try {
@@ -139,7 +139,7 @@ public class PartyInfoDAO {
 			sql.append(" FROM party_info ");
 			sql.append(" WHERE party_id=? ");
 			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setInt(1, party_id);
+			pstmt.setString(1, party_id);
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {

@@ -37,6 +37,9 @@
 	          <c:when test="${ s_mem_id==null || s_mem_pw==null || s_mem_lv==null }">
 	            <li><a href="<%=request.getContextPath()%>/login.do">로그인</a></li>	            
 	          </c:when>
+	          <c:when test="${ s_mem_lv=='A' }">
+	            <li><a href="<%=request.getContextPath()%>/webmaster/webmaster.do">관리자페이지</a></li>	            
+	          </c:when>
 	          <c:otherwise>
 	            <li><a href="<%=request.getContextPath()%>/m_manage/mypage.do">마이페이지</a></li>
 	          </c:otherwise>

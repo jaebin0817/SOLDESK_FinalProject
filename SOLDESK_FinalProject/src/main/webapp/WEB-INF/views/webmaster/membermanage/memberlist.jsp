@@ -25,7 +25,7 @@
 
 		<c:forEach var="dto" items="${list}"> 	
 			<tr>
-				<td><a href="memread.do?memread=${dto.mem_id }">${dto.mem_id }</a></td>				
+				<td><a href="memread.do?mem_id=${dto.mem_id }">${dto.mem_id }</a></td>				
 				<td>${dto.mem_phone }</td>
 				<td>${dto.mem_email }</td>
 				<td>${dto.mem_reg }</td>

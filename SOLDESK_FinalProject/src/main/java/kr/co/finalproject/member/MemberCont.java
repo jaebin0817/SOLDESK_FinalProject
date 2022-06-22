@@ -127,7 +127,7 @@ public class MemberCont {
 		session.removeAttribute("s_mem_pw");
 		session.removeAttribute("s_mem_lv");
 		
-		mav.setViewName("index");
+		mav.setViewName("redirect:/home.do");
 		
 		return mav;
 	}

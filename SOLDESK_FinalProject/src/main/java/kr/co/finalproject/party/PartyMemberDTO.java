@@ -3,7 +3,7 @@ package kr.co.finalproject.party;
 public class PartyMemberDTO {
 
     private String mem_id;
-    private int party_id;
+    private String party_id;
     private int party_pcost;
     private String party_pdate;
     private String party_ordnumber;
@@ -18,11 +18,13 @@ public class PartyMemberDTO {
 		this.mem_id = mem_id;
 	}
 
-	public int getParty_id() {
+
+
+	public String getParty_id() {
 		return party_id;
 	}
 
-	public void setParty_id(int party_id) {
+	public void setParty_id(String party_id) {
 		this.party_id = party_id;
 	}
 

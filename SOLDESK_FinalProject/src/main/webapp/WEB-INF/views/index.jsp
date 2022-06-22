@@ -37,6 +37,9 @@
 	          <c:when test="${ s_mem_id==null || s_mem_pw==null || s_mem_lv==null }">
 	            <li><a href="login.do">로그인</a></li>	            
 	          </c:when>
+	          <c:when test="${ s_mem_lv=='A' }">
+	            <li><a href="webmaster/webmaster.do">관리자페이지</a></li>	            
+	          </c:when>
 	          <c:otherwise>
 	            <li><a href="m_manage/mypage.do">마이페이지</a></li>
 	          </c:otherwise>
@@ -100,7 +103,7 @@
 	          	  <c:set var="end" value="${ fn:length(list) }"></c:set>
 	          	</c:when>
 	          	<c:otherwise>
-	          	  <c:set var="end" value="${ maxcontent }"></c:set>
+	          	  <c:set var="end" value="${ maxcontent-1 }"></c:set>
 	          	</c:otherwise>
 	          </c:choose>
 
@@ -132,10 +135,6 @@
 	  <div class="container-fluid bg-3 text-center">
 	    <a href="notice/notice.do">공지사항</a> &nbsp;&nbsp;
 	    <a href="">문의사항</a>
-	    <!-- 세션이용해서 회원등급 A(webmaster)일때만 접근 허용 -->
-	    <c:if test="${ s_mem_lv=='A' }">
-	      <br><a href="webmaster/webmaster.do">관리자페이지</a>
-	    </c:if>
 	  </div>
 	  
 	  <div class="container-fluid bg-4 text-center">

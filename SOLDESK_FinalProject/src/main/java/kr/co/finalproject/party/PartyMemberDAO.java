@@ -22,7 +22,7 @@ public class PartyMemberDAO {
 	
 	
 	
-	public ArrayList<PartyMemberDTO> readParty(int party_id) {
+	public ArrayList<PartyMemberDTO> readParty(String party_id) {
 		
 		ArrayList<PartyMemberDTO> list=null;
 		
@@ -35,7 +35,7 @@ public class PartyMemberDAO {
 			sql.append(" FROM party_member ");
 			sql.append(" WHERE party_id=? ");
 			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setInt(1, party_id);
+			pstmt.setString(1, party_id);
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
@@ -43,7 +43,7 @@ public class PartyMemberDAO {
 				do {
 					dto=new PartyMemberDTO();
 					dto.setMem_id(rs.getString("mem_id"));
-					dto.setParty_id(rs.getInt("party_id"));
+					dto.setParty_id(rs.getString("party_id"));
 					dto.setParty_pcost(rs.getInt("party_pcost"));
 					dto.setParty_pdate(rs.getString("party_pdate"));
 					dto.setParty_ordnumber(rs.getString("party_ordnumber"));

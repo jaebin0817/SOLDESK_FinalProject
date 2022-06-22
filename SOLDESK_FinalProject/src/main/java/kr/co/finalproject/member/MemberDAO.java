@@ -77,6 +77,40 @@ public class MemberDAO {
 	}
 	
 	
+	
+	public MemberDTO readone(String mem_id){
+		MemberDTO dto = null;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT mem_id, mem_pw, mem_phone, mem_email, mem_lv, mem_reg, mem_birth " );
+			sql.append(" FROM member_info ");
+			sql.append(" WHERE mem_id=? ");
+			
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setString(1, mem_id);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				dto = new MemberDTO();
+				dto.setMem_id(rs.getString("mem_id"));
+				dto.setMem_pw(rs.getString("mem_pw"));
+				dto.setMem_phone(rs.getString("mem_phone"));
+				dto.setMem_email(rs.getString("mem_email"));
+				dto.setMem_lv(rs.getString("mem_lv"));
+				dto.setMem_reg(rs.getString("mem_reg"));
+				dto.setMem_birth(rs.getString("mem_birth"));
+			}
+			
+		}catch(Exception e) {
+			System.out.println("회원 조회 실패: "+ e);
+		}finally {
+			DBclose.close(con, pstmt, rs);
+		}
+		return dto;
+	}
+	
+	
 	public int update(MemberDTO dto) {
 		int cnt=0;
 		try {

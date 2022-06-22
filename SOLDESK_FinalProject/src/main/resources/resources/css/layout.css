@@ -244,6 +244,10 @@
 	 visibility: hidden;
 	}
 	
+	.btnarea {
+		text-align: center;
+	}
+	
 
   @keyframes slide {
     0% {
