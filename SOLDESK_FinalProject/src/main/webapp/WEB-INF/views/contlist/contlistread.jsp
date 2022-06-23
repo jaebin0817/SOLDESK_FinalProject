@@ -15,16 +15,16 @@
 		<img src="../../storage/${dto.mthum}" alt="movie" width="300px"><br>
 	</a>
 	<c:if test="${dto.netflix eq 'O' }">
-		<img src="../../images/icon_netflix.png" width="50px">
+		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_netflix.png" width="50px"></a>
 	</c:if>
 	<c:if test="${dto.tving eq 'O'  }">
-		<img src="../../images/icon_tving.png" width="50px">
+		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_tving.png" width="50px"></a>
 	</c:if>
 	<c:if test="${dto.watcha eq 'O'  }">
-		<img src="../../images/icon_watcha.png" width="50px">
+		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_watcha.png" width="50px"></a>
 	</c:if>
 	<c:if test="${dto.diseny eq 'O'  }">
-		<img src="../../images/icon_disney.png" width="50px">
+		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_disney.png" width="50px"></a>
 	</c:if>
 
 	<div class="mtitle">${dto.mtitle}</div>
@@ -40,19 +40,22 @@
 			</c:forEach>
 	</div>
 
-	<!-- 
-	  <c:forEach items="${keycodelist}" var="list" >
-	  
-	 	<a href="codesearch.do?key_code=${ list }"> 
-	   <c:forEach items="${keylist}" var="list" >
-	   	<c:forEach items="${list}" var="map">
-	   		${map}
-	   	</c:forEach>
-	   </c:forEach>
-	   </a>
-	 </c:forEach>
- -->
 	<div class="mrate">컨텐츠 평점 : ${dto.mrate}</div>
+	<div class="like">좋아요 수 : ${dto.cri_like}</div>
+	
+	<!-- 감독 배우 목록 -->	
+	<div id="people" class="container-fluid text-center">
+	  <h3>감독 / 출연</h3><br>
+ 	  <c:set var="no" value="1"></c:set>
+
+		<c:forEach var="dto" items="${ peoplelist }" begin="0" end="${ fn:length(peoplelist) }" step="1">
+
+		</c:forEach>
+
+	</div>
+	<!-- 감독 배우 목록 -->
+	
+	
 	<hr>
 	<div class="mem_id">ID : ${dto2.mem_id}</div>
 	<div class="rev_title">후기 제목 : ${dto2.rev_title}</div>

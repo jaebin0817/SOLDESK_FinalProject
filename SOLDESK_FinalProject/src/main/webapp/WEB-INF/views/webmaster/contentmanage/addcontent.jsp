@@ -9,6 +9,13 @@
 <!-- 본문시작 addcontent.jsp -->
 
 <div class="container text-center">
+	<div class="pagetitle">
+		<br>
+		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
+		<span><strong> 콘텐츠 추가페이지 </strong></span>
+		<br><br>
+	</div>
+
 <form name="contfrm" id="contfrm" method="post" action="contins.do" enctype="multipart/form-data" onsubmit="">
 	<table class="table">
 	<tr>
@@ -46,6 +53,24 @@
 	<tr>
 	    <td colspan="4">
 	    	<textarea class="form-control" name="key_code" id="key_code"></textarea>
+	    </td>
+	</tr>
+	<tr>
+	    <th>감독</th>
+	    <td colspan="4">
+	      <input type="text" name="directors" id="directors" class="form-control" placeholder="감독1, 감독2, 감독3, ...">
+	    </td>
+	</tr>
+	<tr>
+	    <th>배우</th>
+	    <td colspan="4">
+	      <input type="text" name="actors" id="actors" class="form-control" placeholder="배우1, 배우2, 배우3, ...">
+	    </td>
+	</tr>
+	<tr>
+	    <th>유튜브주소</th>
+	    <td colspan="4">
+	      <input type="text" name="maudio" id="maudio" class="form-control">
 	    </td>
 	</tr>
 	<tr>

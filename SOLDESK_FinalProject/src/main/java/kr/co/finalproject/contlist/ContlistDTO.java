@@ -6,148 +6,154 @@ public class ContlistDTO {
 	   
 	   private String mtitle;
 	   private String mthum;
-	   private int mrate;
+	   private double mrate;
 	   private String netflix;
 	   private String watcha;
 	   private String tving;
 	   private String diseny;
 	   private String mdate;
-	   private String cri_like   ;
 	   private String key_code;
+	   private int cri_like;
 	   private int mcode;
+	   private String maudio;
+	   private String director;
+	   private String actor;
 	   
 	   private MultipartFile mthumMF;
-
 	   
 	   public ContlistDTO() {}
 
+	public String getMtitle() {
+		return mtitle;
+	}
 
-	   public String getMtitle() {
-	      return mtitle;
-	   }
+	public void setMtitle(String mtitle) {
+		this.mtitle = mtitle;
+	}
 
+	public String getMthum() {
+		return mthum;
+	}
 
-	   public void setMtitle(String mtitle) {
-	      this.mtitle = mtitle;
-	   }
+	public void setMthum(String mthum) {
+		this.mthum = mthum;
+	}
 
+	public double getMrate() {
+		return mrate;
+	}
 
-	   public String getMthum() {
-	      return mthum;
-	   }
+	public void setMrate(double mrate) {
+		this.mrate = mrate;
+	}
 
+	public String getNetflix() {
+		return netflix;
+	}
 
-	   public void setMthum(String mthum) {
-	      this.mthum = mthum;
-	   }
+	public void setNetflix(String netflix) {
+		this.netflix = netflix;
+	}
 
+	public String getWatcha() {
+		return watcha;
+	}
 
-	   public int getMrate() {
-	      return mrate;
-	   }
+	public void setWatcha(String watcha) {
+		this.watcha = watcha;
+	}
 
+	public String getTving() {
+		return tving;
+	}
 
-	   public void setMrate(int mrate) {
-	      this.mrate = mrate;
-	   }
+	public void setTving(String tving) {
+		this.tving = tving;
+	}
 
+	public String getDiseny() {
+		return diseny;
+	}
 
-	   public String getNetflix() {
-	      return netflix;
-	   }
+	public void setDiseny(String diseny) {
+		this.diseny = diseny;
+	}
 
+	public String getMdate() {
+		return mdate;
+	}
 
-	   public void setNetflix(String netflix) {
-	      this.netflix = netflix;
-	   }
+	public void setMdate(String mdate) {
+		this.mdate = mdate;
+	}
 
+	public String getKey_code() {
+		return key_code;
+	}
 
-	   public String getWatcha() {
-	      return watcha;
-	   }
+	public void setKey_code(String key_code) {
+		this.key_code = key_code;
+	}
 
+	public int getCri_like() {
+		return cri_like;
+	}
 
-	   public void setWatcha(String watcha) {
-	      this.watcha = watcha;
-	   }
+	public void setCri_like(int cri_like) {
+		this.cri_like = cri_like;
+	}
 
+	public int getMcode() {
+		return mcode;
+	}
 
-	   public String getTving() {
-	      return tving;
-	   }
+	public void setMcode(int mcode) {
+		this.mcode = mcode;
+	}
 
+	public String getMaudio() {
+		return maudio;
+	}
 
-	   public void setTving(String tving) {
-	      this.tving = tving;
-	   }
+	public void setMaudio(String maudio) {
+		this.maudio = maudio;
+	}
 
+	public String getDirector() {
+		return director;
+	}
 
-	   public String getDiseny() {
-	      return diseny;
-	   }
+	public void setDirector(String director) {
+		this.director = director;
+	}
 
+	public String getActor() {
+		return actor;
+	}
 
-	   public void setDiseny(String diseny) {
-	      this.diseny = diseny;
-	   }
-
-
-	   public String getMdate() {
-	      return mdate;
-	   }
-
-
-	   public void setMdate(String mdate) {
-	      this.mdate = mdate;
-	   }
-
-
-	   public String getCri_like() {
-	      return cri_like;
-	   }
-
-
-	   public void setCri_like(String cri_like) {
-	      this.cri_like = cri_like;
-	   }
-
-
-	   public String getKey_code() {
-	      return key_code;
-	   }
-
-
-	   public void setKey_code(String key_code) {
-	      this.key_code = key_code;
-	   }
-
-
-	   public int getMcode() {
-	      return mcode;
-	   }
-
-
-	   public void setMcode(int mcode) {
-	      this.mcode = mcode;
-	   }
-
+	public void setActor(String actor) {
+		this.actor = actor;
+	}
 
 	public MultipartFile getMthumMF() {
 		return mthumMF;
 	}
 
-
 	public void setMthumMF(MultipartFile mthumMF) {
 		this.mthumMF = mthumMF;
 	}
 
-
 	@Override
 	public String toString() {
 		return "ContlistDTO [mtitle=" + mtitle + ", mthum=" + mthum + ", mrate=" + mrate + ", netflix=" + netflix
-				+ ", watcha=" + watcha + ", tving=" + tving + ", diseny=" + diseny + ", mdate=" + mdate + ", cri_like="
-				+ cri_like + ", key_code=" + key_code + ", mcode=" + mcode + ", mthumMF=" + mthumMF + "]";
+				+ ", watcha=" + watcha + ", tving=" + tving + ", diseny=" + diseny + ", mdate=" + mdate + ", key_code="
+				+ key_code + ", cri_like=" + cri_like + ", mcode=" + mcode + ", maudio=" + maudio + ", director="
+				+ director + ", actor=" + actor + ", mthumMF=" + mthumMF + "]";
 	}
+
+	   
+	   
+	   
 
 	   
 	   
