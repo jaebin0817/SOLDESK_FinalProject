@@ -49,7 +49,7 @@
  	  <c:set var="no" value="1"></c:set>
 
 		<c:forEach var="dto" items="${ peoplelist }" begin="0" end="${ fn:length(peoplelist) }" step="1">
-
+			
 		</c:forEach>
 
 	</div>
