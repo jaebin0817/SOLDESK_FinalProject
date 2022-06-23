@@ -2,24 +2,24 @@ package kr.co.finalproject.contentcri;
 
 public class ContentcriDTO {
 	private int mcode;
-	private String cri_like;
+	private int cri_like;
 	private int cri_watch;
 	private int cri_point;
 	private String mem_id;
 	private int cri_code;
-	
+
 	public ContentcriDTO() {}
-	
+
 	public int getMcode() {
 		return mcode;
 	}
 	public void setMcode(int mcode) {
 		this.mcode = mcode;
 	}
-	public String getCri_like() {
+	public int getCri_like() {
 		return cri_like;
 	}
-	public void setCri_like(String cri_like) {
+	public void setCri_like(int cri_like) {
 		this.cri_like = cri_like;
 	}
 	public int getCri_watch() {
@@ -46,4 +46,6 @@ public class ContentcriDTO {
 	public void setCri_code(int cri_code) {
 		this.cri_code = cri_code;
 	}
+
+
 }
