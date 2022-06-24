@@ -13,12 +13,9 @@
 <br>
 <br>
 <div id="review_insert" class="container-fluid text-center">
-	<button class="btn_previous">
-		<a
-			href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode=${ dto2.mcode }">
-			<img src="../../storage/previous_button.png" alt="back" width="30px">
+		<a href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode=${ mcode }">
+			<img src="../../images/previous_button.png" alt="back" width="30px">
 		</a>
-	</button>
 
 
 	<!--   썸네일이랑 제목, 키워드 넣을거임. 키노라이츠 리뷰 작성처럼. 
@@ -79,4 +76,6 @@
 	</form>
 </div>
 
+	<!-- 본문끝 -->
 
+<%@ include file="../footer.jsp"%>

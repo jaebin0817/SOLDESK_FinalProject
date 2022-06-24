@@ -8,13 +8,9 @@
 	<!-- 메인카테고리 끝 -->
 
 	<!-- 본문 시작 -->
-<<<<<<< HEAD
-	<div id="cont_list" class="container-fluid text-center">
-		<h3>컨텐츠들을 구경해보세요 !</h3>
-		<h5>${ msg }</h5>
-=======
+<div id="cont_list" class="container-fluid text-center">
+
 	<div class="pagetitle">
->>>>>>> refs/remotes/origin/branch_jb
 		<br>
 		<span><strong> 👀 컨텐츠들을 구경해보세요! 👀 </strong></span>
 		<h5>${ msg }</h5>

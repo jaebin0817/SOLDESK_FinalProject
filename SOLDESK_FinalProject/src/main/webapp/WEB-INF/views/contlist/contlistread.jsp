@@ -10,11 +10,10 @@
 <!-- 본문 시작 -->
 <div id="cont_list" class="container-fluid text-center">
 	<h3>영화 상세정보와 리뷰</h3>
-	<br> <a
-		href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode=${ dto.mcode }">
-		<img src="../../storage/${dto.mthum}" alt="movie" width="300px"><br>
-	</a>
-<<<<<<< HEAD
+	<br> 
+	<img src="../../storage/${dto.mthum}" alt="movie" width="300px"><br>
+
+
 	<form name="frm" id="frm" method="post" 
 	action="<%=request.getContextPath()%>/contlist/contlistwatch.do?mcode=${ dto.mcode }" onsubmit="return IDlog(${mem_lv})">
 		<c:if test="${dto.netflix eq 'O' }">
@@ -30,20 +29,7 @@
 			<input type="image" src="../../images/icon_disney.png" width="50px">
 		</c:if>
 	</form>
-=======
-	<c:if test="${dto.netflix eq 'O' }">
-		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_netflix.png" width="50px"></a>
-	</c:if>
-	<c:if test="${dto.tving eq 'O'  }">
-		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_tving.png" width="50px"></a>
-	</c:if>
-	<c:if test="${dto.watcha eq 'O'  }">
-		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_watcha.png" width="50px"></a>
-	</c:if>
-	<c:if test="${dto.diseny eq 'O'  }">
-		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_disney.png" width="50px"></a>
-	</c:if>
->>>>>>> refs/remotes/origin/branch_jb
+
 
 	<div class="mtitle">${dto.mtitle}</div>
 
@@ -71,18 +57,17 @@
 		</c:forEach>
 
 	</div>
-<<<<<<< HEAD
 	<!-- 감독 배우 목록 끝 -->
-	
+
 	<c:choose>
-		<c:when test="${ s_mem_id eq 'B' }">
-			<button class="btn" onclick="location.href='<%=request.getContextPath()%>/contlist/reviewForm.do?mcode=${ dto.mcode }'>리뷰작성하기</button>
+		<c:when test="${ s_mem_lv=='B' }">
+			<button class="btn" onclick="location.href='<%=request.getContextPath()%>/contlist/reviewForm.do?mcode=${ dto.mcode }'">리뷰작성하기</button>
 		</c:when>
-		<c:otherwise><p>리뷰는 로그인 후 작성가능합니다</p></c:otherwise>
+		<c:otherwise>
+			<h3>리뷰는 로그인 후 작성가능합니다</h3>
+		</c:otherwise>
 	</c:choose>
-=======
-	<!-- 감독 배우 목록 -->
->>>>>>> refs/remotes/origin/branch_jb
+
 	
 	
 	<hr>

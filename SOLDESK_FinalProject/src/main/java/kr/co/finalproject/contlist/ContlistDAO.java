@@ -458,14 +458,5 @@ public class ContlistDAO {
 			
 		}//mainsearch() end
 		
-		
-		
 
-		
-		
-	
-<<<<<<< HEAD
 }//class end
-=======
-}//class end
->>>>>>> refs/remotes/origin/branch_jb
