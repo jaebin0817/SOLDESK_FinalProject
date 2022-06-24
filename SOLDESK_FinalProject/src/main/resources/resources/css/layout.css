@@ -5,7 +5,7 @@
   }
   
   .bg-1 { 
-    background-color: #ffffff; /* White */
+    background-color: #eeeeee; /* White */
     color: #303030;
   }
   .bg-2 { 
@@ -247,6 +247,17 @@
 	.btnarea {
 		text-align: center;
 	}
+	
+	.backcolor{
+		 background-color: #eeeeee;
+	}
+	
+	#searchfield{
+	margin-top: 20px;
+	padding-top: 50px;
+	
+	}
+
 	
 
   @keyframes slide {

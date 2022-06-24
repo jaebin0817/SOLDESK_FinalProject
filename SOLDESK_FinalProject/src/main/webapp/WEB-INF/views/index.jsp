@@ -52,21 +52,29 @@
 
 <!-- 본문 시작 -->
 
-	<!-- 컨텐츠 검색 시작 -->
-	<div class="jumbotron text-center">
-	  <br><br><br><br>	
-	  <form>
+
+<div id="wrap" class="container-fluid bg-1 text-center">
+	
+	<!-- 컨텐츠 검색 -->
+	<div id="searchfield" class="container">   
+	  <form action="mainsearch.do">
 	    <div class="input-group">
-	      <input type="search" class="form-control" size="50" placeholder="컨텐츠 검색" required>
+	      <input type="search" id="searchkey" name="searchkey" class="form-control" size="50" placeholder="작품명, 감독, 배우를 검색해보세요" required>
 	      <div class="input-group-btn">
-	        <button type="button" class="btn btn-danger">검색</button>
+	        <input type="submit" class="btn btn-danger" value="검색">
 	      </div>
 	    </div>
 	  </form>
 	</div>
+	<div id="searchbtns" class="container"><br>&nbsp;&nbsp;   
+		<c:forEach var="dto" items="${ keywords }" begin="1" end="8" step="1">
+				<button class="btn btn-danger" onclick="location.href='/keysearch.do?key_name=${ dto.key_name }&key_code=${ dto.key_code }'">#${ dto.key_name }</button>&nbsp;&nbsp;
+		</c:forEach>	
+	</div>
 	<!-- 컨텐츠 검색 끝 -->
 	
-	<!-- OTT랭킹 / 시청목록 count해서 가장 많은 top3 -->
+	
+	<!-- OTT랭킹 / 시청목록 count해서 가장 많은 top3 -->	
 	<div id="cont_rank" class="container-fluid text-center">
 	  <h3>오늘의 통합 랭킹</h3><br>
  	  <c:set var="no" value="1"></c:set>
@@ -124,8 +132,7 @@
 	      </c:forEach>
 	</div>
 	<!-- 추천 컨텐츠 끝 -->
-
-
+</div>
 
 <!-- 본문 끝 -->
 

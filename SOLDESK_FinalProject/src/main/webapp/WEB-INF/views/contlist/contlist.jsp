@@ -8,9 +8,12 @@
 	<!-- 메인카테고리 끝 -->
 
 	<!-- 본문 시작 -->
-	<div id="cont_list" class="container-fluid text-center">
-		<h3>컨텐츠들을 구경해보세요 !</h3>
+	<div class="pagetitle">
 		<br>
+		<span><strong> 👀 컨텐츠들을 구경해보세요! 👀 </strong></span>
+		<h5>${ msg }</h5>
+		<br>
+	</div>
 
 
 <c:forEach var="dto" items="${list}">
