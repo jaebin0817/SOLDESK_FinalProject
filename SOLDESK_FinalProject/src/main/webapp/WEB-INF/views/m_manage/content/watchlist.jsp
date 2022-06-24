@@ -28,8 +28,7 @@
 		 <hr>
 		 <c:forEach var="list" items="${ key_names }"> 
 			${ list }			
-		 </c:forEach>
-		
+		 </c:forEach>		
 	</div>
   	
 
