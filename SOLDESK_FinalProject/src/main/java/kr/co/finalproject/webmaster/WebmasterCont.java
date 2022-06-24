@@ -158,9 +158,12 @@ public class WebmasterCont {
       }      
       
       String directors = req.getParameter("directors");
-      directors.replace(" ", "");
+      directors.replaceAll(" ", "");
       String actors = req.getParameter("actors");
-      actors.replace(" ", "");
+      actors.replaceAll(" ", "");
+
+      System.out.println(directors);
+      System.out.println(actors);     
       
       String director="";
       String actor="";
@@ -213,7 +216,7 @@ public class WebmasterCont {
     		  
     		  pdto.setPname(names);
     		  pdto.setPphoto("");
-
+    		  
     		  int cnt=pdao.insertPeople(pdto, pno);
     		  
     		  if(cnt!=0) {
@@ -248,8 +251,10 @@ public class WebmasterCont {
       return mav;
 
    }
-
    
+ 
+   
+
    
    @RequestMapping(value = "/contupdate.do", method = RequestMethod.GET)
    public ModelAndView contupdate(ContlistDTO dto, HttpServletRequest req) {
@@ -363,14 +368,14 @@ public class WebmasterCont {
       }
       
       String directors = req.getParameter("directors");
-      directors.replace(" ", "");
+      directors.replaceAll(" ", "");
       String actors = req.getParameter("actors");
-      actors.replace(" ", "");     
+      actors.replaceAll(" ", "");     
       
       String director="";
       String actor="";
       
-      StringTokenizer stDir = new StringTokenizer(directors, ", ");
+      StringTokenizer stDir = new StringTokenizer(directors, ",");
       while(stDir.hasMoreTokens()) {
     	  
     	  //토큰해서 검색한 감독코드
@@ -402,7 +407,7 @@ public class WebmasterCont {
     	  director+=", ";
       }//while end
       
-      StringTokenizer stAct = new StringTokenizer(actors, ", ");
+      StringTokenizer stAct = new StringTokenizer(actors, ",");
       while(stAct.hasMoreTokens()) {
     	  
     	  //토큰해서 검색한 배우코드

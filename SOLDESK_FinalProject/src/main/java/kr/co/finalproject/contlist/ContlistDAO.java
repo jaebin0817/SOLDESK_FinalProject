@@ -458,10 +458,5 @@ public class ContlistDAO {
 			
 		}//mainsearch() end
 		
-		
-		
 
-		
-		
-	
 }//class end

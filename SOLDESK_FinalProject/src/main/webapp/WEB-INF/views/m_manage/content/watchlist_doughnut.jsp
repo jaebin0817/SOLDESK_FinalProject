@@ -16,19 +16,26 @@
 		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
 		<span><strong> 내가 본 작품 </strong></span>
 		<br>
-		<hr>
-		<!-- 통계 관련 값 확인 -->
-		 <c:forEach var="list" items="${ gernes }" > 			
-			${ list }				
+		
+		
+				
+		 
+		 <c:forEach var="list" items="${ gernes }" > 
+			
+			<c:out value="${ list }"></c:out>
+						
 		 </c:forEach>
 		 <hr>
 		 <c:forEach var="list" items="${ ratios }"> 
-			${ list }			
+			${ list }<br>			
 		 </c:forEach>
 		 <hr>
 		 <c:forEach var="list" items="${ key_names }"> 
-			${ list }			
-		 </c:forEach>		
+			${ list }<br>			
+		 </c:forEach>
+		 
+		 
+		
 	</div>
   	
 

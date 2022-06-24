@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import net.utility.DBclose;
 import net.utility.DBopen;
@@ -103,13 +104,125 @@ public class WatchListDAO {
 		}finally{
 			DBclose.close(con, pstmt, rs);
 		}//try end
-
-		
-	
-		return rank;
-		
+		return rank;		
 	}
 
+	
+	
+	public int create(WatchListDTO dto) {
+		int cnt=0;
+		try {
+			con=dbopen.getConnection();
+			
+			sql=new StringBuilder();
+			sql.append(" INSERT INTO watch_list(mem_id, mcode, watch_time ,watch_reg ) ");
+			sql.append(" values( ?, ?, now(), ?) ");
+			
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setString(1, dto.getMem_id());	
+			pstmt.setInt(2, dto.getMcode());	
+			pstmt.setString(3, dto.getWatch_reg());
+			
+			cnt=pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("시청 목록 추가 실패 : " + e);
+		}finally {
+			DBclose.close(con, pstmt);
+		}//end
+		return cnt;
+	}//create end
+	
+	
+	
+	public String watchregCreate(String dateToStr){
+		
+		String watch_reg="";
+		String lastWatch_reg="";
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" SELECT MAX(watch_reg) ");
+			sql.append(" FROM watch_list ");
+			sql.append(" WHERE watch_reg LIKE '" + dateToStr + "%' ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				lastWatch_reg=rs.getString("MAX(watch_reg)");
+			}//if end
+			
+			if(lastWatch_reg==null) {//현재 만들어진 시청번호가 없음
+
+				watch_reg += dateToStr + "_" + "101";
+				
+			}else {
+				int underbar=lastWatch_reg.lastIndexOf("_");				
+				int lastidxWatch_reg = Integer.parseInt(lastWatch_reg.substring(underbar+1));
+				lastidxWatch_reg++;
+				
+				watch_reg += dateToStr + "_" + lastidxWatch_reg;
+				
+			}
+			
+		}catch (Exception e) {
+			System.out.println("시청목록번호 불러오기 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);
+		}//try end		
+		
+		
+		return watch_reg;
+	}//subnoCreate() end
+
+	
+	public ArrayList<String> genreRead(String mem_id) {
+		
+		ArrayList<String> genrelist=null;
+		ArrayList<String> keycodelist=null;
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" SELECT key_code ");
+			sql.append(" FROM watch_list A JOIN contlist B ");
+			sql.append(" ON A.mcode=B.mcode ");
+			sql.append(" WHERE mem_id=? ");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, mem_id);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				keycodelist= new ArrayList<String>();
+				do {
+					keycodelist.add(rs.getString("key_code"));
+					
+				}while(rs.next());
+			}//if end
+			
+			genrelist=new ArrayList<String>();
+
+			for(int i=0; i<keycodelist.size(); i++) {
+			      StringTokenizer st = new StringTokenizer(keycodelist.get(i), " || ");
+			      while(st.hasMoreTokens()) { //토큰할 문자가 있는지?
+			    	  String key_code=st.nextToken();
+			    	  if(key_code.startsWith("G")) {
+			    		  genrelist.add(key_code);
+			    	  }
+			      }				
+			}
+			
+		}catch (Exception e) {
+			System.out.println("선호장르 불러오기 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);
+		}//try end
+		
+		return genrelist;
+		
+	}
 	
 	
 	

@@ -10,22 +10,26 @@
 <!-- 본문 시작 -->
 <div id="cont_list" class="container-fluid text-center">
 	<h3>영화 상세정보와 리뷰</h3>
-	<br> <a
-		href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode=${ dto.mcode }">
-		<img src="../../storage/${dto.mthum}" alt="movie" width="300px"><br>
-	</a>
-	<c:if test="${dto.netflix eq 'O' }">
-		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_netflix.png" width="50px"></a>
-	</c:if>
-	<c:if test="${dto.tving eq 'O'  }">
-		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_tving.png" width="50px"></a>
-	</c:if>
-	<c:if test="${dto.watcha eq 'O'  }">
-		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_watcha.png" width="50px"></a>
-	</c:if>
-	<c:if test="${dto.diseny eq 'O'  }">
-		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_disney.png" width="50px"></a>
-	</c:if>
+	<br> 
+	<img src="../../storage/${dto.mthum}" alt="movie" width="300px"><br>
+
+
+	<form name="frm" id="frm" method="post" 
+	action="<%=request.getContextPath()%>/contlist/contlistwatch.do?mcode=${ dto.mcode }" onsubmit="return IDlog(${mem_lv})">
+		<c:if test="${dto.netflix eq 'O' }">
+			<input type="image" src="../../images/icon_netflix.png" width="50px">	
+		</c:if>
+		<c:if test="${dto.tving eq 'O'  }">
+			<input type="image" src="../../images/icon_tving.png" width="50px">
+		</c:if>
+		<c:if test="${dto.watcha eq 'O'  }">
+			<input type="image" src="../../images/icon_watcha.png" width="50px">
+		</c:if>
+		<c:if test="${dto.diseny eq 'O'  }">
+			<input type="image" src="../../images/icon_disney.png" width="50px">
+		</c:if>
+	</form>
+
 
 	<div class="mtitle">${dto.mtitle}</div>
 
@@ -53,7 +57,17 @@
 		</c:forEach>
 
 	</div>
-	<!-- 감독 배우 목록 -->
+	<!-- 감독 배우 목록 끝 -->
+
+	<c:choose>
+		<c:when test="${ s_mem_lv=='B' }">
+			<button class="btn" onclick="location.href='<%=request.getContextPath()%>/contlist/reviewForm.do?mcode=${ dto.mcode }'">리뷰작성하기</button>
+		</c:when>
+		<c:otherwise>
+			<h3>리뷰는 로그인 후 작성가능합니다</h3>
+		</c:otherwise>
+	</c:choose>
+
 	
 	
 	<hr>
@@ -67,7 +81,16 @@
 
 </div>
 
+	<script>
+	function IDlog(mem_lv) {
+		if(mem_lv==null || mem_lv=="F"){
+			alert("로그인 후 시청 가능한 컨텐츠 입니다");
+			return false;
+		}
+		return true;
+	}//IDlog() end
 
+	</script>
 
 <!-- 본문끝 -->
 <%@ include file="../footer.jsp"%>

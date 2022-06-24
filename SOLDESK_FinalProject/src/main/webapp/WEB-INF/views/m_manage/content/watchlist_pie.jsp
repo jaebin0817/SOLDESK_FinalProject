@@ -16,8 +16,10 @@
 		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
 		<span><strong> 내가 본 작품 </strong></span>
 		<br>
-		<hr>
-		<!-- 통계 관련 값 확인 -->
+		
+		
+				
+		 
 		 <c:forEach var="list" items="${ gernes }" > 			
 			${ list }				
 		 </c:forEach>
@@ -28,7 +30,10 @@
 		 <hr>
 		 <c:forEach var="list" items="${ key_names }"> 
 			${ list }			
-		 </c:forEach>		
+		 </c:forEach>
+		 
+		 
+		
 	</div>
   	
 
@@ -81,7 +86,7 @@ var chartArea = document.getElementById('myChart').getContext('2d');
 // 차트를 생성한다. 
 var myChart = new Chart(chartArea, {
     // ①차트의 종류(String)
-    type: 'doughnut',
+    type: 'pie',
     // ②차트의 데이터(Object)
     data: {
     	labels: labels,
@@ -98,10 +103,14 @@ var myChart = new Chart(chartArea, {
     // ⑩차트의 설정(Object)
     options: {
         responsive: true,
+        legend: false,
+        animation: false,
+        pieceLabel: {
+            mode:"label",
+            fontSize: 11,
+            fontStyle: 'bold'
+         },
         plugins: {
-          legend: {
-            position: 'top',
-          },
           title: {
             display: true,
             text: '내가 좋아하는 장르는? (단위: %)'

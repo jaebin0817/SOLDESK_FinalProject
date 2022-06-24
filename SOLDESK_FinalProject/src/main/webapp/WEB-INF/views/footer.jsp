@@ -19,11 +19,9 @@
 		  <p>Copyright &copy; OPOT</p> 
 		  <p>SOLDESK 1조</p>
 		  <p>조원들 Contact Info</p>
-	  </div>
-	  
+	  </div>	  
 
 	</footer>
-
 
 </body>
 </html>
