@@ -21,7 +21,7 @@
 		<br>
 	</div>
 	
-	<input type="button" value="콘텐츠추가" onclick="location.href='/addcontent.do'">
+	<input type="button" value="콘텐츠추가" onclick="location.href='/addcontent.do'"><br><br>
 	
 		
 	<table class="table table-hover">

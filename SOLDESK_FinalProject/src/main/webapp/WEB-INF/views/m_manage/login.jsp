@@ -9,6 +9,14 @@
 
 <div class="container text-center">
 
+	<div class="pagetitle">
+		<br>
+		<span><img src="/images/person_icon.png" alt="person" width="50px"></span>
+		<span><strong> LOGIN </strong></span>
+		<br>
+	</div>
+
+
 	<c:set var="s_mem_id" value="${ s_mem_id }"></c:set>
 	<c:set var="s_mem_pw" value="${ s_mem_pw }"></c:set>
 	<c:set var="s_mem_lv" value="${ s_mem_lv }"></c:set>
@@ -19,7 +27,6 @@
 		<!-- ${ fn:length(msg) } -->
 				
 		<!-- 게스트일 때, 로그인 폼 출력 -->
-		<img src="../images/login.png" style="margin: auto; width: 300px" >
 		<form name="loginfrm" id="loginfrm" method="post" action="<%=request.getContextPath()%>/login.do" onsubmit="return">
 			<table class="table table-bordered" id="login_table">
 			<tr>

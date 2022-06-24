@@ -18,7 +18,7 @@
   <script src="../js/jquery-3.6.0.min.js"></script>
   <script src="../js/jquery.cookie.js"></script>
   <script src="../js/moment-with-locales.js"></script>
- /head>
+
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
 
 <!-- 메인카테고리 시작 -->
@@ -47,6 +47,6 @@
 	  </ul>
     </div>
   </div>
-</nav><br><br><br><br><br>
+</nav>
 <!-- 메인카테고리 끝 -->
-
+<div id="wrap" class="container-fluid bg-1 text-center">

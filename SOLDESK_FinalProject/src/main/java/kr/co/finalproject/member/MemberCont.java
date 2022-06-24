@@ -1,5 +1,15 @@
 package kr.co.finalproject.member;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.finalproject.contlist.WatchListDAO;
+import kr.co.finalproject.contlist.WatchListDTO;
+import kr.co.finalproject.search.SearchKeyDAO;
 import net.utility.Utility;
 
 
@@ -21,10 +33,14 @@ public class MemberCont {
 	private MemberDAO dao = null;
 	private SubscribeInfoDAO subdao =null;
 	private WatchListDAO watchdao=null;
+	private SearchKeyDAO skdao =null;
+	
 
 	public MemberCont() {
 		dao = new MemberDAO();
 		subdao = new SubscribeInfoDAO();
+		watchdao = new WatchListDAO();
+		skdao = new SearchKeyDAO();
 		System.out.println("-----MemberCont() 객체 생성");
 	}
 
@@ -304,21 +320,83 @@ public class MemberCont {
 
 	
 	@RequestMapping(value = "/watchlist.do", method = RequestMethod.GET)
-	public ModelAndView watchlist(HttpServletRequest req) {
+	public ModelAndView watchlist(HttpServletRequest req, WatchListDTO dto) {
 		
 		watchdao = new WatchListDAO();
 		
 		ModelAndView mav=new ModelAndView();
 	    HttpSession session = req.getSession();
         String mem_id=session.getAttribute("s_mem_id").toString();
+        
+        //가장 많이 본 장르 읽어오기
+        ArrayList<String> genrelist=new ArrayList<String>();
+        genrelist=watchdao.genreRead(mem_id);
+        
+        //System.out.println(genrelist);
+        int size=genrelist.size();
+        
+		Set<String> set = new HashSet<String>(genrelist);        				
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		
+		for (String str : set) {
+			int count = Collections.frequency(genrelist, str);
+			map.put(str, count);
+		}
 
+		ArrayList<String> gernes= new ArrayList<String>();
+		ArrayList<Integer> ratios= new ArrayList<Integer>();
+		
+		List<Map.Entry<String, Integer>> entryList = new LinkedList<>(map.entrySet());
+		entryList.sort(new Comparator<Map.Entry<String, Integer>>() {
+		    @Override
+		    public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+			return o2.getValue() - o1.getValue();
+		    }
+		});
+		
+		int i=1;
+		int sum=0;
+		for(Map.Entry<String, Integer> entry : entryList){
+
+			gernes.add(entry.getKey());
+			double dratio=Math.round((entry.getValue()/(double)size)*100.0);
+			int ratio=(int)dratio;
+			ratios.add(ratio);
+			sum+=ratio;
+			i++;
+			
+			if(i>4) { 
+				gernes.add("기타");
+				ratios.add(100-sum);
+				break; 
+			}
+		}
+        
+		ArrayList<String> key_names= new ArrayList<String>();		
+		for(int idx=0; idx<gernes.size(); idx++) {
+			
+			if(idx==4) {
+				key_names.add("기타");
+				break;
+			}
+			
+			key_names.add(skdao.SearchKeyAll(gernes.get(idx)));			
+		}
+		
+		
 		mav.setViewName("m_manage/content/watchlist");
 		mav.addObject("mem_id", mem_id);
+		mav.addObject("gernes", gernes);
+		mav.addObject("ratios", ratios);
+		mav.addObject("key_names", key_names);		
 		mav.addObject("watchlist", watchdao.watchread(mem_id));
 
 		return mav;
 		
 	}
+	
+	
+	
 	
 	
 	

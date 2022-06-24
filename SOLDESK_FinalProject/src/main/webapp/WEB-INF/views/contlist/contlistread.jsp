@@ -14,18 +14,21 @@
 		href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode=${ dto.mcode }">
 		<img src="../../storage/${dto.mthum}" alt="movie" width="300px"><br>
 	</a>
-	<c:if test="${dto.netflix eq 'O' }">
-		<img src="../../images/icon_netflix.png" width="50px">
-	</c:if>
-	<c:if test="${dto.tving eq 'O'  }">
-		<img src="../../images/icon_tving.png" width="50px">
-	</c:if>
-	<c:if test="${dto.watcha eq 'O'  }">
-		<img src="../../images/icon_watcha.png" width="50px">
-	</c:if>
-	<c:if test="${dto.diseny eq 'O'  }">
-		<img src="../../images/icon_disney.png" width="50px">
-	</c:if>
+	<form name="frm" id="frm" method="post" 
+	action="<%=request.getContextPath()%>/contlist/contlistwatch.do?mcode=${ dto.mcode }" onsubmit="return IDlog(${mem_lv})">
+		<c:if test="${dto.netflix eq 'O' }">
+			<input type="image" src="../../images/icon_netflix.png" width="50px">	
+		</c:if>
+		<c:if test="${dto.tving eq 'O'  }">
+			<input type="image" src="../../images/icon_tving.png" width="50px">
+		</c:if>
+		<c:if test="${dto.watcha eq 'O'  }">
+			<input type="image" src="../../images/icon_watcha.png" width="50px">
+		</c:if>
+		<c:if test="${dto.diseny eq 'O'  }">
+			<input type="image" src="../../images/icon_disney.png" width="50px">
+		</c:if>
+	</form>
 
 	<div class="mtitle">${dto.mtitle}</div>
 
@@ -40,19 +43,29 @@
 			</c:forEach>
 	</div>
 
-	<!-- 
-	  <c:forEach items="${keycodelist}" var="list" >
-	  
-	 	<a href="codesearch.do?key_code=${ list }"> 
-	   <c:forEach items="${keylist}" var="list" >
-	   	<c:forEach items="${list}" var="map">
-	   		${map}
-	   	</c:forEach>
-	   </c:forEach>
-	   </a>
-	 </c:forEach>
- -->
 	<div class="mrate">컨텐츠 평점 : ${dto.mrate}</div>
+	<div class="like">좋아요 수 : ${dto.cri_like}</div>
+	
+	<!-- 감독 배우 목록 -->	
+	<div id="people" class="container-fluid text-center">
+	  <h3>감독 / 출연</h3><br>
+ 	  <c:set var="no" value="1"></c:set>
+
+		<c:forEach var="dto" items="${ peoplelist }" begin="0" end="${ fn:length(peoplelist) }" step="1">
+			
+		</c:forEach>
+
+	</div>
+	<!-- 감독 배우 목록 끝 -->
+	
+	<c:choose>
+		<c:when test="${ s_mem_id eq 'B' }">
+			<button class="btn" onclick="location.href='<%=request.getContextPath()%>/contlist/reviewForm.do?mcode=${ dto.mcode }'>리뷰작성하기</button>
+		</c:when>
+		<c:otherwise><p>리뷰는 로그인 후 작성가능합니다</p></c:otherwise>
+	</c:choose>
+	
+	
 	<hr>
 	<div class="mem_id">ID : ${dto2.mem_id}</div>
 	<div class="rev_title">후기 제목 : ${dto2.rev_title}</div>
@@ -64,7 +77,16 @@
 
 </div>
 
+	<script>
+	function IDlog(mem_lv) {
+		if(mem_lv==null || mem_lv=="F"){
+			alert("로그인 후 시청 가능한 컨텐츠 입니다");
+			return false;
+		}
+		return true;
+	}//IDlog() end
 
+	</script>
 
 <!-- 본문끝 -->
 <%@ include file="../footer.jsp"%>
