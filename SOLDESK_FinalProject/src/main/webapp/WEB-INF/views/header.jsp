@@ -49,4 +49,8 @@
   </div>
 </nav>
 <!-- 메인카테고리 끝 -->
+<<<<<<< HEAD
 <div id="wrap" class="container-fluid bg-1 text-center">
+=======
+<div id="wrap" class="container-fluid bg-1 text-center">
+>>>>>>> refs/remotes/origin/branch_jb

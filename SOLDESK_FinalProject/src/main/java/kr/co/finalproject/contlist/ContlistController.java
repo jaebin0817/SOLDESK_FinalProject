@@ -68,13 +68,11 @@ public class ContlistController {
     	  keycodelist.add(kc.nextToken());
     	  
       }
-
+      
       ArrayList<String> keylist=new ArrayList<String>() ;
-      StringTokenizer st = new StringTokenizer(key_code, " || ");
-      while(st.hasMoreTokens()) { //토큰할 문자가 있는지?
-          
-    	  keylist.add(dao3.SearchKeyAll(st.nextToken()));
-    	  
+      for(int i=0; i<keycodelist.size(); i++) {
+    	  keylist.add(dao3.SearchKeyAll(keycodelist.get(i)));
+
       }
       
       
@@ -95,6 +93,8 @@ public class ContlistController {
    }
 
    
+   
+   
    @RequestMapping("contlist/search.do")
    public ModelAndView search(String key_name) {
       ModelAndView mav = new ModelAndView();
@@ -114,6 +114,7 @@ public class ContlistController {
    }
    
    
+<<<<<<< HEAD
    @RequestMapping(value = "contlist/contlistwatch.do", method = RequestMethod.POST)
    public ModelAndView create(ContlistDTO contdto, WatchListDTO dto, HttpServletRequest req) {
 	   ModelAndView mav = new ModelAndView();
@@ -211,6 +212,69 @@ public class ContlistController {
 		return mav;
 
 	}
+=======
+   @RequestMapping("watch.do")
+   public ModelAndView watch(HttpServletRequest req, ContlistDTO dto) {
+      ModelAndView mav = new ModelAndView();
+      
+      int mcode = Integer.parseInt(req.getParameter("mcode"));
+      
+      dto=dao.contlist(mcode);
+      String maudio=dto.getMaudio();      
+      
+      mav.setViewName("contlist/contentwatch");
+      mav.addObject("maudio", maudio);
+      
+      return mav;
+   }
+   
+   
+   
+   @RequestMapping("mainsearch.do")
+   public ModelAndView mainsearch(HttpServletRequest req) {
+      ModelAndView mav = new ModelAndView();
+      
+      String searchkey=req.getParameter("searchkey").trim();
+      String searchname=req.getParameter("searchkey").trim();
+      searchname=searchname.replace(" ", "");
+      
+      String pno=dao.readPno(searchname);
+      
+      ArrayList<ContlistDTO> list = null;
+      
+      String msg=searchkey+" : 검색 결과";
+      
+      list = dao.mainsearch(searchkey, pno);
+
+      mav.setViewName("contlist/contlist");
+      mav.addObject("list", list);
+      mav.addObject("msg", msg);
+
+      return mav;
+   }
+   
+   
+   @RequestMapping("keysearch.do")
+   public ModelAndView keysearch(HttpServletRequest req) {
+      ModelAndView mav = new ModelAndView();
+      
+      String key_code=req.getParameter("key_code");
+      String key_name=req.getParameter("key_name");
+
+      
+      ArrayList<ContlistDTO> list = null;
+      
+      String msg="#"+key_name+" : 검색 결과";
+      
+      list = dao.searchPart(key_code);
+
+      mav.setViewName("contlist/contlist");
+      mav.addObject("list", list);
+      mav.addObject("msg", msg);
+
+      return mav;
+   }
+>>>>>>> refs/remotes/origin/branch_jb
    
    
    

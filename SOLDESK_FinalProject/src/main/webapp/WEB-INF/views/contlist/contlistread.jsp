@@ -14,6 +14,7 @@
 		href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode=${ dto.mcode }">
 		<img src="../../storage/${dto.mthum}" alt="movie" width="300px"><br>
 	</a>
+<<<<<<< HEAD
 	<form name="frm" id="frm" method="post" 
 	action="<%=request.getContextPath()%>/contlist/contlistwatch.do?mcode=${ dto.mcode }" onsubmit="return IDlog(${mem_lv})">
 		<c:if test="${dto.netflix eq 'O' }">
@@ -29,6 +30,20 @@
 			<input type="image" src="../../images/icon_disney.png" width="50px">
 		</c:if>
 	</form>
+=======
+	<c:if test="${dto.netflix eq 'O' }">
+		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_netflix.png" width="50px"></a>
+	</c:if>
+	<c:if test="${dto.tving eq 'O'  }">
+		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_tving.png" width="50px"></a>
+	</c:if>
+	<c:if test="${dto.watcha eq 'O'  }">
+		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_watcha.png" width="50px"></a>
+	</c:if>
+	<c:if test="${dto.diseny eq 'O'  }">
+		<a href="/watch.do?mcode=${ dto.mcode }"><img src="../../images/icon_disney.png" width="50px"></a>
+	</c:if>
+>>>>>>> refs/remotes/origin/branch_jb
 
 	<div class="mtitle">${dto.mtitle}</div>
 
@@ -56,6 +71,7 @@
 		</c:forEach>
 
 	</div>
+<<<<<<< HEAD
 	<!-- 감독 배우 목록 끝 -->
 	
 	<c:choose>
@@ -64,6 +80,9 @@
 		</c:when>
 		<c:otherwise><p>리뷰는 로그인 후 작성가능합니다</p></c:otherwise>
 	</c:choose>
+=======
+	<!-- 감독 배우 목록 -->
+>>>>>>> refs/remotes/origin/branch_jb
 	
 	
 	<hr>
