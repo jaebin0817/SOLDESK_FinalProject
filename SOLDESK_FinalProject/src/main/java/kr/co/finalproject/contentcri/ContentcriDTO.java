@@ -47,5 +47,11 @@ public class ContentcriDTO {
 		this.cri_code = cri_code;
 	}
 
+	@Override
+	public String toString() {
+		return "ContentcriDTO [mcode=" + mcode + ", cri_like=" + cri_like + ", cri_watch=" + cri_watch + ", cri_point="
+				+ cri_point + ", mem_id=" + mem_id + ", cri_code=" + cri_code + "]";
+	}
 
+	
 }

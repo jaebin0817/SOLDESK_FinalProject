@@ -43,7 +43,7 @@
 				  &nbsp;&nbsp;&nbsp;
 				  <a href="agreement.do">회원가입</a>
 				  &nbsp;&nbsp;&nbsp;
-				  <a href="">아이디/비밀번호찾기</a>
+				  <a href="find_info.do">아이디/비밀번호찾기</a>
 			   </td>
 			</tr>		  
 			</table>

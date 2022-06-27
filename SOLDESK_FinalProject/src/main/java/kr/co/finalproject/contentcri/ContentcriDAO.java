@@ -26,8 +26,8 @@ public class ContentcriDAO {
     	try {
     		con = dbopen.getConnection();
     		sql = new StringBuilder();
-    		sql.append(" INSERT INTO content_critic(mcode, cri_like, cri_watch, cri_point, mem_id, cri_code) ");
-    		sql.append(" VALUES(?, ?, ?, ?, ?,auto) ");
+    		sql.append(" INSERT INTO content_critic(mcode, cri_like, cri_watch, cri_point, mem_id) ");
+    		sql.append(" VALUES(?, ?, ?, ?, ?) ");
     		
     		pstmt= con.prepareStatement(sql.toString());
     		pstmt.setInt(1, dto.getMcode());
@@ -46,34 +46,82 @@ public class ContentcriDAO {
     		
     }//insert() end    
     
-    public int update(ContentcriDTO dto) {
+    public int like_update(ContentcriDTO dto) {
     	int cnt = 0;
     	try {
     		con = dbopen.getConnection();
 			sql = new StringBuilder();
 			sql.append(" UPDATE content_critic ");
-			sql.append(" SET cri_like =? cri_watch=?, cri_point=? ");
+			sql.append(" SET cri_like =? ");
 			sql.append(" WHERE mcode=? and mem_id=? ");
 			
 			pstmt=con.prepareStatement(sql.toString());
 			pstmt.setInt(1, dto.getCri_like());
-			pstmt.setInt(2, dto.getCri_watch());
-			pstmt.setInt(3, dto.getCri_point());
-			pstmt.setInt(4, dto.getMcode());
-			pstmt.setString(5, dto.getMem_id());
-			
+			pstmt.setInt(2, dto.getMcode());
+			pstmt.setString(3, dto.getMem_id());
 			
 			cnt = pstmt.executeUpdate();
 			
     	}catch (Exception e) {
-			System.out.println("개인 평가 수정 실패: "+ e);
+			System.out.println("좋아요 수정 실패: "+ e);
+		}finally {
+			DBclose.close(con, pstmt);
+		}
+    	
+    	return cnt;
+    }//like_update() end
+    
+    public int watch_update(ContentcriDTO dto) {
+		int cnt = 0;
+    	try {
+    		con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" UPDATE content_critic ");
+			sql.append(" SET cri_watch =? ");
+			sql.append(" WHERE mcode=? and mem_id=? ");
+			
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setInt(1, dto.getCri_watch());
+			pstmt.setInt(2, dto.getMcode());
+			pstmt.setString(3, dto.getMem_id());
+			
+			cnt = pstmt.executeUpdate();
+			
+    	}catch (Exception e) {
+			System.out.println("봤어요 수정 실패: "+ e);
 		}finally {
 			DBclose.close(con, pstmt);
 		}
     	
     	
     	return cnt;
-    }//update() end
+	}//watch_update() end
+	
+	public int point_update(ContentcriDTO dto) {
+		int cnt = 0;
+    	try {
+    		con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" UPDATE content_critic ");
+			sql.append(" SET cri_point =? ");
+			sql.append(" WHERE mcode=? and mem_id=? ");
+			
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setInt(1, dto.getCri_point());
+			pstmt.setInt(2, dto.getMcode());
+			pstmt.setString(3, dto.getMem_id());
+			
+			cnt = pstmt.executeUpdate();
+			
+    	}catch (Exception e) {
+			System.out.println("찜하기 수정 실패: "+ e);
+		}finally {
+			DBclose.close(con, pstmt);
+		}
+    	
+    	
+    	return cnt;
+	}//point_update() end
 
 	public ContentcriDTO read(int mcode, String mem_id) {
 		ContentcriDTO dto = null;
@@ -101,5 +149,6 @@ public class ContentcriDAO {
 		}
 		
 		return dto;
-	}
+	}//read() end
+
 }

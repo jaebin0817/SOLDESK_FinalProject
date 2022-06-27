@@ -18,6 +18,66 @@ public class memberDAO {
 	public memberDAO() {
 		dbopen = new DBopen();
 	}
+	
+	public memberDTO findId(String mem_email, String mem_phone) {
+		memberDTO dto = null;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT mem_id ");
+			sql.append(" FROM member_info ");
+			sql.append(" WHERE mem_email =? AND mem_phone=? ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, mem_email);
+			pstmt.setString(2, mem_phone);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto.setMem_email(rs.getString("mem_email"));
+				dto.setMem_phone(rs.getString("mem_phone"));
+			}
+			
+		} catch(Exception e) {
+			System.out.println("ID조회 실패: " + e);
+		} finally {
+			DBclose.close(con, pstmt, rs);
+		}
+		
+		return dto;
+	}
+	
+	public memberDTO findPw(String mem_id, String mem_email, String mem_phone) {
+		memberDTO dto = null;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT mem_pw ");
+			sql.append(" FROM member_info ");
+			sql.append(" WHERE mem_id=? AND mem_email =? AND mem_phone=? ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, mem_id);
+			pstmt.setString(2, mem_email);
+			pstmt.setString(3, mem_phone);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto.setMem_id(rs.getString("mem_id"));
+				dto.setMem_email(rs.getString("mem_email"));
+				dto.setMem_phone(rs.getString("mem_phone"));
+			}
+			
+		} catch(Exception e) {
+			System.out.println("PW조회 실패: " + e);
+		} finally {
+			DBclose.close(con, pstmt, rs);
+		}
+		
+		return dto;
+	}
 
 	public int insert(memberDTO dto) {
 		int cnt=0;
@@ -158,6 +218,33 @@ public class memberDAO {
 		return mem_lv;
 	}//loginProc() end
 	
+	
+	public int ckId(String mem_id) {
+		int result = -1;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT mem_id ");
+			sql.append(" FROM member_info ");
+			sql.append(" WHERE mem_id=? ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, mem_id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = 0;
+			}else {
+				result = 1;
+			}
+			
+		}catch (Exception e) {
+			System.out.println("아이디 체크 실패: "+e);
+		}
+		
+		return result;
+	}
 	
 	
 	

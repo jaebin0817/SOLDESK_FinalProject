@@ -1,5 +1,7 @@
 package kr.co.finalproject.member;
 
+import java.io.PrintWriter;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -260,4 +262,46 @@ public class MemberCont {
 		return mav;
 	}
 	
+	
+	@RequestMapping("find_info.do")
+	public String find_info() {
+		return "m_manage/find_info";
+	}
+	
+	@RequestMapping(value = "/findidscr.do", method = RequestMethod.GET)
+	public String find_id_form() {
+		return "m_manage/findidscr";
+	}
+	
+	@RequestMapping(value = "/findpwscr.do", method = RequestMethod.GET)
+	public String find_pw_form() {
+		return "m_manage/findpwscr";
+	}
+	
+	@RequestMapping(value="/IdCheck.do", method = RequestMethod.POST)
+	public void idcheck(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			req.setCharacterEncoding("UTF-8");
+			resp.setCharacterEncoding("UTF-8");
+			
+			String mem_id = req.getParameter("mem_id");
+			PrintWriter out=resp.getWriter();
+			
+			memberDAO dao = new memberDAO();
+			
+			int result = dao.ckId(mem_id);
+			if(result ==1){
+				System.out.println("사용가능한 아이디입니다");
+			}else if(result == 0){
+				System.out.println("중복된 아이디입니다");
+			}
+			System.out.println(result);
+			out.write(result + "");
+			out.flush(); 
+            out.close();
+            
+		}catch (Exception e) {
+			System.out.println("응답실패: " + e);
+		}
+	}
 }

@@ -5,6 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>    
     
 <%@ include file="../header.jsp"%>
+<script type="text/javascript" src="./js/member_action.js" ></script>
 <!-- 본문시작 member_join.jsp -->
    
 <!-- 회원 가입 시작 -->
@@ -18,7 +19,7 @@
       <br><br>
    </div>
    
-   <form name="mem_info" id="mem_info" method="post">
+   <form name="mem_join" id="mem_join" method="post" >
    
       <table class="table memTable" id="memTable">
          
@@ -26,9 +27,10 @@
           <th>아이디*</th>
           <td>
             <input type="text" class="form-control" name="mem_id" id="mem_id" size="10" required>
+            <font id="checkId" size="2"></font>
           </td>
           <td>  
-            <input type="button" class="btn" value="ID 중복확인" onclick="">
+            <input type="button" class="btn" id="id_check" value="ID 중복확인" onclick="idCheck()">
           </td>
       </tr>
       <tr>
@@ -37,7 +39,7 @@
               <input type="text" class="form-control" name="mem_email" id="mem_email" required>
           </td>
           <td>
-            <input type="button" class="btn" value="Email 중복확인" onclick="" required>
+            <input type="button" class="btn" value="Email 중복확인" onclick="emailCheck()" required>
           </td>
       </tr>
       <tr>
@@ -61,7 +63,9 @@
           <td>
             <input type="password" class="form-control" name="re_pw" id="re_pw" size="20" required>
           </td>
-          <td></td>
+          <td>  
+      		<input type="button" class="btn" value="비밀번호 확인" onclick="pwCheck()">
+      	  </td>
       </tr>
       <tr>
           <th>연락처*</th>
