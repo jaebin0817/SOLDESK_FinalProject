@@ -1,23 +1,20 @@
 package kr.co.finalproject.contlist;
 
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 
 import kr.co.finalproject.review.ReviewDAO;
 import kr.co.finalproject.review.ReviewDTO;
@@ -162,7 +159,8 @@ public class ContlistController {
       String searchkey=req.getParameter("searchkey").trim();
       String searchname=req.getParameter("searchkey").trim();
       searchname=searchname.replace(" ", "");
-      
+      searchkey=searchkey.replace(" ", "");
+     
       String pno=dao.readPno(searchname);
       
       ArrayList<ContlistDTO> list = null;
@@ -222,63 +220,130 @@ public class ContlistController {
 	
 	
 	
-	
-	   @RequestMapping("/contlist/contlistAjax.do")
-	   public ModelAndView contlistAjax(ContlistDTO dto) {
-	      ModelAndView mav = new ModelAndView();
+   @RequestMapping("/contlist/contlistAjax.do")
+   public ModelAndView contlistAjax(ContlistDTO dto) {
+      ModelAndView mav = new ModelAndView();
 
-	      ArrayList<ContlistDTO> list = null;
+      ArrayList<ContlistDTO> list = null;
 
-	      list = dao.contlistAll();
-	      /*
-	      JSONObject obj = new JSONObject();
-	      
-	      JSONArray jArray = new JSONArray();
-	      JSONParser parser = new JSONParser();
-	      
-	      for(int i=0; i<list.size(); i++) {
-	    	  
-	    	  JSONObject sObject = new JSONObject();
-	    	  sObject.put("mtitle", list.get(i).getMtitle());
-	    	  sObject.put("mthum", list.get(i).getMthum());
-	    	  sObject.put("netflix", list.get(i).getNetflix());
-	    	  sObject.put("watcha", list.get(i).getWatcha());
-	    	  sObject.put("tving", list.get(i).getTving());
-	    	  sObject.put("disney", list.get(i).getDisney());
-	    	  sObject.put("mrate", list.get(i).getMrate());
-	    	  jArray.add(sObject);
-	    	  System.out.println(jArray);
-	      }
-	      */
-	      
-	      
-	      mav.setViewName("contlist/contlistAjax");
-	      mav.addObject("list", list);
+      list = dao.contlistAll();
+     
+      
+      mav.setViewName("contlist/contlistAjax");
+      mav.addObject("list", list);
 
-	      return mav;
-	   }
+      return mav;
+   }
 	
-	
+    @ResponseBody	
 	@RequestMapping("contlist/ottsearch.do")
-	private void ottsearch(HttpServletRequest req, HttpServletResponse resp) {
+	private ArrayList<ContlistDTO> ottsearch(@RequestParam Map<String, Object> map) {
 		
+        ArrayList<ContlistDTO> list = null;
+    	
 		try {
 			
-			String message="<span style='color:red;font-weight:bold'>넷플릭스 선택됨</span>";
+			System.out.println("검색키워드: "+(String)map.get("key_name")); 
 			
-			resp.setContentType("text/plain; charset=UTF-8");
-			PrintWriter out=resp.getWriter();
+			String ott= (String)map.get("ott");
 			
-			out.println(message);
-			out.flush();//out객체에 남아 있는 버퍼의 내용을 클리어
-			out.close();
+			String netflix="X";
+			String watcha="X"; 
+			String tving="X"; 
+			String disney="X";
+			
+			String searchkey=(String)map.get("searchkey");
+			String key_name=(String)map.get("key_name"); 
+			//System.out.println(searchkey.equals("")); 
+			//System.out.println(key_name.equals("")); 
+			String key_code=""; 
+			String pno="";
+
+			
+			if(!(key_name.equals(""))) {//key_name이 검색된 상태라면				
+				key_code=dao3.SearchKeyCode(key_name);				
+			}
+			
+			
+			if(ott.equals("netflix")) {
+				netflix="O";
+			}else if(ott.equals("watcha")) {
+				watcha="O"; 
+			}else if(ott.equals("tving")) {
+				tving="O"; 
+			}else if(ott.equals("disney")) {
+				disney="O"; 
+			}
+			
+			
+		    list = dao.ottRead(netflix, watcha, tving, disney, searchkey, key_code, pno);
 			
 		}catch (Exception e) {
 			System.out.println("응답실패: " + e);
 		}
 		
-	}
+		return list;
+		
+	}//ottsearch() end
 	
+   
+    
+    @ResponseBody	
+	@RequestMapping("ottsearch.do")
+	private ArrayList<ContlistDTO> ottsearchkey(@RequestParam Map<String, Object> map) {
+		
+        ArrayList<ContlistDTO> list = null;
+    	
+		try {
+			//메인 페이지에서 검색된 상태일 때
+			
+			System.out.println("검색어: "+(String)map.get("searchkey")); 
+			System.out.println("검색키워드: "+(String)map.get("key_name")); 
+			System.out.println("검색키코드: "+(String)map.get("key_code")); 
+
+			
+			String ott= (String)map.get("ott");
+			
+			String netflix="X";
+			String watcha="X"; 
+			String tving="X"; 
+			String disney="X";
+			
+			String searchkey=(String)map.get("searchkey");
+			String searchname=(String)map.get("searchkey");
+			String key_code=(String)map.get("key_code"); 
+			String pno="";
+			if(!(searchkey.equals(""))) {
+				  searchkey=searchkey.replace(" ", "");			      
+			      searchname=searchname.replace(" ", "");			      
+			      pno=dao.readPno(searchname);
+				
+			}
+			System.out.println(searchkey);
+			System.out.println(searchname);
+			System.out.println(pno);
+			
+			if(ott.equals("netflix")) {
+				netflix="O";
+			}else if(ott.equals("watcha")) {
+				watcha="O"; 
+			}else if(ott.equals("tving")) {
+				tving="O"; 
+			}else if(ott.equals("disney")) {
+				disney="O"; 
+			}
+			
+			
+		    list = dao.ottRead(netflix, watcha, tving, disney, searchkey, key_code, pno);
+			
+		}catch (Exception e) {
+			System.out.println("응답실패: " + e);
+		}
+		
+		return list;
+		
+	}//ottsearch() end
+    
 	
 	
    

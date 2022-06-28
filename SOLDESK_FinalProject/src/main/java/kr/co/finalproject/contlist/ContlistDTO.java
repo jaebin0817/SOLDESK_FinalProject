@@ -18,6 +18,7 @@ public class ContlistDTO {
 	   private String maudio;
 	   private String director;
 	   private String actor;
+	   private String mtitle_eng;
 	   
 	   private MultipartFile mthumMF;
 	   
@@ -136,6 +137,14 @@ public class ContlistDTO {
 	public void setActor(String actor) {
 		this.actor = actor;
 	}
+	
+	public String getMtitle_eng() {
+		return mtitle_eng;
+	}
+
+	public void setMtitle_eng(String mtitle_eng) {
+		this.mtitle_eng = mtitle_eng;
+	}
 
 	public MultipartFile getMthumMF() {
 		return mthumMF;
@@ -144,7 +153,10 @@ public class ContlistDTO {
 	public void setMthumMF(MultipartFile mthumMF) {
 		this.mthumMF = mthumMF;
 	}
-
+	
+	
+	
+	
 	@Override
 	public String toString() {
 		return "ContlistDTO [mtitle=" + mtitle + ", mthum=" + mthum + ", mrate=" + mrate + ", netflix=" + netflix

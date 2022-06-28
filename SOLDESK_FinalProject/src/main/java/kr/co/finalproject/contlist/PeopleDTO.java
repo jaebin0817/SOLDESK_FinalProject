@@ -6,6 +6,7 @@ public class PeopleDTO {
 
 	private String pno;
 	private String pname;
+	private String pname_eng;	
 	private String pphoto;
 	
 	private MultipartFile pphotoMF;
@@ -26,6 +27,15 @@ public class PeopleDTO {
 
 	public void setPname(String pname) {
 		this.pname = pname;
+	}
+
+	
+	public String getPname_eng() {
+		return pname_eng;
+	}
+
+	public void setPname_eng(String pname_eng) {
+		this.pname_eng = pname_eng;
 	}
 
 	public String getPphoto() {

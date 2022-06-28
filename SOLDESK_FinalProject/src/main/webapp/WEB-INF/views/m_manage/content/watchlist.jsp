@@ -15,27 +15,15 @@
 		<br>
 		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
 		<span><strong> 내가 본 작품 </strong></span>
-		<br>
-		<hr>
-		<!-- 통계 관련 값 확인 -->
-		 <c:forEach var="list" items="${ gernes }" > 			
-			${ list }				
-		 </c:forEach>
-		 <hr>
-		 <c:forEach var="list" items="${ ratios }"> 
-			${ list }			
-		 </c:forEach>
-		 <hr>
-		 <c:forEach var="list" items="${ key_names }"> 
-			${ list }			
-		 </c:forEach>		
+	
 	</div>
   	
 
 	
   <div class="container-fluid text-center">	
-	
-	<canvas id="myChart" width="400" height="400"></canvas>
+	<div class="chart_wrap">
+		<canvas id="myChart"></canvas>
+	</div>
 		
 	<table class="table table-hover">
 		<tr>

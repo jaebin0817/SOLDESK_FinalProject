@@ -1,6 +1,7 @@
 package kr.co.finalproject.webmaster;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -127,7 +130,7 @@ public class WebmasterCont {
       
       String mthum=UploadSaveManager.saveFileSpring30(mthumMF, basePath);
       dto.setMthum(mthum);
-            
+      
       String netflix=Utility.checkNull(req.getParameter("netflix"));   
       String watcha=Utility.checkNull(req.getParameter("watcha"));   
       String tving=Utility.checkNull(req.getParameter("tving"));   
@@ -157,23 +160,19 @@ public class WebmasterCont {
          dto.setDisney("X");
       }      
       
-      String directors = req.getParameter("directors");
-      directors.replaceAll(" ", "");
-      String actors = req.getParameter("actors");
-      actors.replaceAll(" ", "");
-
-      System.out.println(directors);
-      System.out.println(actors);     
+      System.out.println(req.getParameter("i"));
+      
+      int directorsNo=Integer.parseInt(req.getParameter("i"));
+      int actorsNo=Integer.parseInt(req.getParameter("j"));
       
       String director="";
-      String actor="";
+      String directors="";
       
-      StringTokenizer stDir = new StringTokenizer(directors, ", ");
-      while(stDir.hasMoreTokens()) {
+      for(int i=1; i<=directorsNo; i++) {
     	  
-    	  //토큰해서 검색한 감독코드
-    	  String names=stDir.nextToken();
-    	  String searchedDir=contdao.readDirector(names);
+    	  director=req.getParameter("director"+i);
+          director.replace(" ", "");
+    	  String searchedDir=contdao.readDirector(director);
     	  
     	  if(searchedDir==null){
     		  //기존의 감독리스트에 감독이 없다면
@@ -183,29 +182,34 @@ public class WebmasterCont {
     		  String pcode="D";
     		  String pno=pdao.createPno(pcode);
     		  
-    		  pdto.setPname(names);
+    		  pdto.setPname(director);
     		  pdto.setPphoto("");
 
     		  int cnt=pdao.insertPeople(pdto, pno);
     		  
     		  if(cnt!=0) {
     			  System.out.println("인물추가성공");
-    			  director+=pno;
+    			  directors+=pno;
     		  }else {
     			  System.out.println("인물추가실패");
     		  }    		      		  
     	  }else {
-    		  director+=searchedDir;
+    		  directors+=searchedDir;
     	  }
-    	  director+=", ";
-      }//while end
-      
-      StringTokenizer stAct = new StringTokenizer(actors, ", ");
-      while(stAct.hasMoreTokens()) {
+    		  directors+=", ";
+
+      }//for end
     	  
-    	  //토큰해서 검색한 배우코드
-    	  String names=stAct.nextToken();
-    	  String searchedAct=contdao.readActor(names);
+      System.out.println(directors);
+	  
+      String actor="";
+      String actors="";
+      
+      for(int i=1; i<=actorsNo; i++) {
+    	  
+    	  actor=req.getParameter("actor"+i);
+    	  actor.replace(" ", "");
+    	  String searchedAct=contdao.readActor(actor);
     	  
     	  if(searchedAct==null){
     		  //기존의 리스트에 없다면 people테이블에 배우추가
@@ -214,25 +218,29 @@ public class WebmasterCont {
     		  String pcode="A";
     		  String pno=pdao.createPno(pcode);
     		  
-    		  pdto.setPname(names);
+    		  pdto.setPname(actor);
     		  pdto.setPphoto("");
     		  
     		  int cnt=pdao.insertPeople(pdto, pno);
     		  
     		  if(cnt!=0) {
     			  System.out.println("인물추가성공");
-    			  actor+=pno;
+    			  actors+=pno;
     		  }else {
     			  System.out.println("인물추가실패");
     		  }    		      		  
     	  }else {
-    		  actor+=searchedAct;
+    		  actors+=searchedAct;
     	  }
-    	  actor+=", ";
-       }//while end
+    	  
+    		  actors+=", ";
+    	  
+      }//for end      
       
-      dto.setDirector(director);
-      dto.setActor(actor);
+      System.out.println(actors);     
+      
+      dto.setDirector(directors);
+      dto.setActor(actors);
       
       contdao = new ContlistDAO();
       int cnt=contdao.insert(dto);
@@ -251,9 +259,7 @@ public class WebmasterCont {
       return mav;
 
    }
-   
- 
-   
+
 
    
    @RequestMapping(value = "/contupdate.do", method = RequestMethod.GET)
@@ -271,31 +277,27 @@ public class WebmasterCont {
       String director=dto.getDirector();
       String key_code=dto.getKey_code();
       
-      System.out.println("감독코드 : "+ actor);
-      System.out.println("배우코드 : "+ director);
-      System.out.println("키코드 : "+ key_code);
+      //int directorsNo=Utility.countChar(director, ',');
+      //int actorsNo=Utility.countChar(actor, ',');
       
-      String actors="";
-      String directors="";
+      ArrayList<String> actors = new ArrayList<String>();
+      ArrayList<String> directors = new ArrayList<String>();
+
       ArrayList<String> key_codes=new ArrayList<String>();
       
       StringTokenizer stAct = new StringTokenizer(actor, ", ");
       while(stAct.hasMoreTokens()) {
-    	  actors+=contdao.readPname(stAct.nextToken());
-    	  actors+=", ";
+    	  actors.add(contdao.readPname(stAct.nextToken()));
       }
       
       StringTokenizer stDir = new StringTokenizer(director, ", ");
       while(stDir.hasMoreTokens()) {
-    	  directors+=contdao.readPname(stDir.nextToken());
-    	  directors+=", ";
+    	  directors.add(contdao.readPname(stDir.nextToken()));
       }
       
       StringTokenizer stKc = new StringTokenizer(key_code, " || ");
-      while(stKc.hasMoreTokens()) {
-    	  
-    	  key_codes.add(stKc.nextToken());
-    	  
+      while(stKc.hasMoreTokens()) {    	  
+    	  key_codes.add(stKc.nextToken());    	  
       }
       
       System.out.println("감독 : "+ directors);
@@ -367,20 +369,17 @@ public class WebmasterCont {
     	  dto.setMthum(mthum);
       }
       
-      String directors = req.getParameter("directors");
-      directors.replaceAll(" ", "");
-      String actors = req.getParameter("actors");
-      actors.replaceAll(" ", "");     
+      int directorsNo=Integer.parseInt(req.getParameter("i"));
+      int actorsNo=Integer.parseInt(req.getParameter("j"));
       
       String director="";
-      String actor="";
+      String directors="";
       
-      StringTokenizer stDir = new StringTokenizer(directors, ",");
-      while(stDir.hasMoreTokens()) {
+      for(int i=1; i<=directorsNo; i++) {
     	  
-    	  //토큰해서 검색한 감독코드
-    	  String names=stDir.nextToken();
-    	  String searchedDir=contdao.readDirector(names);
+    	  director=req.getParameter("director"+i);
+          director.replace(" ", "");
+    	  String searchedDir=contdao.readDirector(director);
     	  
     	  if(searchedDir==null){
     		  //기존의 감독리스트에 감독이 없다면
@@ -390,29 +389,34 @@ public class WebmasterCont {
     		  String pcode="D";
     		  String pno=pdao.createPno(pcode);
     		  
-    		  pdto.setPname(names);
+    		  pdto.setPname(director);
     		  pdto.setPphoto("");
 
     		  int cnt=pdao.insertPeople(pdto, pno);
     		  
     		  if(cnt!=0) {
     			  System.out.println("인물추가성공");
-    			  director+=pno;
+    			  directors+=pno;
     		  }else {
     			  System.out.println("인물추가실패");
     		  }    		      		  
     	  }else {
-    		  director+=searchedDir;
+    		  directors+=searchedDir;
     	  }
-    	  director+=", ";
-      }//while end
-      
-      StringTokenizer stAct = new StringTokenizer(actors, ",");
-      while(stAct.hasMoreTokens()) {
+    		  directors+=", ";
+
+      }//for end
     	  
-    	  //토큰해서 검색한 배우코드
-    	  String names=stAct.nextToken();
-    	  String searchedAct=contdao.readActor(names);
+      System.out.println(directors);
+	  
+      String actor="";
+      String actors="";
+      
+      for(int i=1; i<=actorsNo; i++) {
+    	  
+    	  actor=req.getParameter("actor"+i);
+    	  actor.replace(" ", "");
+    	  String searchedAct=contdao.readActor(actor);
     	  
     	  if(searchedAct==null){
     		  //기존의 리스트에 없다면 people테이블에 배우추가
@@ -421,25 +425,30 @@ public class WebmasterCont {
     		  String pcode="A";
     		  String pno=pdao.createPno(pcode);
     		  
-    		  pdto.setPname(names);
+    		  pdto.setPname(actor);
     		  pdto.setPphoto("");
-
+    		  
     		  int cnt=pdao.insertPeople(pdto, pno);
     		  
     		  if(cnt!=0) {
     			  System.out.println("인물추가성공");
-    			  actor+=pno;
+    			  actors+=pno;
     		  }else {
     			  System.out.println("인물추가실패");
     		  }    		      		  
     	  }else {
-    		  actor+=searchedAct;
+    		  actors+=searchedAct;
     	  }
-    	  actor+=", ";
-       }//while end
+    	  
+    		  actors+=", ";
+    	  
+      }//for end      
       
-      dto.setDirector(director);
-      dto.setActor(actor);
+      System.out.println(actors);     
+      
+      dto.setDirector(directors);
+      dto.setActor(actors);
+
       
       int cnt=0;
       cnt=contdao.contUpdate(dto);
@@ -458,5 +467,44 @@ public class WebmasterCont {
       return mav;
 
    }
+   
+   
+   
+    @ResponseBody	
+	@RequestMapping("keycodes.do")
+	private ArrayList<String> keycodes(@RequestParam Map<String, Object> map, ContlistDTO dto) {
+			
+    	ArrayList<String> key_codes=null;
+    	
+		try {
+			  String strmcode = (String)map.get("mcode");   
+		      int mcode = Integer.parseInt(strmcode);
+		      //System.out.println(mcode); 
+		      
+		      skeydao = new SearchKeyDAO();
+		      
+		      dto=contdao.contlist(mcode);
+		      
+		      String key_code=dto.getKey_code();
+		      
+		      key_codes=new ArrayList<String>();
+		    		      
+		      StringTokenizer stKc = new StringTokenizer(key_code, " || ");
+		      while(stKc.hasMoreTokens()) {
+		    	  
+		    	  key_codes.add(stKc.nextToken());
+		    	  
+		      }
+		      
+		      //System.out.println(key_codes); 
+
+		      
+		}catch (Exception e) {
+			System.out.println("응답실패: " + e);
+		}
+		
+		return key_codes;
+		
+	}//ottsearch() end
    
 }//class end

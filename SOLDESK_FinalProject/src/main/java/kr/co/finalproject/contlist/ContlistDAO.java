@@ -71,7 +71,7 @@ public class ContlistDAO {
 		try {
 			con=dbopen.getConnection();//DB연결
 			sql=new StringBuilder();
-			sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, cri_like, key_code, mcode, maudio, director, actor ");
+			sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, cri_like, key_code, mcode, maudio, director, actor, mtitle_eng ");
 			sql.append(" FROM contlist ");
 			sql.append(" WHERE mcode=? ");
 			pstmt = con.prepareStatement(sql.toString());
@@ -94,6 +94,7 @@ public class ContlistDAO {
 					dto.setMaudio(rs.getString("maudio"));
 					dto.setDirector(rs.getString("director"));
 					dto.setActor(rs.getString("actor"));
+					dto.setMtitle_eng(rs.getString("mtitle_eng"));
 			}//if end
 			
 		}catch (Exception e) {
@@ -230,8 +231,8 @@ public class ContlistDAO {
 			try {
 				con=dbopen.getConnection();//DB연결
 				sql=new StringBuilder();
-				sql.append(" INSERT INTO contlist (mtitle, mthum, netflix, watcha, tving, disney, mdate, key_code, maudio, director, actor) ");
-				sql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+				sql.append(" INSERT INTO contlist (mtitle, mthum, netflix, watcha, tving, disney, mdate, key_code, maudio, director, actor, mtitle_eng) ");
+				sql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 				pstmt = con.prepareStatement(sql.toString());
 				pstmt.setString(1, dto.getMtitle());
 				pstmt.setString(2, dto.getMthum());
@@ -244,6 +245,7 @@ public class ContlistDAO {
 				pstmt.setString(9, dto.getMaudio());
 				pstmt.setString(10, dto.getDirector());
 				pstmt.setString(11, dto.getActor());
+				pstmt.setString(12, dto.getMtitle_eng());
 				
 				cnt=pstmt.executeUpdate();
 				
@@ -321,6 +323,7 @@ public class ContlistDAO {
 				sql.append(" SELECT pno ");
 				sql.append(" FROM people ");
 				sql.append(" WHERE pname LIKE '%"+searchname+"%' ");
+				sql.append("    OR pname_eng LIKE '%"+searchname+"%' ");
 				
 				pstmt = con.prepareStatement(sql.toString());
 
@@ -374,7 +377,7 @@ public class ContlistDAO {
 				sql=new StringBuilder();
 				sql.append(" UPDATE contlist ");
 				sql.append(" SET mtitle=?, mthum=?, netflix=?, watcha=?, tving=?, disney=?, ");
-				sql.append(" 	 mdate=?, key_code=?, maudio=?, director=?, actor=?  ");
+				sql.append(" 	 mdate=?, key_code=?, maudio=?, director=?, actor=?, mtitle_eng=? ");
 				sql.append(" WHERE mcode=?  ");
 
 				pstmt = con.prepareStatement(sql.toString());
@@ -389,7 +392,8 @@ public class ContlistDAO {
 				pstmt.setString(9, dto.getMaudio());
 				pstmt.setString(10, dto.getDirector());
 				pstmt.setString(11, dto.getActor());
-				pstmt.setInt(12, dto.getMcode());
+				pstmt.setString(12, dto.getMtitle_eng());
+				pstmt.setInt(13, dto.getMcode());
 
 				
 				cnt=pstmt.executeUpdate();
@@ -415,9 +419,10 @@ public class ContlistDAO {
 			try {
 				con=dbopen.getConnection();//DB연결
 				sql=new StringBuilder();
-				sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor ");
+				sql.append(" SELECT mtitle, mtitle_eng, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor ");
 				sql.append(" FROM contlist ");
 				sql.append(" WHERE mtitle LIKE '%"+searchkey+"%' ");
+				sql.append(" 	OR mtitle_eng LIKE '%"+searchkey+"%' ");
 				sql.append(" 	OR director LIKE '%"+pno+"%' ");
 				sql.append(" 	OR actor LIKE '%"+pno+"%' ");
 				sql.append(" ORDER BY mcode DESC ");
@@ -461,7 +466,7 @@ public class ContlistDAO {
 		
 		
 		
-		public ArrayList<ContlistDTO> ottRead(String netflix, String watcha, String tving, String disney) {
+		public ArrayList<ContlistDTO> ottRead(String netflix, String watcha, String tving, String disney, String searchkey, String key_code, String pno) {
 			ContlistDTO dto=null;
 			
 			ArrayList<ContlistDTO> list=null;
@@ -473,53 +478,29 @@ public class ContlistDAO {
 				sql.append(" FROM contlist ");
 				
 				String search="";
-				if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
-					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
-					
-				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("X")) {
-					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' ";
-
-					
-				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
-					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
-					
-				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
-					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
-					
-				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
-					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
-					
-				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
-					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
-					
-				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
-					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
-					
-				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
-					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
-					
-				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
-					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
-					
-				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
-					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
-					
-				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
-					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
-					
-				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
-					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
-					
+				if(netflix.equals("O")) {
+					search+=" WHERE netflix='O' ";
+				}else if(watcha.equals("O")) {
+					search+=" WHERE watcha='O' ";
+				}else if(tving.equals("O")) {
+					search+=" WHERE tving='O' ";
+				}else if(disney.equals("O")) {
+					search+=" WHERE disney='O' ";
 				}
-
 				
+				if(!(key_code.equals(""))) {//key_name이 검색된 상태라면
+					search+=" AND key_code LIKE '%"+key_code+"%' ";
+				}
+				
+				if(!(searchkey.equals(""))) {//key_name이 검색된 상태라면
+					search+=" AND (mtitle LIKE '%"+searchkey+"%' ";
+					search+=" OR mtitle_eng LIKE '%"+searchkey+"%' ";
+					search+=" OR director LIKE '%"+pno+"%' ";
+					search+=" OR actor  LIKE '%"+pno+"%') ";
+				}
+					
 				sql.append(search);
-
 				sql.append(" ORDER BY mcode DESC ");
-				
-				
-				
-				
 				
 				pstmt = con.prepareStatement(sql.toString());
 				
@@ -544,7 +525,7 @@ public class ContlistDAO {
 				}//if end
 				
 			}catch (Exception e) {
-				System.out.println("컨텐츠리스트 불러오기 실패: " + e);
+				System.out.println("OTT 검색 리스트 불러오기 실패: " + e);
 			}finally{
 				DBclose.close(con, pstmt, rs);
 			}//try end
