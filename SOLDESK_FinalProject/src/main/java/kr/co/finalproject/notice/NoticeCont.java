@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import net.utility.Paging;
+import net.utility.Utility;
+
+
 @Controller
 public class NoticeCont {
 	
@@ -21,10 +25,27 @@ public class NoticeCont {
 	
 	//결과확인 http://localhost:9090/notice/notice.do
 	@RequestMapping(value = "notice/notice.do")
-	public ModelAndView list() {
+	public ModelAndView list(HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
+		
+		String word=req.getParameter("word");
+		String col=req.getParameter("col");
+		word=Utility.checkNull(word);
+		col=Utility.checkNull(col);
+		
+		int recordPerPage=5;
+		
+		int nowPage=1;
+		if(req.getParameter("nowPage")!=null){
+			nowPage=Integer.parseInt(req.getParameter("nowPage"));
+		}//if end
+		int totalRecord=dao.count(col, word);
+		
+		
 		mav.setViewName("notice/noticelist");
-		mav.addObject("list", dao.list());
+		String paging=new Paging().paging3(totalRecord, nowPage, recordPerPage, col, word, "notice.do");
+		mav.addObject("paging",paging);
+		mav.addObject("list", dao.list(col, word, nowPage, recordPerPage));
 		return mav;
 	}//notice() end
 	

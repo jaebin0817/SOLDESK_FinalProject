@@ -10,7 +10,7 @@ public class ContlistDTO {
 	   private String netflix;
 	   private String watcha;
 	   private String tving;
-	   private String diseny;
+	   private String disney;
 	   private String mdate;
 	   private String key_code;
 	   private int cri_like;
@@ -18,6 +18,7 @@ public class ContlistDTO {
 	   private String maudio;
 	   private String director;
 	   private String actor;
+	   private String mtitle_eng;
 	   
 	   private MultipartFile mthumMF;
 	   
@@ -71,12 +72,14 @@ public class ContlistDTO {
 		this.tving = tving;
 	}
 
-	public String getDiseny() {
-		return diseny;
+
+
+	public String getDisney() {
+		return disney;
 	}
 
-	public void setDiseny(String diseny) {
-		this.diseny = diseny;
+	public void setDisney(String disney) {
+		this.disney = disney;
 	}
 
 	public String getMdate() {
@@ -134,6 +137,14 @@ public class ContlistDTO {
 	public void setActor(String actor) {
 		this.actor = actor;
 	}
+	
+	public String getMtitle_eng() {
+		return mtitle_eng;
+	}
+
+	public void setMtitle_eng(String mtitle_eng) {
+		this.mtitle_eng = mtitle_eng;
+	}
 
 	public MultipartFile getMthumMF() {
 		return mthumMF;
@@ -142,14 +153,21 @@ public class ContlistDTO {
 	public void setMthumMF(MultipartFile mthumMF) {
 		this.mthumMF = mthumMF;
 	}
-
+	
+	
+	
+	
 	@Override
 	public String toString() {
 		return "ContlistDTO [mtitle=" + mtitle + ", mthum=" + mthum + ", mrate=" + mrate + ", netflix=" + netflix
-				+ ", watcha=" + watcha + ", tving=" + tving + ", diseny=" + diseny + ", mdate=" + mdate + ", key_code="
+				+ ", watcha=" + watcha + ", tving=" + tving + ", disney=" + disney + ", mdate=" + mdate + ", key_code="
 				+ key_code + ", cri_like=" + cri_like + ", mcode=" + mcode + ", maudio=" + maudio + ", director="
 				+ director + ", actor=" + actor + ", mthumMF=" + mthumMF + "]";
 	}
+
+
+	
+	
 
 	   
 	   

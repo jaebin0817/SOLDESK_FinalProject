@@ -16,7 +16,7 @@
 		<h3>${ mem_id }님! 현재 가입 가능한 ${ ott_name } 파티가 없습니다</h3>
 		<h3> 매칭이 완료되면 결제 후 마이페이지에서 가입한 파티의 정보(ID,PW)를 확인 할 수 있습니다</h3>
 		<br>
-		<input type="button" value="홈화면"  class="btn btn-success" onclick="location.href='<%=request.getContextPath()%>/home.do'">
+		<input type="button" value="홈화면"  class="btn btn-danger" onclick="location.href='<%=request.getContextPath()%>/home.do'">
 	</form>
 	</div>
 

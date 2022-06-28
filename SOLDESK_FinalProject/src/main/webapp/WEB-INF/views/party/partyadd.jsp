@@ -38,7 +38,7 @@
  	  <hr> 
  	    
 	  <div>
-	      <input type="submit" value="파티 생성/가입하기">
+	      <input type="submit" value="파티 생성/가입하기" class="btn btn-danger">
 	  </div>  
     
     </form>

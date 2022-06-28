@@ -235,6 +235,104 @@ public class MemberDAO {
 	}
 
 	
+	public int count(String col, String word) {
+    	int cnt=0;
+    	try {
+			con=dbopen.getConnection();
+			
+			sql=new StringBuilder();
+			sql.append(" SELECT COUNT(*) as cnt ");
+			sql.append(" FROM member_info ");
+			
+			if(word.length()>=1) {
+				String search="";
+				if(col.equals("mem_id")) {
+					search+= " WHERE mem_id LIKE '%" + word + "%' ";
+				}else if(col.equals("mem_phone")) {
+					search+= " WHERE mem_phone LIKE '%" + word + "%' ";
+				}else if(col.equals("mem_email")) {
+					search+= " WHERE mem_email LIKE '%" + word + "%' ";
+				}else if(col.equals("mem_lv")) {
+					search+= " WHERE mem_lv LIKE '%" + word + "%' ";
+				}//if end
+				sql.append(search);
+			}//if end
+			
+			pstmt=con.prepareStatement(sql.toString());
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				cnt=rs.getInt("cnt");
+			}//if end
+			
+		} catch (Exception e) {
+			System.out.println("카운팅 실패 : " + e );
+		}finally {
+			DBclose.close(con,pstmt,rs);
+		}//end
+    	return cnt;
+    }//end
+	
+	public ArrayList<MemberDTO> list(String col,String word,int nowPage, int recordPerPage){
+    	ArrayList<MemberDTO> list=null;
+    	
+    	int startRow = ((nowPage-1) * recordPerPage) + 1 ;
+        int endRow   = nowPage * recordPerPage;
+    	try {
+    		con=dbopen.getConnection(); 
+			sql=new StringBuilder();
+			if(word.length()==0) { 
+				sql.append(" SELECT mem_id, mem_pw, mem_phone, mem_email, mem_lv, mem_reg, mem_birth ");
+		        sql.append(" FROM( SELECT mem_id, mem_pw, mem_phone, mem_email, mem_lv, mem_reg, mem_birth, @RNO := @RNO + 1 AS r ");
+		        sql.append("       FROM ( ");
+		        sql.append("              SELECT mem_id, mem_pw, mem_phone, mem_email, mem_lv, mem_reg, mem_birth ");
+		        sql.append("              FROM member_info ORDER BY mem_lv, mem_id  ASC)A, (SELECT @RNO := 0) B ");
+		        sql.append("           )C");
+		        sql.append(" WHERE r>=" + startRow + " AND r<=" + endRow) ;
+			}else {
+				sql.append(" SELECT mem_id, mem_pw, mem_phone, mem_email, mem_lv, mem_reg, mem_birth ");
+		        sql.append(" FROM( SELECT mem_id, mem_pw, mem_phone, mem_email, mem_lv, mem_reg, mem_birth, @RNO := @RNO + 1 AS r ");
+		        sql.append("       FROM ( ");
+		        sql.append("              SELECT mem_id, mem_pw, mem_phone, mem_email, mem_lv, mem_reg, mem_birth ");
+		        sql.append("              FROM member_info  ");
+		        String search="";
+				if(col.equals("mem_id")) {
+					search+= " WHERE mem_id LIKE '%" + word + "%' ";
+				}else if(col.equals("mem_phone")) {
+					search+= " WHERE mem_phone LIKE '%" + word + "%' ";
+				}else if(col.equals("mem_email")) {
+					search+= " WHERE mem_email LIKE '%" + word + "%' ";
+				}else if(col.equals("mem_lv")) {
+					search+= " WHERE mem_lv LIKE '%" + word + "%' ";
+				}//if end
+				sql.append(search);
+		        sql.append("              				   ORDER BY mem_lv, mem_id  ASC)A, (SELECT @RNO := 0) B ");
+		        sql.append("           )C");
+		        sql.append(" WHERE r>=" + startRow + " AND r<=" + endRow) ;
+			}//if end
+		pstmt=con.prepareStatement(sql.toString());
+	    rs=pstmt.executeQuery();
+	    if(rs.next()) {
+	    	list=new ArrayList<>();
+	    	do {
+	    		MemberDTO dto = new MemberDTO();
+				dto.setMem_id(rs.getString("mem_id"));
+				dto.setMem_pw(rs.getString("mem_pw"));
+				dto.setMem_phone(rs.getString("mem_phone"));
+				dto.setMem_email(rs.getString("mem_email"));
+				dto.setMem_lv(rs.getString("mem_lv"));
+				dto.setMem_reg(rs.getString("mem_reg"));
+				dto.setMem_birth(rs.getString("mem_birth"));
+				list.add(dto);
+	    	}while(rs.next());
+	    }
+    		
+    	}catch (Exception e) {
+			System.out.println("목록 불러오기 실패 : " + e);
+		}finally {
+			DBclose.close(con,pstmt,rs);
+		}
+    	return list;
+    }
 	
 	
 	

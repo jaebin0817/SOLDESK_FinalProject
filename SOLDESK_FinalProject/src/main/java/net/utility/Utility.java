@@ -1362,5 +1362,10 @@ public class Utility {
 
     return _str;
   }
+  
+  
+  public static int countChar(String str, char ch) {        
+	   return str.length() - str.replace(String.valueOf(ch), "").length();    
+  }
 
 }//class end

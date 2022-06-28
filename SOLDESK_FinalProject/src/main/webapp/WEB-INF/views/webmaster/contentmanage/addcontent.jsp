@@ -19,8 +19,12 @@
 <form name="contfrm" id="contfrm" method="post" action="contins.do" enctype="multipart/form-data" onsubmit="">
 	<table class="table">
 	<tr>
-	    <th>영화제목</th>
-	    <td colspan="4"><input type="text" name="mtitle" id="mtitle" class="form-control" size="20" maxlength="20" required autofocus></td>
+	    <th>콘텐츠제목</th>
+	    <td colspan="4"><input type="text" name="mtitle" id="mtitle" class="form-control" size="50" maxlength="50" required autofocus></td>
+	</tr>
+	<tr>
+	    <th>영문콘텐츠제목</th>
+	    <td colspan="4"><input type="text" name="mtitle_eng" id="mtitle_eng" class="form-control" size="50" maxlength="50" autofocus></td>
 	</tr>
 	<tr>
 		<th>서비스 중인 OTT</th>
@@ -28,7 +32,7 @@
 	    	<label><input type="checkbox" name="netflix" id="netflix" value="O"> 넷플릭스 &nbsp;</label>
 	    	<label><input type="checkbox" name="watcha" id="watcha" value="O"> 왓챠 &nbsp;</label>	
 	    	<label><input type="checkbox" name="tving" id="tving" value="O"> 티빙 &nbsp;</label>
-	    	<label><input type="checkbox" name="diseny" id="diseny" value="O"> 디즈니 &nbsp;</label>
+	    	<label><input type="checkbox" name="disney" id="disney" value="O"> 디즈니 &nbsp;</label>
 	    </th>
 	    
 	    <th></th>
@@ -57,14 +61,22 @@
 	</tr>
 	<tr>
 	    <th>감독</th>
-	    <td colspan="4">
-	      <input type="text" name="directors" id="directors" class="form-control" placeholder="감독1, 감독2, 감독3, ...">
+	    <td colspan="3" id="directors">
+	      <input type="text" name="director1" id="director1" class="form-control" placeholder="감독1">
 	    </td>
+	    <td>
+	    	<img src="../../images/plus_icon.png" id="director_plus" name="director_plus" width="20px">	      	    
+	    	<img src="../../images/minus_icon.png" id="director_minus" name="director_minus" width="20px">	      	    
+		</td>
 	</tr>
 	<tr>
 	    <th>배우</th>
-	    <td colspan="4">
-	      <input type="text" name="actors" id="actors" class="form-control" placeholder="배우1, 배우2, 배우3, ...">
+	    <td colspan="3" id="actors">
+	      <input type="text" name="actor1" id="actor1" class="form-control" placeholder="배우1">
+	    </td>
+	    <td>
+	      <img src="../../images/plus_icon.png" id="actor_plus" name="actor_plus" width="20px">      
+	      <img src="../../images/minus_icon.png" id="actor_minus" name="actor_minus" width="20px">	      	    	           
 	    </td>
 	</tr>
 	<tr>
@@ -84,8 +96,10 @@
 	    </td>
 	</tr> 
 	</table>
-	<input type="submit" value="컨텐츠 등록" class="btn">
-	<input type="reset"  value="취소"       class="btn"><br><br>
+	<input type="hidden" name="i" id="i" value="1">
+	<input type="hidden" name="j" id="j" value="1">
+	<input type="submit" value="컨텐츠 등록" class="btn btn-danger">
+	<input type="reset"  value="취소"       class="btn btn-danger	"><br><br>
 
 </form>
 </div>
@@ -125,6 +139,51 @@
                 $(".key_word").prop("checked", false);
             }
         });
+        
+        var i=1;
+        var j=1;
+        
+        $("#director_plus").click(function(){
+			
+        	i++;        	
+        	$("#directors").append("<input type='text' name='director"+i+"' id='director"+i+"' class='form-control' placeholder='감독"+i+"'>");
+        	$("#i").attr('value', i);
+           
+        });      
+
+        
+        $("#actor_plus").click(function(){
+			
+        	j++;        	
+        	$("#actors").append("<input type='text' name='actor"+j+"' id='actor"+j+"' class='form-control' placeholder='배우"+j+"'>");
+        	$("#j").attr('value', j);
+
+        });
+        
+		
+        
+        $("#director_minus").click(function(){			
+        	
+        	if(i>1){
+	        	$("#director"+i).remove();
+	        	i--; 
+	        	$("#i").attr('value', i);
+        	}else{
+	        	$("#director"+i).attr('value', '');
+        		alert("최소 1명 이상의 감독을 입력해주세요");
+        	}
+        });    
+        
+        $("#actor_minus").click(function(){			
+        	if(j>1){
+	        	$("#actor"+j).remove();
+	        	j--; 
+	        	$("#j").attr('value', j);
+        	}else{
+	        	$("#actor"+j).attr('value', '');
+        		alert("최소 1명 이상의 배우를 입력해주세요");
+        	}
+        });    
      
     </script>
 

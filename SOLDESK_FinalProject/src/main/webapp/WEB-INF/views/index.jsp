@@ -141,7 +141,7 @@
 
 	  <div class="container-fluid bg-3 text-center">
 	    <a href="notice/notice.do">공지사항</a> &nbsp;&nbsp;
-	    <a href="">문의사항</a>
+	    <a href="qna/qna.do">문의사항</a>
 	  </div>
 	  
 	  <div class="container-fluid bg-4 text-center">

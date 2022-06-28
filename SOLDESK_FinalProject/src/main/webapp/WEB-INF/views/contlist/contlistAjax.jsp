@@ -13,9 +13,7 @@
 	<div class="pagetitle">
 		<br>
 		<span><strong> 👀 컨텐츠들을 구경해보세요! 👀 </strong></span>
-		<h5 class="searchkey">${ msg }</h5>
-		<h5 class="searchedott"></h5>
-
+		<h5>${ msg }</h5>
 		<br>
 	</div>
 	
@@ -70,37 +68,31 @@
 
 	<script>	
 	
-	function searchParam(key) {
-		  return new URLSearchParams(location.search).get(key);
-	};
-	
 	$(".ott_search_btn").click(function(){
 			
-		//alert($(this).val());
-		var msg = $(this).val();
+		//alert($(this).val());				
 		
 	    $.ajax({
             url:"ottsearch.do",  //요청명령어 
             type:"get",        //get방식
         	data : {
 				ott : $(this).val(),
-				searchkey : searchParam('searchkey'),
-				key_code : searchParam('key_code'),
-				key_name : searchParam('key_name'),				
         	},		
             success:function(data){//success callback함수
                 
                 $(".thumb").empty();
-                $(".searchedott").empty();
-                $(".searchedott").append(msg+" : 검색결과");
-
    			    var no=0;
             	$.each(data,function(index, value) { // 값이 여러개 일 때는 반복문 사용
 	      			
 	      			var stars="";
 	                for(i=1; i<=value.mrate; i++){ stars+="★"; }
 	                for(i=value.mrate+1; i<=5; i++){ stars+="☆"; }
-            	
+            		
+            		mimg=$('<img>', {
+            			'src' : '../../storage/'+value.mthum,
+            			'width' : '300px',
+            			'id' : value.mcode
+            		});
             	
             		netfliximg=$('<img>', {
             			'src' : '../../images/icon_netflix.png',
@@ -124,6 +116,7 @@
 
       			   	var identifier = ".thumb";
             		
+          			//$(".thumb:eq("+i+")").append(mimg);
           			$(identifier).eq(no).append("<input type='image' id='"+value.mcode+"' name='"+value.mcode+"' src='../../storage/"+value.mthum+"' alt='movie' width='300px' onclick=''>");
 
 	      			$(identifier).eq(no).append("<div class='mtitle'><strong>"+value.mtitle+"</strong></div>");

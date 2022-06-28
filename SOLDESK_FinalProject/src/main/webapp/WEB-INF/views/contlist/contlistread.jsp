@@ -25,7 +25,7 @@
 		<c:if test="${dto.watcha eq 'O'  }">
 			<input type="image" src="../../images/icon_watcha.png" width="50px">
 		</c:if>
-		<c:if test="${dto.diseny eq 'O'  }">
+		<c:if test="${dto.disney eq 'O'  }">
 			<input type="image" src="../../images/icon_disney.png" width="50px">
 		</c:if>
 	</form>
@@ -50,10 +50,46 @@
 	<!-- 감독 배우 목록 -->	
 	<div id="people" class="container-fluid text-center">
 	  <h3>감독 / 출연</h3><br>
- 	  <c:set var="no" value="1"></c:set>
-
-		<c:forEach var="dto" items="${ peoplelist }" begin="0" end="${ fn:length(peoplelist) }" step="1">
-			
+		감독<br>
+		
+		<c:forEach var="dto" items="${ directorlist }">
+			  <span class="directors">
+			   <c:choose>
+			    <c:when test="${ dto.pphoto==null }">
+			      <a href="<%=request.getContextPath()%>/peoplesearch.do?pno=${ dto.pno }&pname=${ dto.pname }">
+			      	<img src="../../storage/people_None.jpg" class="img-circle" alt="director" width="50" height="50">
+			       </a>			      
+			    </c:when>
+			    <c:otherwise>
+			      <a href="<%=request.getContextPath()%>/peoplesearch.do?pno=${ dto.pno }&pname=${ dto.pname }">
+			         <img src="../../storage/${ dto.pphoto }" class="img-circle" alt="director" width="50" height="50">
+			      </a>
+			    </c:otherwise>
+			   </c:choose>
+			    
+			  </span>
+			  <span>${ dto.pname }</span>
+		</c:forEach>
+		<hr>
+		
+		배우<br>
+		<c:forEach var="dto" items="${ actorlist }">
+			  
+			  <span class="actors">
+			  <c:choose>
+			    <c:when test="${ dto.pphoto==null }">
+				  <a href="<%=request.getContextPath()%>/peoplesearch.do?pno=${ dto.pno }&pname=${ dto.pname }">
+			      	<img src="../../storage/people_None.jpg" class="img-circle" alt="actor" width="50" height="50">
+			      </a>			      
+			    </c:when>
+			    <c:otherwise>
+			      <a href="<%=request.getContextPath()%>/peoplesearch.do?pno=${ dto.pno }&pname=${ dto.pname }">
+			          <img src="../../storage/${ dto.pphoto }" class="img-circle" alt="actor" width="50" height="50">
+			      </a>
+			    </c:otherwise>
+			   </c:choose> 
+			    </span>			  
+			  <span>${ dto.pname }</span>
 		</c:forEach>
 
 	</div>
@@ -61,7 +97,7 @@
 
 	<c:choose>
 		<c:when test="${ s_mem_lv=='B' }">
-			<button class="btn" onclick="location.href='<%=request.getContextPath()%>/contlist/reviewForm.do?mcode=${ dto.mcode }'">리뷰작성하기</button>
+			<button class="btn btn-danger" onclick="location.href='<%=request.getContextPath()%>/contlist/reviewForm.do?mcode=${ dto.mcode }'">리뷰작성하기</button>
 		</c:when>
 		<c:otherwise>
 			<h3>리뷰는 로그인 후 작성가능합니다</h3>

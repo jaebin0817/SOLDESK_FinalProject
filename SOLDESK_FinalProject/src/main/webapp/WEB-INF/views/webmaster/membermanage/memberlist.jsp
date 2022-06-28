@@ -49,6 +49,26 @@
 				
 			</tr>	
 		</c:forEach>
+		  <tr>
+				<td colspan='6' style='text-align:center; height: 50px'>
+					<form action="memberlist.do">
+						<select name="col">
+							<option value="mem_id">아이디
+							<option value="mem_phone">연락처
+							<option value="mem_email">이메일
+							<option value="mem_lv">회원등급
+						</select>
+						<input type="text" name="word" id="word">
+						<input type="submit" value="검색" class="btn btn-danger">
+					</form>
+				</td>
+			</tr>
+			<tr>
+			<td colspan='6' style='text-align:center; height: 50px;' >
+			${paging}
+
+			</td>
+		</tr>
 		
 	</table>
 

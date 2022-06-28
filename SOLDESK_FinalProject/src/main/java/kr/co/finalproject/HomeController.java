@@ -25,7 +25,7 @@ public class HomeController {
 		
 		mav.addObject("list", dao.contlistAll());
 		mav.addObject("rank", watchdao.rankRead());
-		mav.addObject("keywords", searchdao.readall());
+		mav.addObject("keywords", searchdao.readRandom());
 		mav.setViewName("index");
 		return mav;
 	}//home() end

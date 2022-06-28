@@ -3,15 +3,17 @@ package kr.co.finalproject.contlist;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.finalproject.review.ReviewDAO;
@@ -26,6 +28,7 @@ public class ContlistController {
    ReviewDAO dao2 = null;
    SearchKeyDAO dao3 = null;
    WatchListDAO dao4 = null;
+   PeopleDAO pdao=null;
 
    
    public ContlistController() {
@@ -52,7 +55,7 @@ public class ContlistController {
    
 
    @RequestMapping("contlist/contlistread.do")
-   public ModelAndView contlistread(ContlistDTO dto, ReviewDTO dto2, SearchKeyDTO dto3, HttpServletRequest req) {
+   public ModelAndView contlistread(ContlistDTO dto, ReviewDTO dto2, SearchKeyDTO dto3, PeopleDTO pdto, HttpServletRequest req) {
       ModelAndView mav = new ModelAndView();
       int mcode = Integer.parseInt(req.getParameter("mcode"));
       
@@ -82,12 +85,38 @@ public class ContlistController {
 			mav.addObject("mem_lv", mem_lv);    	  
       }
       
+      pdao=new PeopleDAO();
+      
+      String directors = dto.getDirector();
+      String actors = dto.getActor();
+      ArrayList<PeopleDTO> directorlist = new ArrayList<>();
+      ArrayList<PeopleDTO> actorlist = new ArrayList<>();
+    
+      
+      StringTokenizer dirSt = new StringTokenizer(directors, ", ");
+      while(dirSt.hasMoreTokens()) { //토큰할 문자가 있는지?
+          
+    	  directorlist.add(pdao.readDirector(dirSt.nextToken()));
+    	  
+      }
+      
+      StringTokenizer actSt = new StringTokenizer(actors, ", ");
+      while(actSt.hasMoreTokens()) { //토큰할 문자가 있는지?
+          
+    	  String pno = actSt.nextToken();
+    	  //System.out.println(pno);
+
+    	  actorlist.add(pdao.readActor(pno));
+      }
+     
       dto2 = dao2.reviewAll(mcode);
       mav.setViewName("contlist/contlistread");
       mav.addObject("dto", dto);
       mav.addObject("dto2", dto2);
       mav.addObject("keylist",keylist);
       mav.addObject("keycodelist",keycodelist);
+      mav.addObject("directorlist",directorlist);
+      mav.addObject("actorlist",actorlist);
       
       return mav;
    }
@@ -157,7 +186,8 @@ public class ContlistController {
       String searchkey=req.getParameter("searchkey").trim();
       String searchname=req.getParameter("searchkey").trim();
       searchname=searchname.replace(" ", "");
-      
+      searchkey=searchkey.replace(" ", "");
+     
       String pno=dao.readPno(searchname);
       
       ArrayList<ContlistDTO> list = null;
@@ -212,6 +242,157 @@ public class ContlistController {
 		return mav;
 
 	}
+	
+	
+	
+	
+	
+   @RequestMapping("/contlist/contlistAjax.do")
+   public ModelAndView contlistAjax(ContlistDTO dto) {
+      ModelAndView mav = new ModelAndView();
+
+      ArrayList<ContlistDTO> list = null;
+
+      list = dao.contlistAll();
+     
+      
+      mav.setViewName("contlist/contlistAjax");
+      mav.addObject("list", list);
+
+      return mav;
+   }
+	
+    @ResponseBody	
+	@RequestMapping("contlist/ottsearch.do")
+	private ArrayList<ContlistDTO> ottsearch(@RequestParam Map<String, Object> map) {
+		
+        ArrayList<ContlistDTO> list = null;
+    	
+		try {
+			
+			System.out.println("검색키워드: "+(String)map.get("key_name")); 
+			
+			String ott= (String)map.get("ott");
+			
+			String netflix="X";
+			String watcha="X"; 
+			String tving="X"; 
+			String disney="X";
+			
+			String searchkey=(String)map.get("searchkey");
+			String key_name=(String)map.get("key_name"); 
+			//System.out.println(searchkey.equals("")); 
+			//System.out.println(key_name.equals("")); 
+			String key_code=""; 
+			String pno="";
+
+			
+			if(!(key_name.equals(""))) {//key_name이 검색된 상태라면				
+				key_code=dao3.SearchKeyCode(key_name);				
+			}
+			
+			
+			if(ott.equals("netflix")) {
+				netflix="O";
+			}else if(ott.equals("watcha")) {
+				watcha="O"; 
+			}else if(ott.equals("tving")) {
+				tving="O"; 
+			}else if(ott.equals("disney")) {
+				disney="O"; 
+			}
+			
+			
+		    list = dao.ottRead(netflix, watcha, tving, disney, searchkey, key_code, pno);
+			
+		}catch (Exception e) {
+			System.out.println("응답실패: " + e);
+		}
+		
+		return list;
+		
+	}//ottsearch() end
+	
+   
+    
+    @ResponseBody	
+	@RequestMapping("ottsearch.do")
+	private ArrayList<ContlistDTO> ottsearchkey(@RequestParam Map<String, Object> map) {
+		
+        ArrayList<ContlistDTO> list = null;
+    	
+		try {
+			//메인 페이지에서 검색된 상태일 때
+			
+			System.out.println("검색어: "+(String)map.get("searchkey")); 
+			System.out.println("검색키워드: "+(String)map.get("key_name")); 
+			System.out.println("검색키코드: "+(String)map.get("key_code")); 
+
+			
+			String ott= (String)map.get("ott");
+			
+			String netflix="X";
+			String watcha="X"; 
+			String tving="X"; 
+			String disney="X";
+			
+			String searchkey=(String)map.get("searchkey");
+			String searchname=(String)map.get("searchkey");
+			String key_code=(String)map.get("key_code"); 
+			String pno="";
+			if(!(searchkey.equals(""))) {
+				  searchkey=searchkey.replace(" ", "");			      
+			      searchname=searchname.replace(" ", "");			      
+			      pno=dao.readPno(searchname);
+				
+			}
+			System.out.println(searchkey);
+			System.out.println(searchname);
+			System.out.println(pno);
+			
+			if(ott.equals("netflix")) {
+				netflix="O";
+			}else if(ott.equals("watcha")) {
+				watcha="O"; 
+			}else if(ott.equals("tving")) {
+				tving="O"; 
+			}else if(ott.equals("disney")) {
+				disney="O"; 
+			}
+			
+			
+		    list = dao.ottRead(netflix, watcha, tving, disney, searchkey, key_code, pno);
+			
+		}catch (Exception e) {
+			System.out.println("응답실패: " + e);
+		}
+		
+		return list;
+		
+	}//ottsearch() end
+    
+	
+    @RequestMapping("peoplesearch.do")
+    public ModelAndView peoplesearch(HttpServletRequest req) {
+       ModelAndView mav = new ModelAndView();
+       
+       String pno=req.getParameter("pno");
+       String pname=req.getParameter("pname");
+
+       
+       ArrayList<ContlistDTO> list = null;
+       
+       String msg=pname+" : 검색 결과";
+       
+       list = dao.searchPeople(pno);
+
+       mav.setViewName("contlist/contlist");
+       mav.addObject("list", list);
+       mav.addObject("msg", msg);
+
+       return mav;
+    }
+	
    
    
    
