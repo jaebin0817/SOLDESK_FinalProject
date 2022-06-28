@@ -25,6 +25,7 @@ import kr.co.finalproject.party.PartyInfoDTO;
 import kr.co.finalproject.party.PartyMemberDAO;
 import kr.co.finalproject.search.SearchKeyDAO;
 import kr.co.finalproject.search.SearchKeyDTO;
+import net.utility.Paging;
 import net.utility.UploadSaveManager;
 import net.utility.Utility;
 
@@ -80,12 +81,27 @@ public class WebmasterCont {
    
    
    @RequestMapping("/memberlist.do")
-   public ModelAndView memberlist(MemberDTO dto) {
+   public ModelAndView memberlist(MemberDTO dto,HttpServletRequest req) {
       ModelAndView mav=new ModelAndView();
       
+      String word=req.getParameter("word");
+      String col=req.getParameter("col");
+      word=Utility.checkNull(word);
+      col=Utility.checkNull(col);
+      
+      int recordPerPage=5;
+      
+      int nowPage=1;
+      if(req.getParameter("nowPage")!=null){
+    	  nowPage=Integer.parseInt(req.getParameter("nowPage"));
+      }//if end
+      int totalRecord=memberdao.count(col, word);
+      
       mav.setViewName("webmaster/membermanage/memberlist");
+      String paging=new Paging().paging2(totalRecord, nowPage, recordPerPage, col, word,"memberlist.do");
       mav.addObject("dto", dto);
-      mav.addObject("list", memberdao.memberlist());
+      mav.addObject("paging",paging);
+      mav.addObject("list", memberdao.list(col, word,nowPage, recordPerPage));
       
       return mav;
    }
@@ -106,12 +122,32 @@ public class WebmasterCont {
    
    
    @RequestMapping("/contmanage.do")
-   public ModelAndView contentrlist(ContlistDTO dto) {
+   public ModelAndView contentrlist(ContlistDTO dto, HttpServletRequest req) {
       ModelAndView mav=new ModelAndView();
-      
       contdao = new ContlistDAO();
       
-      mav.addObject("list", contdao.contlistAll());
+      String word=req.getParameter("word");
+      String col=req.getParameter("col");
+      word=Utility.checkNull(word);
+      col=Utility.checkNull(col);
+      
+      int recordPerPage=10;
+      
+      int nowPage=1;
+      if(req.getParameter("nowPage")!=null){
+    	  nowPage=Integer.parseInt(req.getParameter("nowPage"));
+      }//if end
+      //int totalRecord=contdao.count1(); 수정해야함
+      ArrayList<ContlistDTO> list = new ArrayList<>();
+      list=contdao.list(col, word,nowPage, recordPerPage);
+      int totalRecord=contdao.count();
+      
+      contdao = new ContlistDAO();
+      String paging=new Paging().paging2(totalRecord, nowPage, recordPerPage, col, word,"contmanage.do");
+      mav.addObject("dto", dto);
+      mav.addObject("paging",paging);
+      //mav.addObject("list", list);
+      mav.addObject("list", list);
       mav.setViewName("webmaster/contentmanage/contmanage");
       
       return mav;

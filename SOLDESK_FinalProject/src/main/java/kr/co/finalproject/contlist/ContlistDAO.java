@@ -582,6 +582,133 @@ public class ContlistDAO {
 			return list;
 			
 		}
+
+	    
+		public int count(String col, String word) {
+	    	int cnt=0;
+	    	try {
+				con=dbopen.getConnection();
+				
+				sql=new StringBuilder();
+				sql.append(" SELECT COUNT(*) as cnt ");
+				sql.append(" FROM contlist ");
+				
+				if(word.length()>=1) {
+					String search="";
+					if(col.equals("mcode")) {
+						search+= " WHERE mcode LIKE '%" + word + "%' ";
+					}else if(col.equals("mtitle")) {
+						search+= " WHERE mtitle LIKE '%" + word + "%' ";
+					}//if end
+					sql.append(search);
+				}//if end
+				
+				pstmt=con.prepareStatement(sql.toString());
+				rs=pstmt.executeQuery();
+				if(rs.next()) {
+					cnt=rs.getInt("cnt");
+				}//if end
+				
+			} catch (Exception e) {
+				System.out.println("카운팅 실패 : " + e );
+			}finally {
+				DBclose.close(con,pstmt,rs);
+			}//end
+	    	return cnt;
+	    }//end
 		
+		
+		
+		public ArrayList<ContlistDTO> list(String col,String word, int nowPage, int recordPerPage){
+	    	ArrayList<ContlistDTO> list=null;
+	    	
+	    	int startRow = ((nowPage-1) * recordPerPage) + 1 ;
+	        int endRow   = nowPage * recordPerPage;
+	    	try {
+	    		con=dbopen.getConnection(); 
+				sql=new StringBuilder();
+				
+				if(word.length()==0) { 
+					sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor ");
+		            sql.append(" FROM( SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor, @RNO := @RNO + 1 AS r ");
+		            sql.append("       FROM ( ");
+		            sql.append("              SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor ");
+		            sql.append("              FROM contlist ORDER BY mcode DESC)A, (SELECT @RNO := 0) B ");
+		            sql.append("           )C");
+		            sql.append(" WHERE r>=" + startRow + " AND r<=" + endRow) ;
+				}else {
+					sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor ");
+		            sql.append(" FROM( SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor, @RNO := @RNO + 1 AS r ");
+		            sql.append("       FROM ( ");
+		            sql.append("              SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor ");
+		            sql.append("              FROM contlist  ");
+		            String search="";
+					if(col.equals("mcode")) {
+						search+= " WHERE mcode LIKE '%" + word + "%' ";
+					}else if(col.equals("mtitle")) {
+						search+= " WHERE mtitle LIKE '%" + word + "%' ";
+					}//if end
+					sql.append(search);
+		            sql.append("              				ORDER BY mcode DESC)A, (SELECT @RNO := 0) B ");
+		            sql.append("           )C");
+		            sql.append(" WHERE r>=" + startRow + " AND r<=" + endRow) ;
+				}
+			pstmt=con.prepareStatement(sql.toString());
+		    rs=pstmt.executeQuery();
+		    if(rs.next()) {
+		    	list=new ArrayList<>();
+		    	do {
+		    		ContlistDTO dto = new ContlistDTO();//커서가 가리키는 한 줄 저장
+					dto.setMtitle(rs.getString("mtitle"));
+					dto.setMthum(rs.getString("mthum"));
+					dto.setMrate(rs.getDouble("mrate"));
+					dto.setNetflix(rs.getString("netflix"));
+					dto.setWatcha(rs.getString("watcha"));
+					dto.setTving(rs.getString("tving"));
+					dto.setDisney(rs.getString("disney"));
+					dto.setMdate(rs.getString("mdate"));
+					dto.setCri_like(rs.getInt("cri_like"));
+					dto.setKey_code(rs.getString("key_code"));
+					dto.setMcode(rs.getInt("mcode"));
+					dto.setActor(rs.getString("actor"));
+					dto.setDirector(rs.getString("director"));
+					
+					list.add(dto);
+		    	}while(rs.next());
+		    }
+	    		
+	    	}catch (Exception e) {
+				System.out.println("목록 불러오기 실패 : " + e);
+			}finally {
+				DBclose.close(con,pstmt,rs);
+			}
+	    	
+	    	return list;
+	    }//list3() end
+		
+		public int count() {
+	    	int cnt=0;
+	    	try {
+				con=dbopen.getConnection();
+				
+				sql=new StringBuilder();
+				sql.append(" SELECT COUNT(*) as cnt ");
+				sql.append(" FROM contlist ");
+				
+				pstmt=con.prepareStatement(sql.toString());
+				rs=pstmt.executeQuery();
+				if(rs.next()) {
+					cnt=rs.getInt("cnt");
+				}//if end
+				
+			} catch (Exception e) {
+				System.out.println("카운팅 실패 : " + e );
+			}finally {
+				DBclose.close(con,pstmt,rs);
+			}//end
+	    	return cnt;
+	    }//end
+		
+	    
 
 }//class end

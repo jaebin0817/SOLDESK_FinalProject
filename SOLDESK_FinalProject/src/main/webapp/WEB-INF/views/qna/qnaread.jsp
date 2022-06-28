@@ -41,14 +41,14 @@
             <input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
             <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
             <input type="hidden" id="qna_num" name="qna_num" value="${dto.qna_num}">
-            비밀번호 입력<input type="password" name="qna_pw" id="qna_pw"> 
-            <input type="submit" value="문의사항삭제"  class="btn btn-danger">
+            비밀번호 입력<input type="password" name="qna_pw" id="qna_pw"><br><br>
+            <input type="submit" value="문의사항삭제"  class="btn btn-danger"><br>
             
         </form>	
         <form name="frm" id="frm" action="qnaupdate.do?qna_num=${dto.qna_num}" method="post" onsubmit="return IDlog2()">
         	<input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
             <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
-        	<input type="submit" value="문의사항수정"  class="btn btn-warning">
+        	<input type="submit" value="문의사항수정"  class="btn btn-danger">
         </form>
 
 	</div>

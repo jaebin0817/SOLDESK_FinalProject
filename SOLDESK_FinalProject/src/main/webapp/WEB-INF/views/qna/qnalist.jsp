@@ -35,6 +35,26 @@
 				<td>${dto.qna_date}</td>
 			</tr>
 		</c:forEach>
+			<tr>
+				<td colspan='8' style='text-align:center; height: 50px'>
+					<form action="qna.do">
+						<select name="col">
+							<option value="qna_title_qna_content">제목+내용
+							<option value="qna_title">제목
+							<option value="qna_content">내용
+							<option value="mem_id">작성자
+						</select>
+						<input type="text" name="word" id="word">
+						<input type="submit" value="검색" class="btn btn-danger">
+					</form>
+				</td>
+			</tr>
+			<tr>
+				<td colspan='8' style='text-align:center; height: 50px;' >
+				${paging}
+	
+				</td>
+			</tr>
 		
 		</table>
 		</div>

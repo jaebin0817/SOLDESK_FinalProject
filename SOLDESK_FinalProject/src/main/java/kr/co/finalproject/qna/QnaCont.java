@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import net.utility.Paging;
+import net.utility.Utility;
+
 
 
 @Controller
@@ -28,20 +31,34 @@ public class QnaCont {
 	public ModelAndView list(HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
 		
+		String word=req.getParameter("word");//검색어
+		String col=req.getParameter("col");//검색칼럼
+		word=Utility.checkNull(word); //문자열값이 null이면 빈문자열로 치환
+		col =Utility.checkNull(col);
 		
+		int recordPerPage=5;
+		
+		int nowPage=1;
+		if(req.getParameter("nowPage")!=null){
+			nowPage=Integer.parseInt(req.getParameter("nowPage"));
+		}//if end
+		int totalRecord=dao.count(col, word);
+			
 		HttpSession session = req.getSession();
 		
-		if(session.getAttribute("s_mem_id")==null || session.getAttribute("s_mem_lv")==null || session.getAttribute("s_mem_pw")==null) {
-			mav.setViewName("qna/qnalist");
-			mav.addObject("list", dao.list());
-		}else {
+		if(session.getAttribute("s_mem_id")!=null && session.getAttribute("s_mem_lv")!=null && session.getAttribute("s_mem_pw")!=null) {
 			String mem_lv=session.getAttribute("s_mem_lv").toString();
 			mav.addObject("mem_lv", mem_lv);
-			mav.setViewName("qna/qnalist");
-			mav.addObject("list", dao.list());
-			}
+		}
+		mav.setViewName("qna/qnalist");
+		String paging=new Paging().paging3(totalRecord, nowPage, recordPerPage, col, word, "qna.do");
+		mav.addObject("paging",paging);
+		mav.addObject("list", dao.list3(col, word, nowPage, recordPerPage));
+
+		
 		return mav;
-	}//notice() end
+	}//list) end
+
 	
 	@RequestMapping(value = "qna/qnaread.do", method = RequestMethod.GET)
 	public ModelAndView read(@ModelAttribute QnaDTO dto, HttpServletRequest req) {
@@ -57,7 +74,7 @@ public class QnaCont {
 			String msg="<p>해당 글 없음</p>";
 	        mav.addObject("msg", msg);
 		}else{
-			//dao.incrementCnt(qna_num);
+			dao.incrementCnt(qna_num);
 	        if(session.getAttribute("s_mem_id")==null || session.getAttribute("s_mem_lv")==null || session.getAttribute("s_mem_pw")==null) {
 				String msg="<p>로그인 후 글 수정 및 삭제 가능합니다</p>";
 				mav.addObject("dto", dto);

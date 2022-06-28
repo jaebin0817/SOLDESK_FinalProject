@@ -21,14 +21,14 @@
 		<br>
 	</div>
 	
-	<input type="button" value="콘텐츠추가" onclick="location.href='/addcontent.do'"><br><br>
+	<input type="button" value="콘텐츠추가" onclick="location.href='/addcontent.do'" class="btn btn-danger"><br><br>
 	
 		
 	<table class="table table-hover">
 		<tr>
 
-			<th>영화코드</th>
-			<th>영화제목</th>
+			<th>콘텐츠코드</th>
+			<th>콘텐츠제목</th>
 		</tr>
 
 		<c:forEach var="dto" items="${list}"> 	
@@ -38,6 +38,25 @@
 			</tr>	
 		</c:forEach>
 		
+		
+		<tr>
+			<td colspan='2' style='text-align:center; height: 50px'>
+				<form action="contmanage.do">
+					<select name="col">
+						<option value="mcode">콘텐츠코드
+						<option value="mtitle">콘텐츠제목
+					</select>
+					<input type="text" name="word" id="word">
+					<input type="submit" value="검색" class="btn btn-danger">
+				</form>
+			</td>
+		</tr>
+		<tr>
+			<td colspan='2' style='text-align:center; height: 50px;' >
+			${paging}
+
+			</td>
+		</tr>		
 	</table>
 
   </div>	
