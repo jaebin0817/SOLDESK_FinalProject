@@ -31,6 +31,7 @@
     </div>
     <div>
       <ul class="nav navbar-nav navbar-right">
+      	    <li><a href="<%=request.getContextPath()%>/contlist/contlistAjax.do">AJAX컨텐츠</a></li>
 	      	<li><a href="<%=request.getContextPath()%>/contlist/contlist.do">컨텐츠</a></li>
 	        <li><a href="<%=request.getContextPath()%>/party/partyadd.do">파티매칭</a></li>
 	        <c:choose>

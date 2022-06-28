@@ -17,7 +17,6 @@
 		<br>
 	</div>
 	
-    <form name="searchfrm" method="post">
 	
 		<div class="ott_search">
 			
@@ -29,7 +28,8 @@
 		</div>
 		
 		<div class="contents">
-			<c:forEach var="dto" items="${list}">
+		
+					<c:forEach var="dto" items="${list}">
 				<div class="col-sm-3">
 					<div class="thumbnall">
 					  
@@ -56,11 +56,41 @@
 					</div>
 				</div>
 			</c:forEach>
+		
 		</div>	
-    </form>
+		
     
 </div>
 
+	<script>	
+	
+	$(document).ready(function(){
+		
+
+	});
+	
+	
+	
+	$("#netflix").click(function(){
+			
+		//$(this).val("O");				
+		
+	    $.ajax({
+            url:"ottsearch.do",  //요청명령어 
+            type:"get",        //get방식
+            datatype:"text", 
+		
+            success:function(result){//success callback함수
+               alert("성공: " + result); //result : 서버가 응답해준 메시지               
+               $(".contents").empty();
+			   $(".contents").append(result);
+               
+            }
+   		});//ajax() end
+			
+	});	
+		
+	</script>
 
 	<!-- 본문끝 -->
 <%@ include file="../footer.jsp"%>

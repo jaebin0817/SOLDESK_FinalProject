@@ -29,7 +29,7 @@ public class ContlistDAO {
 		try {
 			con=dbopen.getConnection();//DB연결
 			sql=new StringBuilder();
-			sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, diseny, mdate, cri_like, key_code, mcode ");
+			sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, cri_like, key_code, mcode ");
 			sql.append(" FROM contlist ");
 			sql.append(" ORDER BY mcode DESC ");
 			pstmt = con.prepareStatement(sql.toString());
@@ -45,7 +45,7 @@ public class ContlistDAO {
 					dto.setNetflix(rs.getString("netflix"));
 					dto.setWatcha(rs.getString("watcha"));
 					dto.setTving(rs.getString("tving"));
-					dto.setDiseny(rs.getString("diseny"));
+					dto.setDisney(rs.getString("disney"));
 					dto.setMdate(rs.getString("mdate"));
 					dto.setCri_like(rs.getInt("cri_like"));
 					dto.setKey_code(rs.getString("key_code"));
@@ -71,7 +71,7 @@ public class ContlistDAO {
 		try {
 			con=dbopen.getConnection();//DB연결
 			sql=new StringBuilder();
-			sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, diseny, mdate, cri_like, key_code, mcode, maudio, director, actor ");
+			sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, cri_like, key_code, mcode, maudio, director, actor ");
 			sql.append(" FROM contlist ");
 			sql.append(" WHERE mcode=? ");
 			pstmt = con.prepareStatement(sql.toString());
@@ -86,7 +86,7 @@ public class ContlistDAO {
 					dto.setNetflix(rs.getString("netflix"));
 					dto.setWatcha(rs.getString("watcha"));
 					dto.setTving(rs.getString("tving"));
-					dto.setDiseny(rs.getString("diseny"));
+					dto.setDisney(rs.getString("disney"));
 					dto.setMdate(rs.getString("mdate"));
 					dto.setCri_like(rs.getInt("cri_like"));
 					dto.setKey_code(rs.getString("key_code"));
@@ -131,7 +131,7 @@ public class ContlistDAO {
 	        	   dto.setNetflix(rs.getString("netflix"));
 	        	   dto.setWatcha(rs.getString("watcha"));
 	        	   dto.setTving(rs.getString("tving"));
-	        	   dto.setDiseny(rs.getString("diseny"));
+				   dto.setDisney(rs.getString("disney"));
 	        	   dto.setMdate(rs.getString("mdate"));
 				   dto.setCri_like(rs.getInt("cri_like"));
 	        	   dto.setKey_code(rs.getString("key_code"));
@@ -186,7 +186,7 @@ public class ContlistDAO {
 			try {
 				con=dbopen.getConnection();//DB연결
 				sql=new StringBuilder();
-				sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, diseny, mdate, cri_like, key_code, mcode ");
+				sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, cri_like, key_code, mcode ");
 				sql.append(" FROM contlist ");
 				sql.append(" WHERE key_code LIKE '%"+key_code+"%' ");
 				sql.append(" ORDER BY mcode DESC ");
@@ -203,7 +203,7 @@ public class ContlistDAO {
 						dto.setNetflix(rs.getString("netflix"));
 						dto.setWatcha(rs.getString("watcha"));
 						dto.setTving(rs.getString("tving"));
-						dto.setDiseny(rs.getString("diseny"));
+						dto.setDisney(rs.getString("disney"));
 						dto.setMdate(rs.getString("mdate"));
 						dto.setCri_like(rs.getInt("cri_like"));
 						dto.setKey_code(rs.getString("key_code"));
@@ -230,7 +230,7 @@ public class ContlistDAO {
 			try {
 				con=dbopen.getConnection();//DB연결
 				sql=new StringBuilder();
-				sql.append(" INSERT INTO contlist (mtitle, mthum, netflix, watcha, tving, diseny, mdate, key_code, maudio, director, actor) ");
+				sql.append(" INSERT INTO contlist (mtitle, mthum, netflix, watcha, tving, disney, mdate, key_code, maudio, director, actor) ");
 				sql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 				pstmt = con.prepareStatement(sql.toString());
 				pstmt.setString(1, dto.getMtitle());
@@ -238,7 +238,7 @@ public class ContlistDAO {
 				pstmt.setString(3, dto.getNetflix());
 				pstmt.setString(4, dto.getWatcha());
 				pstmt.setString(5, dto.getTving());
-				pstmt.setString(6, dto.getDiseny());
+				pstmt.setString(6, dto.getDisney());
 				pstmt.setString(7, dto.getMdate());
 				pstmt.setString(8, dto.getKey_code());
 				pstmt.setString(9, dto.getMaudio());
@@ -373,7 +373,7 @@ public class ContlistDAO {
 				con=dbopen.getConnection();//DB연결
 				sql=new StringBuilder();
 				sql.append(" UPDATE contlist ");
-				sql.append(" SET mtitle=?, mthum=?, netflix=?, watcha=?, tving=?, diseny=?, ");
+				sql.append(" SET mtitle=?, mthum=?, netflix=?, watcha=?, tving=?, disney=?, ");
 				sql.append(" 	 mdate=?, key_code=?, maudio=?, director=?, actor=?  ");
 				sql.append(" WHERE mcode=?  ");
 
@@ -383,7 +383,7 @@ public class ContlistDAO {
 				pstmt.setString(3, dto.getNetflix());
 				pstmt.setString(4, dto.getWatcha());
 				pstmt.setString(5, dto.getTving());
-				pstmt.setString(6, dto.getDiseny());
+				pstmt.setString(6, dto.getDisney());
 				pstmt.setString(7, dto.getMdate());
 				pstmt.setString(8, dto.getKey_code());
 				pstmt.setString(9, dto.getMaudio());
@@ -415,7 +415,7 @@ public class ContlistDAO {
 			try {
 				con=dbopen.getConnection();//DB연결
 				sql=new StringBuilder();
-				sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, diseny, mdate, key_code, cri_like, mcode, director, actor ");
+				sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor ");
 				sql.append(" FROM contlist ");
 				sql.append(" WHERE mtitle LIKE '%"+searchkey+"%' ");
 				sql.append(" 	OR director LIKE '%"+pno+"%' ");
@@ -435,7 +435,7 @@ public class ContlistDAO {
 						dto.setNetflix(rs.getString("netflix"));
 						dto.setWatcha(rs.getString("watcha"));
 						dto.setTving(rs.getString("tving"));
-						dto.setDiseny(rs.getString("diseny"));
+						dto.setDisney(rs.getString("disney"));
 						dto.setMdate(rs.getString("mdate"));
 						dto.setCri_like(rs.getInt("cri_like"));
 						dto.setKey_code(rs.getString("key_code"));
@@ -457,6 +457,102 @@ public class ContlistDAO {
 			return list;
 			
 		}//mainsearch() end
+		
+		
+		
+		
+		public ArrayList<ContlistDTO> ottRead(String netflix, String watcha, String tving, String disney) {
+			ContlistDTO dto=null;
+			
+			ArrayList<ContlistDTO> list=null;
+			
+			try {
+				con=dbopen.getConnection();//DB연결
+				sql=new StringBuilder();
+				sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, cri_like, key_code, mcode ");
+				sql.append(" FROM contlist ");
+				
+				String search="";
+				if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
+					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
+					
+				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("X")) {
+					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' ";
+
+					
+				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
+					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
+					
+				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
+					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
+					
+				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
+					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
+					
+				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
+					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
+					
+				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
+					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
+					
+				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
+					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
+					
+				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
+					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
+					
+				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
+					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
+					
+				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
+					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
+					
+				}else if(netflix.equals("O") && watcha.equals("O") && tving.equals("O") && disney.equals("O")) {
+					search+=" WHERE netflix='O' OR watcha='O' OR tving='O' OR disney='O' ";
+					
+				}
+
+				
+				sql.append(search);
+
+				sql.append(" ORDER BY mcode DESC ");
+				
+				
+				
+				
+				
+				pstmt = con.prepareStatement(sql.toString());
+				
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					list=new ArrayList<ContlistDTO>();				
+					do {
+						dto = new ContlistDTO();//커서가 가리키는 한 줄 저장
+						dto.setMtitle(rs.getString("mtitle"));
+						dto.setMthum(rs.getString("mthum"));
+						dto.setMrate(rs.getDouble("mrate"));
+						dto.setNetflix(rs.getString("netflix"));
+						dto.setWatcha(rs.getString("watcha"));
+						dto.setTving(rs.getString("tving"));
+						dto.setDisney(rs.getString("disney"));
+						dto.setMdate(rs.getString("mdate"));
+						dto.setCri_like(rs.getInt("cri_like"));
+						dto.setKey_code(rs.getString("key_code"));
+						dto.setMcode(rs.getInt("mcode"));
+						list.add(dto);
+					}while(rs.next());
+				}//if end
+				
+			}catch (Exception e) {
+				System.out.println("컨텐츠리스트 불러오기 실패: " + e);
+			}finally{
+				DBclose.close(con, pstmt, rs);
+			}//try end
+			
+			return list;
+			
+		}
+		
 		
 
 }//class end

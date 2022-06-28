@@ -25,7 +25,7 @@
 		<c:if test="${dto.watcha eq 'O'  }">
 			<input type="image" src="../../images/icon_watcha.png" width="50px">
 		</c:if>
-		<c:if test="${dto.diseny eq 'O'  }">
+		<c:if test="${dto.disney eq 'O'  }">
 			<input type="image" src="../../images/icon_disney.png" width="50px">
 		</c:if>
 	</form>

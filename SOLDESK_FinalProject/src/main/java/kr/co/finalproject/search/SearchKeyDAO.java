@@ -54,6 +54,42 @@ public class SearchKeyDAO {
 
 	
 	
+	public ArrayList<SearchKeyDTO> readRandom() {
+		
+		SearchKeyDTO dto=null;
+		ArrayList<SearchKeyDTO> list=null;
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" SELECT key_name, key_code ");
+			sql.append(" FROM search_key ");
+			sql.append(" ORDER BY RAND() ");			
+			pstmt = con.prepareStatement(sql.toString());
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				list = new ArrayList<SearchKeyDTO>();
+				do {
+					dto = new SearchKeyDTO();//커서가 가리키는 한 줄 저장
+					dto.setKey_code(rs.getString("key_code"));
+					dto.setKey_name(rs.getString("key_name"));
+					list.add(dto);
+				}while(rs.next());
+			}//if end
+		}catch (Exception e) {
+			System.out.println("키워드 불러오기 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);
+		}//try end
+		
+		return list;
+	}
+
+	
+	
+	
+	
 	public String SearchKeyAll(String key_code) {
 		String key_name = null;
 		try {

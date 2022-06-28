@@ -131,7 +131,7 @@ public class WebmasterCont {
       String netflix=Utility.checkNull(req.getParameter("netflix"));   
       String watcha=Utility.checkNull(req.getParameter("watcha"));   
       String tving=Utility.checkNull(req.getParameter("tving"));   
-      String diseny=Utility.checkNull(req.getParameter("diseny"));   
+      String disney=Utility.checkNull(req.getParameter("disney"));   
       
       if(netflix.equals("O")) { 
          dto.setNetflix("O");
@@ -151,10 +151,10 @@ public class WebmasterCont {
          dto.setTving("X");
       }
       
-      if(diseny.equals("O")) { 
-         dto.setDiseny("O");
+      if(disney.equals("O")) { 
+         dto.setDisney("O");
       }else {
-         dto.setDiseny("X");
+         dto.setDisney("X");
       }      
       
       String directors = req.getParameter("directors");
@@ -322,7 +322,7 @@ public class WebmasterCont {
       String netflix=Utility.checkNull(req.getParameter("netflix"));   
       String watcha=Utility.checkNull(req.getParameter("watcha"));   
       String tving=Utility.checkNull(req.getParameter("tving"));   
-      String diseny=Utility.checkNull(req.getParameter("diseny"));   
+      String disney=Utility.checkNull(req.getParameter("disney"));   
       
       if(netflix.equals("O")) { 
          dto.setNetflix("O");
@@ -342,11 +342,11 @@ public class WebmasterCont {
          dto.setTving("X");
       }
       
-      if(diseny.equals("O")) { 
-         dto.setDiseny("O");
+      if(disney.equals("O")) { 
+         dto.setDisney("O");
       }else {
-         dto.setDiseny("X");
-      }      
+         dto.setDisney("X");
+      }           
       
       
       int mcode = Integer.parseInt(req.getParameter("mcode"));

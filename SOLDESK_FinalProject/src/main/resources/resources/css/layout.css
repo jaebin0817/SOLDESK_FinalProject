@@ -257,7 +257,22 @@
 	padding-top: 50px;
 	
 	}
+	
+	.ott_search{
+	padding-bottom: 20px;
+	--text-align: left;
+	}
+	
+	.ott_search button{
+		border: none;
+		width: 55px;
+		height: 50px;
+	}
 
+	.ott_search img{
+		border-radius: 7px;
+		width:50px;
+	}
 	
 
   @keyframes slide {
