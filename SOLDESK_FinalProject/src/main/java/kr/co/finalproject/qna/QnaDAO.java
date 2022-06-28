@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import kr.co.finalproject.notice.NoticeDTO;
 import net.utility.DBclose;
 import net.utility.DBopen;
 
@@ -110,6 +111,7 @@ public class QnaDAO {
 			sql=new StringBuilder();
 			sql.append(" INSERT INTO tb_qna(qna_title, qna_date, qna_content, mem_id, qna_pw, qna_grpno, ip) ");
 			sql.append(" values( ?, now(), ?, ?, ?, (select ifnull(max(qna_num),0)+1 from tb_qna as TB) ,?) ");
+
 			
 			pstmt=con.prepareStatement(sql.toString());
 			pstmt.setString(1, dto.getQna_title());	
@@ -129,6 +131,101 @@ public class QnaDAO {
 		return cnt;
 	}//create end
 	
+	public int delete(int qna_num, String qna_pw){
+		int cnt=0; //성공 또는 실패 여부 반환
+		try {
+			con=dbopen.getConnection();
+			
+			sql=new StringBuilder();
+			sql.append(" DELETE FROM tb_qna ");
+			sql.append(" WHERE qna_num=? && qna_pw=? ");
+			
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setInt(1, qna_num);
+			pstmt.setString(2, qna_pw);
+			cnt=pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("행삭제 실패 : " + e);
+		}finally {
+			DBclose.close(con,pstmt);
+		}//end
+		return cnt;
+	}//delete end
+	
+	public int deletemaster(int qna_num){
+		int cnt=0; //성공 또는 실패 여부 반환
+		try {
+			con=dbopen.getConnection();
+			
+			sql=new StringBuilder();
+			sql.append(" DELETE FROM tb_qna ");
+			sql.append(" WHERE qna_num=? ");
+			
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setInt(1, qna_num);
+			cnt=pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("행삭제 실패 : " + e);
+		}finally {
+			DBclose.close(con,pstmt);
+		}//end
+		return cnt;
+	}//delete end
+	
+	public int updateproc(QnaDTO dto,String qna_pw) {
+		int cnt=0; //성공 또는 실패 여부 반환
+		try {
+
+			con=dbopen.getConnection();
+			sql=new StringBuilder();
+			sql.append(" UPDATE tb_qna ");
+			sql.append(" SET qna_title=?, qna_content=? ");
+			sql.append(" WHERE qna_num=? && qna_pw=? ");
+			
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setString(1, dto.getQna_title());
+			pstmt.setString(2, dto.getQna_content());
+			pstmt.setInt(3, dto.getQna_num());
+			pstmt.setString(4, qna_pw);
+		
+			cnt=pstmt.executeUpdate(); 
+			
+		} catch (Exception e) {
+			System.out.println("행수정 실패 : " + e);
+		}finally {
+			DBclose.close(con,pstmt);
+		}//end
+		return cnt;
+	}//updateproc() end
+	
+	public int updatemasterproc(QnaDTO dto) {
+		int cnt=0; //성공 또는 실패 여부 반환
+		try {
+
+			con=dbopen.getConnection();
+			sql=new StringBuilder();
+			sql.append(" UPDATE tb_qna ");
+			sql.append(" SET qna_title=?, qna_content=? ");
+			sql.append(" WHERE qna_num=? ");
+			
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setString(1, dto.getQna_title());
+			pstmt.setString(2, dto.getQna_content());
+			pstmt.setInt(3, dto.getQna_num());
+		
+			cnt=pstmt.executeUpdate(); 
+			
+		} catch (Exception e) {
+			System.out.println("행수정 실패 : " + e);
+		}finally {
+			DBclose.close(con,pstmt);
+		}//end
+		return cnt;
+	}//updateproc() end
+	
 	
 
 }//class end
+

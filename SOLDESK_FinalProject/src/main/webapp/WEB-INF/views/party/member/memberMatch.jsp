@@ -21,7 +21,7 @@
 		<br>
 		파티 매칭을 시작하시겠습니까?
 		<br>
-		<input type="submit" value="시작하기"  class="btn btn-success">
+		<input type="submit" value="시작하기"  class="btn btn-danger">
 	</form>
 	</div>
 

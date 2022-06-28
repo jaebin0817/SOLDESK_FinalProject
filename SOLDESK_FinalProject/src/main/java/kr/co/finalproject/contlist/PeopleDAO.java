@@ -119,4 +119,70 @@ public class PeopleDAO {
 	}
 	
 	
+	
+	public PeopleDTO readDirector(String pno) {
+
+		PeopleDTO dto=null;
+		
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT pno, pname, pname_eng, pphoto ");
+			sql.append(" FROM people ");
+			sql.append(" WHERE pno=? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, pno);
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+
+					dto = new PeopleDTO();
+					dto.setPname(rs.getString("pname"));
+					dto.setPname_eng(rs.getString("pname_eng"));
+					dto.setPno(rs.getString("pno"));
+					dto.setPphoto(rs.getString("pphoto"));
+			}
+
+		} catch (Exception e) {
+			System.out.println("감독 불러오기 실패 : " + e);
+		} finally {
+			DBclose.close(con, pstmt, rs);
+		}
+		return dto;
+
+	}
+
+	
+	public PeopleDTO readActor(String pno) {
+		PeopleDTO dto=null;
+
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT pno, pname, pname_eng, pphoto ");
+			sql.append(" FROM people ");
+			sql.append(" WHERE pno=? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, pno);
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+
+					dto = new PeopleDTO();
+					dto.setPname(rs.getString("pname"));
+					dto.setPname_eng(rs.getString("pname_eng"));
+					dto.setPno(rs.getString("pno"));
+					dto.setPphoto(rs.getString("pphoto"));
+			}
+
+		} catch (Exception e) {
+			System.out.println("배우 불러오기 실패 : " + e);
+		} finally {
+			DBclose.close(con, pstmt, rs);
+		}
+		return dto;
+	}
+	
 }//class end

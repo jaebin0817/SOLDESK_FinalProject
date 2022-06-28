@@ -19,40 +19,32 @@
 		<div class="container-fluid text-center">
 		<table class="table">
 		<tr>
-			<th>글번호</th>
 			<th>글제목</th>
-			<th>등록일</th>
-			<th>내용</th>
 			<th>작성자</th>
-			<th>비밀번호</th>
 			<th>조회수</th>
 			<th>그룹번호</th>
+			<th>등록일</th>
 			
 		</tr>
 		<c:forEach var="dto" items="${list}">
 			<tr>
-				<td>${dto.qna_num}</td>	
 				<td><a href="../qna/qnaread.do?qna_num=${dto.qna_num}">${dto.qna_title}</a></td>
-				<td>${dto.qna_date}</td>
-				<td>${dto.qna_content}</td>
 				<td>${dto.mem_id}</td>
-				<td>${dto.qna_pw}</td>
 				<td>${dto.qna_readcnt}</td>
 				<td>${dto.qna_grpno}</td>
-				<td>${mem_lv}</td>
+				<td>${dto.qna_date}</td>
 			</tr>
 		</c:forEach>
 		
 		</table>
 		</div>
-		<form name="frm" id="frm" action="qnaForm.do" method="post" action="qnaForm.do" onsubmit="return IDlog(${mem_lv})">
-            <input type="submit" value="문의사항등록"  class="btn btn-success">
+		<form name="frm" id="frm" method="post" action="qnaForm.do" onsubmit="return IDlog(${mem_lv})">
+            <input type="submit" value="문의사항등록"  class="btn btn-danger">
         </form>
 	</div>
 		
 	<script>
 	function IDlog(mem_lv) {
-
 		if(mem_lv==null || mem_lv=="F"){
 			alert("로그인 후 작성가능합니다")
 			return false;

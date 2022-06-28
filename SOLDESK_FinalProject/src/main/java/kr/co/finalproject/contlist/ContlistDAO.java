@@ -535,5 +535,53 @@ public class ContlistDAO {
 		}
 		
 		
+		
+	    public ArrayList<ContlistDTO> searchPeople(String pno) {
+			ContlistDTO dto=null;
+			ArrayList<ContlistDTO> list=null;
+			
+			try {
+				con=dbopen.getConnection();//DB연결
+				sql=new StringBuilder();
+				sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, cri_like, key_code, mcode, actor, director ");
+				sql.append(" FROM contlist ");
+				sql.append(" WHERE actor LIKE '%"+pno+"%' ");
+				sql.append("    OR director LIKE '%"+pno+"%' ");
+				sql.append(" ORDER BY mcode DESC ");
+				pstmt = con.prepareStatement(sql.toString());
+				
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					list=new ArrayList<ContlistDTO>();				
+					do {
+						dto = new ContlistDTO();//커서가 가리키는 한 줄 저장
+						dto.setMtitle(rs.getString("mtitle"));
+						dto.setMthum(rs.getString("mthum"));
+						dto.setMrate(rs.getDouble("mrate"));
+						dto.setNetflix(rs.getString("netflix"));
+						dto.setWatcha(rs.getString("watcha"));
+						dto.setTving(rs.getString("tving"));
+						dto.setDisney(rs.getString("disney"));
+						dto.setMdate(rs.getString("mdate"));
+						dto.setCri_like(rs.getInt("cri_like"));
+						dto.setKey_code(rs.getString("key_code"));
+						dto.setMcode(rs.getInt("mcode"));
+						dto.setActor(rs.getString("actor"));
+						dto.setDirector(rs.getString("director"));
+
+						list.add(dto);
+					}while(rs.next());
+				}//if end
+				
+			}catch (Exception e) {
+				System.out.println("감독/출연 검색 실패: " + e);
+			}finally{
+				DBclose.close(con, pstmt, rs);
+			}//try end
+			
+			return list;
+			
+		}
+		
 
 }//class end

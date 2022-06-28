@@ -33,7 +33,7 @@
 			<hr>
 
 		    <div>
-		      <input type="submit" value="다음">
+		      <input type="submit" value="다음" class="btn btn-danger">
 		    </div>  
 	    </form>
 	

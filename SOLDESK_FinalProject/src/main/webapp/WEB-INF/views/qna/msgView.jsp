@@ -10,6 +10,8 @@
     <div class="content">
     	<dl>
     		<dd> ${ msg }</dd> <!-- requestScope생략 -->
+    		<dd> ${ mem_id }</dd>
+    		<dd> ${ mem_id }</dd>
     	</dl>
 
     </div>

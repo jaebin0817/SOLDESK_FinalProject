@@ -28,6 +28,7 @@ public class ContlistController {
    ReviewDAO dao2 = null;
    SearchKeyDAO dao3 = null;
    WatchListDAO dao4 = null;
+   PeopleDAO pdao=null;
 
    
    public ContlistController() {
@@ -54,7 +55,7 @@ public class ContlistController {
    
 
    @RequestMapping("contlist/contlistread.do")
-   public ModelAndView contlistread(ContlistDTO dto, ReviewDTO dto2, SearchKeyDTO dto3, HttpServletRequest req) {
+   public ModelAndView contlistread(ContlistDTO dto, ReviewDTO dto2, SearchKeyDTO dto3, PeopleDTO pdto, HttpServletRequest req) {
       ModelAndView mav = new ModelAndView();
       int mcode = Integer.parseInt(req.getParameter("mcode"));
       
@@ -84,12 +85,38 @@ public class ContlistController {
 			mav.addObject("mem_lv", mem_lv);    	  
       }
       
+      pdao=new PeopleDAO();
+      
+      String directors = dto.getDirector();
+      String actors = dto.getActor();
+      ArrayList<PeopleDTO> directorlist = new ArrayList<>();
+      ArrayList<PeopleDTO> actorlist = new ArrayList<>();
+    
+      
+      StringTokenizer dirSt = new StringTokenizer(directors, ", ");
+      while(dirSt.hasMoreTokens()) { //토큰할 문자가 있는지?
+          
+    	  directorlist.add(pdao.readDirector(dirSt.nextToken()));
+    	  
+      }
+      
+      StringTokenizer actSt = new StringTokenizer(actors, ", ");
+      while(actSt.hasMoreTokens()) { //토큰할 문자가 있는지?
+          
+    	  String pno = actSt.nextToken();
+    	  //System.out.println(pno);
+
+    	  actorlist.add(pdao.readActor(pno));
+      }
+     
       dto2 = dao2.reviewAll(mcode);
       mav.setViewName("contlist/contlistread");
       mav.addObject("dto", dto);
       mav.addObject("dto2", dto2);
       mav.addObject("keylist",keylist);
       mav.addObject("keycodelist",keycodelist);
+      mav.addObject("directorlist",directorlist);
+      mav.addObject("actorlist",actorlist);
       
       return mav;
    }
@@ -345,6 +372,26 @@ public class ContlistController {
 	}//ottsearch() end
     
 	
+    @RequestMapping("peoplesearch.do")
+    public ModelAndView peoplesearch(HttpServletRequest req) {
+       ModelAndView mav = new ModelAndView();
+       
+       String pno=req.getParameter("pno");
+       String pname=req.getParameter("pname");
+
+       
+       ArrayList<ContlistDTO> list = null;
+       
+       String msg=pname+" : 검색 결과";
+       
+       list = dao.searchPeople(pno);
+
+       mav.setViewName("contlist/contlist");
+       mav.addObject("list", list);
+       mav.addObject("msg", msg);
+
+       return mav;
+    }
 	
    
    

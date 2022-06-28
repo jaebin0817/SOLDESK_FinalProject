@@ -22,7 +22,7 @@
 	    
 	    
 	    <div>
-	      <input type="submit" value="파티 생성하기"><!-- 파티생성 완료 안내창으로 이동 -->
+	      <input type="submit" value="파티 생성하기" class="btn btn-danger"><!-- 파티생성 완료 안내창으로 이동 -->
 	    </div>  
     </form>
 	</div>

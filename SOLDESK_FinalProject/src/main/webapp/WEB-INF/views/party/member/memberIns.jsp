@@ -57,7 +57,7 @@
 		                <option value="기업">기업</option>      
 		        </select>
 		        <br>
-				<input type="submit" value="입력"  class="btn btn-success">
+				<input type="submit" value="입력"  class="btn btn-danger">
 		        <input type="reset"  value="취소"  class="btn btn-danger">
 			</div>
 		</form>
