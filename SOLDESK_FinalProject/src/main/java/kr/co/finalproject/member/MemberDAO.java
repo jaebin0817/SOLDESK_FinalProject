@@ -335,5 +335,32 @@ public class MemberDAO {
     }
 	
 	
+	public int ckId(String mem_id) {
+		int result = -1;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT mem_id ");
+			sql.append(" FROM member_info ");
+			sql.append(" WHERE mem_id=? ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, mem_id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = 0;
+			}else {
+				result = 1;
+			}
+			
+		}catch (Exception e) {
+			System.out.println("아이디 체크 실패: "+e);
+		}
+		
+		return result;
+	}
+	
 	
 }//class end

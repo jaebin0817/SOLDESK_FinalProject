@@ -5,7 +5,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+
 <!-- 메인카테고리 끝 -->
+<script type="text/javascript" src="../js/contentcri_action.js"></script>
+
 
 <!-- 본문 시작 -->
 <div id="cont_list" class="container-fluid text-center">
@@ -46,6 +49,27 @@
 
 	<div class="mrate">컨텐츠 평점 : ${dto.mrate}</div>
 	<div class="like">좋아요 수 : ${dto.cri_like}</div>
+	<hr>
+	<!-- 사용자 컨텐츠 평가 -->
+	<div class="container" align="center" id="cri_panel">
+	   		
+	   <form name="crifrm" id="crifrm" method="post">	
+		<c:choose>
+		<c:when test="${ s_mem_id==null || s_mem_pw==null || s_mem_lv==null }">
+			<a href="<%=request.getContextPath()%>/login.do">로그인</a>
+		</c:when>
+		<c:otherwise>
+			<div class="btn-group">
+				<button class="btn btn-danger btn-lg" onclick="likeCheck()">😍 좋아요</button>
+				<button class="btn btn-danger btn-lg" onclick="watchCheck()">✔ 봤어요</button>
+				<button class="btn btn-danger btn-lg" onclick="pointCheck()">♥ 찜하기</button>
+		 	</div>
+		</c:otherwise>
+		</c:choose>
+		</form>
+	</div>		
+	
+	<!-- 사용자 컨텐츠 평가 끝 -->
 	
 	<!-- 감독 배우 목록 -->	
 	<div id="people" class="container-fluid text-center">
@@ -55,7 +79,7 @@
 		<c:forEach var="dto" items="${ directorlist }">
 			  <span class="directors">
 			   <c:choose>
-			    <c:when test="${ dto.pphoto==null }">
+			    <c:when test="${ dto.pphoto==null || dto.pphoto eq '' }">
 			      <a href="<%=request.getContextPath()%>/peoplesearch.do?pno=${ dto.pno }&pname=${ dto.pname }">
 			      	<img src="../../storage/people_None.jpg" class="img-circle" alt="director" width="50" height="50">
 			       </a>			      
@@ -77,7 +101,7 @@
 			  
 			  <span class="actors">
 			  <c:choose>
-			    <c:when test="${ dto.pphoto==null }">
+			    <c:when test="${ dto.pphoto==null || dto.pphoto eq '' }">
 				  <a href="<%=request.getContextPath()%>/peoplesearch.do?pno=${ dto.pno }&pname=${ dto.pname }">
 			      	<img src="../../storage/people_None.jpg" class="img-circle" alt="actor" width="50" height="50">
 			      </a>			      

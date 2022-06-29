@@ -56,7 +56,7 @@
 				  &nbsp;&nbsp;&nbsp;
 				  <a href="<%=request.getContextPath()%>/agreement.do">회원가입</a>
 				  &nbsp;&nbsp;&nbsp;
-				  <a href="">아이디/비밀번호찾기</a>
+				  <a href="find_info.do">아이디/비밀번호찾기</a>
 			   </td>
 			</tr>		  
 			</table>
@@ -72,9 +72,9 @@
 			<br>
 			<input type="submit" value="로그아웃">
 			<br><br>
-			<a href=''>[회원정보수정]</a>
+			<a href='member_info.do'>[회원정보수정]</a>
 			&nbsp;&nbsp;
-			<a href=''>[회원탈퇴]</a>
+			<a href='member_retire.do'>[회원탈퇴]</a>
 			<br><br>
 		</form>
 		
