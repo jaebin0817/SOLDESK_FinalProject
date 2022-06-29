@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import kr.co.finalproject.party.PartyInfoDTO;
 import net.utility.DBclose;
 import net.utility.DBopen;
 
@@ -182,6 +181,138 @@ public class NoticeDAO {
 		}//end
 		return cnt;
 	}//updateproc() end
+    
+    public int count(String col, String word) {
+    	int cnt=0;
+    	try {
+			con=dbopen.getConnection();
+			
+			sql=new StringBuilder();
+			sql.append(" SELECT COUNT(*) as cnt ");
+			sql.append(" FROM notice ");
+			
+			if(word.length()>=1) {
+				String search="";
+				if(col.equals("n_title_n_content")) {
+					search+= " WHERE n_title LIKE '%" + word + "%' ";
+					search+= " OR n_content LIKE '%" + word + "%' ";
+				}else if(col.equals("n_title")) {
+					search+= " WHERE n_title LIKE '%" + word + "%' ";
+				}else if(col.equals("n_content")) {
+					search+= " WHERE n_content LIKE '%" + word + "%' ";
+				}//if end
+				sql.append(search);
+			}//if end
+			
+			pstmt=con.prepareStatement(sql.toString());
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				cnt=rs.getInt("cnt");
+			}//if end
+			
+		} catch (Exception e) {
+			System.out.println("카운팅 실패 : " + e );
+		}finally {
+			DBclose.close(con,pstmt,rs);
+		}//end
+    	return cnt;
+    }//end
+    
+    public int count1() {
+    	int cnt=0;
+    	try {
+			con=dbopen.getConnection();
+			
+			sql=new StringBuilder();
+			sql.append(" SELECT COUNT(*) as cnt ");
+			sql.append(" FROM notice ");
+			
+			pstmt=con.prepareStatement(sql.toString());
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				cnt=rs.getInt("cnt");
+			}//if end
+			
+		} catch (Exception e) {
+			System.out.println("카운팅 실패 : " + e );
+		}finally {
+			DBclose.close(con,pstmt,rs);
+		}//end
+    	return cnt;
+    }//end
+    
+  
+    public ArrayList<NoticeDTO> list3(String col,String word, int nowPage, int recordPerPage){
+    	ArrayList<NoticeDTO> list=null;
+    	
+    	int startRow = ((nowPage-1) * recordPerPage) + 1 ;
+        int endRow   = nowPage * recordPerPage;
+    	try {
+    		con=dbopen.getConnection(); 
+			sql=new StringBuilder();
+			
+			if(word.length()==0) { 
+				sql.append(" SELECT n_num, n_title, n_date, n_content, n_readcnt ");
+	            sql.append(" FROM( SELECT n_num, n_title, n_date, n_content, n_readcnt, @RNO := @RNO + 1 AS r ");
+	            sql.append("       FROM ( ");
+	            sql.append("              SELECT n_num, n_title, n_date, n_content, n_readcnt ");
+	            sql.append("              FROM notice ORDER BY n_date DESC)A, (SELECT @RNO := 0) B ");
+	            sql.append("           )C");
+	            sql.append(" WHERE r>=" + startRow + " AND r<=" + endRow) ;
+			}else {
+				sql.append(" SELECT n_num, n_title, n_date, n_content, n_readcnt ");
+	            sql.append(" FROM( SELECT n_num, n_title, n_date, n_content, n_readcnt, @RNO := @RNO + 1 AS r ");
+	            sql.append("       FROM ( ");
+	            sql.append("              SELECT n_num, n_title, n_date, n_content, n_readcnt ");
+	            sql.append("              FROM notice ");
+	            String search="";
+				if(col.equals("n_title_n_content")) {
+					search+= " WHERE n_title LIKE '%" + word + "%' ";
+					search+= " OR n_content LIKE '%" + word + "%' ";
+				}else if(col.equals("n_title")) {
+					search+= " WHERE n_title LIKE '%" + word + "%' ";
+				}else if(col.equals("n_content")) {
+					search+= " WHERE n_content LIKE '%" + word + "%' ";
+				}//if end
+				sql.append(search);
+	            sql.append("              				ORDER BY n_date DESC)A, (SELECT @RNO := 0) B ");
+	            sql.append("           )C");
+	            sql.append(" WHERE r>=" + startRow + " AND r<=" + endRow) ;
+			}
+		pstmt=con.prepareStatement(sql.toString());
+	    rs=pstmt.executeQuery();
+	    if(rs.next()) {
+	    	list=new ArrayList<>();
+	    	do {
+	    		NoticeDTO dto=new NoticeDTO();
+	    		dto.setN_num(rs.getInt("n_num"));
+				dto.setN_title(rs.getString("n_title"));;
+				dto.setN_date(rs.getString("n_date"));;
+				dto.setN_content(rs.getString("n_content"));;
+				dto.setN_readcnt(rs.getInt("n_readcnt"));;
+				list.add(dto); //list에 모으기
+	    	}while(rs.next());
+	    }
+    		
+    	}catch (Exception e) {
+			System.out.println("목록 불러오기 실패 : " + e);
+		}finally {
+			DBclose.close(con,pstmt,rs);
+		}
+    	
+    	return list;
+    }//list3() end
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 
 

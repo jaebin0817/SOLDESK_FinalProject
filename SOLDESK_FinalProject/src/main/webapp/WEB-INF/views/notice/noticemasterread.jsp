@@ -4,9 +4,8 @@
 
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>    
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!-- 본문시작 memberIns.jsp -->
+<!-- 본문시작noticemasterread.jsp -->
 	
-	<!-- 파티원 정보 입력 -->
 	<input type="hidden" id="n_num" name="n_num" value="${dto.n_num}">
 	<div class="container-fluid text-center">	
 		<div class="container text-center">

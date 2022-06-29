@@ -1,6 +1,6 @@
 package kr.co.finalproject.party;
 
-public class PartyMatchDTO {
+public class PartyWaitingDTO {
 	String mem_id;
 	String ott_name;
 	int waiting_no;

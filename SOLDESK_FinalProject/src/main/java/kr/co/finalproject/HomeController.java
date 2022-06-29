@@ -4,6 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.finalproject.contlist.ContlistDAO;
+import kr.co.finalproject.contlist.WatchListDAO;
+import kr.co.finalproject.search.SearchKeyDAO;
+
 @Controller
 public class HomeController {
 
@@ -15,6 +19,13 @@ public class HomeController {
 	@RequestMapping("home.do")
 	public ModelAndView home() {
 		ModelAndView mav=new ModelAndView();
+		ContlistDAO dao=new ContlistDAO();
+		WatchListDAO watchdao=new WatchListDAO();
+		SearchKeyDAO searchdao=new SearchKeyDAO();
+		
+		mav.addObject("list", dao.contlistAll());
+		mav.addObject("rank", watchdao.rankRead());
+		mav.addObject("keywords", searchdao.readall());
 		mav.setViewName("index");
 		return mav;
 	}//home() end

@@ -1,6 +1,6 @@
 package kr.co.finalproject.party;
 
-public class PartyMemDTO {
+public class PaymentCardDTO {
 
 	String mem_id;	
 	String card_exp;
@@ -8,7 +8,7 @@ public class PartyMemDTO {
 	int card_pw;
 	String card_com;
 	
-	public PartyMemDTO() {}
+	public PaymentCardDTO() {}
 	
 	public String getMem_id() {
 		return mem_id;

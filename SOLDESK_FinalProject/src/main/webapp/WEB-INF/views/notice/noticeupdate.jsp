@@ -2,9 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp"%>
 
-<!-- 본문시작 memberIns.jsp -->
-	
-	<!-- 파티원 정보 입력 -->
+<!-- 본문시작 noticeupdate.jsp -->
+<!-- 스마트 에디터 넣기 !! -->	
 	
 	<div class="container-fluid text-center">	
 	<form name="frm" id="frm" method="post" action="noticeupdateproc.do?n_num=${n_num}">

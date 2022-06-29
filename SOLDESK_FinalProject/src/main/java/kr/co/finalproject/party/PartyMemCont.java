@@ -1,12 +1,9 @@
 package kr.co.finalproject.party;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.GregorianCalendar;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.stereotype.Controller;
@@ -19,8 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class PartyMemCont {
 
-	PartyMemDAO dao=new PartyMemDAO();
-	PartyMatchDAO dao2 = new PartyMatchDAO();
+	PaymentCardDAO dao=new PaymentCardDAO();
+	PartyWaitingDAO dao2 = new PartyWaitingDAO();
 	PartyInfoDAO dao3 = new PartyInfoDAO();
 	PartyMemberDAO dao4 = new PartyMemberDAO();
 
@@ -29,8 +26,9 @@ public class PartyMemCont {
 	}//end
 
 
+
 	@RequestMapping(value = "party/member.do" , method = RequestMethod.POST)
-	public ModelAndView memberaccount(@ModelAttribute PartyMemDTO dto, HttpServletRequest req) {
+	public ModelAndView memberaccount(@ModelAttribute PaymentCardDTO dto, HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
 			
 		String ott_name=req.getParameter("ott_name");
@@ -50,15 +48,17 @@ public class PartyMemCont {
 		mav.addObject("party_pcost", party_pcost);
 		mav.addObject("payback_amount", payback_amount);
 		
-		String mem_id="kimkim12";//session정보 받아오기
+		//String mem_id="kimkim12";//session정보 받아오기
+		HttpSession session = req.getSession();
+		String s_mem_id=session.getAttribute("s_mem_id").toString();
 		
 		String card_m = req.getParameter("card_m");
 		String card_y = req.getParameter("card_y");
 		String card_exp= card_m + "/" + card_y;
 		dto.setCard_exp(card_exp);
-		dto.setMem_id(mem_id);
+		dto.setMem_id(s_mem_id);
 		
-		mav.addObject("mem_id",mem_id);
+		mav.addObject("mem_id",s_mem_id);
 
 		int cnt=dao.cardIns(dto);
 		if(cnt==0) {
@@ -72,7 +72,7 @@ public class PartyMemCont {
 	}//memberMatch() end
 	
 	@RequestMapping(value = "party/membermatch.do" , method = RequestMethod.POST)
-	public ModelAndView memberMatchWait(@ModelAttribute  PartyMatchDTO dto, PartyInfoDTO dto2 , PartyMemberDTO dto3, HttpServletRequest req) {
+	public ModelAndView memberMatchWait(@ModelAttribute  PartyWaitingDTO dto, PartyInfoDTO dto2 , PartyMemberDTO dto3, HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
 		
 		
