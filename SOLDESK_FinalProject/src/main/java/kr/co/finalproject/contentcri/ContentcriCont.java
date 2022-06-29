@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
-
 @Controller
 public class ContentcriCont {
 	private ContentcriDAO dao = null;
@@ -23,13 +22,10 @@ public class ContentcriCont {
 		dao = new ContentcriDAO();
 		System.out.println("-----ContentcriCont() 객체 생성");
 	}
-	@RequestMapping(value= "content_cri.do", method = RequestMethod.GET)
-	public String content_cri() {
-		return "content_cri/content_cri";
-	}
+
 	
 	@ResponseBody
-	@RequestMapping(value= "content_crilike.do", method = RequestMethod.POST)
+	@RequestMapping(value= "/content_crilike.do", method = RequestMethod.POST)
 	public void cri_like(HttpServletRequest req, ContentcriDTO dto, HttpServletResponse resp) {
 		
 		try {
@@ -79,7 +75,7 @@ public class ContentcriCont {
 	}//cri_like() end
 
 	@ResponseBody
-	@RequestMapping(value= "content_criwatch.do", method = RequestMethod.POST)
+	@RequestMapping(value= "/content_criwatch.do", method = RequestMethod.POST)
 	public void cri_watch(HttpServletRequest req, ContentcriDTO dto, HttpServletResponse resp) {
 		try {
 			
@@ -125,7 +121,7 @@ public class ContentcriCont {
 	}//cri_watch() end
 	
 	@ResponseBody
-	@RequestMapping(value= "content_cripoint.do", method = RequestMethod.POST)
+	@RequestMapping(value= "/content_cripoint.do", method = RequestMethod.POST)
 	public void cri_point(HttpServletRequest req, ContentcriDTO dto, HttpServletResponse resp) {
 		
 		try {
