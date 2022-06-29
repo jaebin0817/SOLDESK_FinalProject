@@ -9,12 +9,27 @@
 	
 	<div class="container-fluid text-center">	
 		<div class="container text-center">
-			${dto.n_num}	
-			${dto.n_title}
-			${dto.n_date}
-			${dto.n_content} 
-			${dto.n_readcnt}
-			${msg}
+		<table class="table" >
+		<tr>
+			<td colspan="2"><h1>${dto.n_title}</h1></td>
+		</tr>
+		<tr>
+			<th>공지날짜</th>
+			<td>${dto.n_date}</td>
+		</tr>
+		<tr>
+			<th colspan="2" ><h4>내용</h4></th>
+		</tr>
+		<tr height=500>
+			<td colspan="2"><h3>${dto.n_content}</h3></td>
+		</tr>
+		<tr>
+			<th>조회수</th>
+			<td>${dto.n_readcnt}</td>
+		</tr>
+		</table>
+		<input type="button" value="홈으로"  onclick="location.href='/home.do'" class="btn btn-success">
+		<input type="button" value="공지목록" onclick="location.href='/notice/notice.do'" class="btn btn-success">
 		</div>
 	</div>
 

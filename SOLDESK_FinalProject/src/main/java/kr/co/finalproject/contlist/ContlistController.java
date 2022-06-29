@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import kr.co.finalproject.review.ReviewDAO;
 import kr.co.finalproject.review.ReviewDTO;
 import kr.co.finalproject.search.SearchKeyDAO;
 import kr.co.finalproject.search.SearchKeyDTO;
+import net.utility.Utility;
 
 @Controller
 public class ContlistController {
@@ -225,26 +227,6 @@ public class ContlistController {
       return mav;
    }
 
-   
-   
-	@RequestMapping("contlist/reviewForm.do")
-	public ModelAndView rev_create(ContlistDTO dto, ReviewDTO dto2) {
-		ModelAndView mav=new ModelAndView();		
-		
-		int mcode = dto2.getMcode();
-		dto2 = dao2.reviewAll(mcode);
-	
-			mav.setViewName("contlist/reviewForm");
-			mav.addObject("mcode", mcode);			
-			mav.addObject("dto", dto);
-			mav.addObject("dto2", dto2);
-
-		return mav;
-
-	}
-	
-	
-	
 	
 	
    @RequestMapping("/contlist/contlistAjax.do")
@@ -393,7 +375,155 @@ public class ContlistController {
        return mav;
     }
 	
+    
+    @RequestMapping(value = "contlist/reviewForm.do", method = RequestMethod.GET)
+    public ModelAndView reviewAll(@ModelAttribute ContlistDTO dto, ReviewDTO dto2) {
+       ModelAndView mav=new ModelAndView();
+       
+       
+       int mcode = dto.getMcode();
+       dto2 = dao2.reviewAll(mcode);
+    
+          mav.setViewName("review/reviewForm");
+          mav.addObject("dto", dto);
+          mav.addObject("dto2", dto2);
+          mav.addObject("mcode", mcode);
+
+       return mav;
+
+    }
+    
+    
+    @RequestMapping(value = "contlist/contlistins.do", method = RequestMethod.POST)
+    public ModelAndView rev_ins(@ModelAttribute ContlistDTO dto, ReviewDTO dto2, HttpServletRequest req) {
+       ModelAndView mav=new ModelAndView();
+       
+       int mcode = Integer.parseInt(req.getParameter("mcode"));
+       dto2.setMcode(mcode);
+       
+       HttpSession session = req.getSession();
+       String mem_id =session.getAttribute("s_mem_id").toString();
+       dto2.setMem_id(mem_id);
+       
+       String rev_spo=Utility.checkNull(req.getParameter("rev_spo"));
+    
+
+          if(rev_spo.equals("O")) { 
+             dto2.setRev_spo("O");
+          }else {
+             dto2.setRev_spo("X");
+          }
+          
+       int cnt = dao2.rev_ins(dto2);
+       
+       
+       if(cnt==1) {//리뷰 입력 성공, 컨텐츠 리스트의 별점을 수정
+          
+          //1) 새로 넣은 리뷰의 별점+기존에 있던 별점을 평균내서 가져오기 DAO select 
+          double mrate = (int)dao2.rev_rateHap(mcode);
+          //2) 1)1에서 불러온 값을 매개변수로 넘겨서 CONTLIST를 update 해준다
+          dao.mrateUpdate(mrate, mcode);
+          
+       }else {
+          System.out.println("리뷰  입력 실패");
+       }
+       
+          ArrayList<ContlistDTO> list = null;
+
+          list = dao.contlistAll();
+       
+           mav.setViewName("contlist/contlist");
+          mav.addObject("list", list);
+          mav.addObject("mcode", mcode);
+
+       return mav;
+
+    }
    
-   
+    
+    @RequestMapping(value = "contlist/reviewdelete.do", method = RequestMethod.POST)
+    public ModelAndView delete(@ModelAttribute ReviewDTO dto2, ContlistDTO dto, HttpServletRequest req) {
+       ModelAndView mav=new ModelAndView();
+       mav.setViewName("review/msgView");//어디로 보낼지 바꾸기
+       int rev_code=Integer.parseInt(req.getParameter("rev_code"));
+       
+       int cnt=dao2.delete(rev_code, dto2.getMcode());
+       if(cnt==0) {   
+          String msg="<p>해당 글 삭제 실패</p>";
+            mav.addObject("msg", msg);
+       }else {
+          String msg="<p>해당 글 삭제 성공</p>";
+            mav.addObject("msg", msg);
+       }//if end
+       
+       return mav;
+    }//delete() end
+    
+    
+    @RequestMapping(value = "reviewupdate.do", method = RequestMethod.POST)
+    public ModelAndView update(@ModelAttribute ReviewDTO dto2, HttpServletRequest req) {
+       ModelAndView mav=new ModelAndView();
+       int rev_code=Integer.parseInt(req.getParameter("rev_code"));
+       dto2= dao2.readReviewOne(rev_code);
+       
+       HttpSession session = req.getSession();      
+       String s_mem_id=session.getAttribute("s_mem_id").toString();
+       String mem_id=dto2.getMem_id();
+       
+       if(!(s_mem_id.equals(mem_id))) {//세션정보의 글의 작성자가 일치하지 않을때는 수정페이지로 넘어가지 않음
+          
+          String msg="<p> 작성자 본인만 글을 수정할 수 있습니다</p>";
+             mav.addObject("msg", msg);
+           mav.setViewName("review/msgView");
+
+       }else {
+          mav.addObject("dto2", dto2);
+           mav.setViewName("review/reviewUpdate");         
+       }
+       
+       return mav;
+    
+    }// update() end
+    
+
+    
+    
+    
+    @RequestMapping(value = "reviewupdateproc.do", method = RequestMethod.POST)
+    public ModelAndView updateproc(@ModelAttribute ReviewDTO dto2,  HttpServletRequest req) {
+       ModelAndView mav=new ModelAndView();
+       mav.setViewName("review/msgView");
+       
+       String rev_spo=Utility.checkNull(req.getParameter("rev_spo"));
+       
+       if(rev_spo.equals("O")) { 
+          dto2.setRev_spo("O");
+       }else {
+          dto2.setRev_spo("X");
+       }
+        
+       HttpSession session = req.getSession();
+       
+       String s_mem_id=session.getAttribute("s_mem_id").toString();
+       int rev_code = Integer.parseInt(req.getParameter("rev_code"));
+          
+          int cnt = dao2.updateproc(dto2, rev_code, s_mem_id);
+          
+          if(cnt==0) {
+             String msg="<p> 글 수정 실패</p>";
+                mav.addObject("msg", msg);
+          }else {
+             String msg="<p> 글 수정이 완료 되었습니다</p>";
+                mav.addObject("msg", msg);
+          }//if end
+       
+       return mav;
+    
+    }
+    
+    
+    
+    
+    
    
 }// class end

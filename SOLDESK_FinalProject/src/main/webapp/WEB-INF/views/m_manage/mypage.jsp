@@ -22,15 +22,16 @@
 			
 		<form action="<%=request.getContextPath()%>/logout.do" method="post"> 
 			
-	    	<input type="button" value="개인정보수정" onclick="location.href='member_info.do'">
+			<button type="button" class="btn btn-default btn-lg btn-block" onclick="location.href='member_info.do'">개인정보수정</button>
 	    	<br><br>
-	    	<input type="button" value="구독관리/마이파티" onclick="location.href='mysubscribe.do'">
+			<button type="button" class="btn btn-default btn-lg btn-block" onclick="location.href='mysubscribe.do'">구독관리/마이파티</button>	    	
 	    	<br><br>
-	    	<input type="button" value="나의 컨텐츠" onclick="location.href='mycontent.do'">
+			<button type="button" class="btn btn-default btn-lg btn-block" onclick="location.href='mycontent.do'">나의 컨텐츠/시청 정보</button>	    		    	
 	    	<br><br>
-	    	<input type="button" value="계좌등록 및 변경" onclick="location.href='member_bank.do'">
+			<button type="button" class="btn btn-default btn-lg btn-block" onclick="location.href='member_bank.do'">계좌등록 및 변경</button>	    		    	
+	    	
 	    	<hr>
-	    	<input type="submit" value="로그아웃">
+	    	<input type="submit" value="로그아웃" class="btn btn-danger btn-lg">
 			<br><br>
 			
 		</form>

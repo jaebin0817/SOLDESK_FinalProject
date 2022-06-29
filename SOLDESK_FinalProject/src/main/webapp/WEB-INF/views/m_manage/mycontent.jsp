@@ -16,12 +16,12 @@
 		<br>
 	</div>
 	
-	<h4><strong>${ s_mem_id }</strong> 컨텐츠 목록 </h4>
-	
-	<button onclick="location.href='/watchlist.do?mem_id=${ s_mem_id }'">시청 목록</button>
-	<button onclick="location.href='">좋아요한 컨텐츠</button>
-	<button onclick="location.href='">찜한 컨텐츠</button>
-	
+	<h4><strong>${ s_mem_id }</strong> 컨텐츠 목록 </h4><hr>
+	<div class="btn-group">
+		<button class="btn btn-danger btn-lg" onclick="location.href='/watchlist.do?mem_id=${ s_mem_id }'">시청 목록</button>
+		<button class="btn btn-danger btn-lg" onclick="location.href='">좋아요한 컨텐츠</button>
+		<button class="btn btn-danger btn-lg" onclick="location.href='">찜한 컨텐츠</button>
+	</div>
 	<br><br>
 	
 	

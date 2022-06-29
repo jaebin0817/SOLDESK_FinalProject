@@ -73,9 +73,7 @@
 	
 	<!-- 감독 배우 목록 -->	
 	<div id="people" class="container-fluid text-center">
-	  <h3>감독 / 출연</h3><br>
-		감독<br>
-		
+	  <h4><strong>감독</strong></h4>		
 		<c:forEach var="dto" items="${ directorlist }">
 			  <span class="directors">
 			   <c:choose>
@@ -96,7 +94,7 @@
 		</c:forEach>
 		<hr>
 		
-		배우<br>
+	    <h4><strong>출연</strong></h4>		
 		<c:forEach var="dto" items="${ actorlist }">
 			  
 			  <span class="actors">
@@ -119,17 +117,19 @@
 	</div>
 	<!-- 감독 배우 목록 끝 -->
 
-	<c:choose>
-		<c:when test="${ s_mem_lv=='B' }">
-			<button class="btn btn-danger" onclick="location.href='<%=request.getContextPath()%>/contlist/reviewForm.do?mcode=${ dto.mcode }'">리뷰작성하기</button>
-		</c:when>
-		<c:otherwise>
-			<h3>리뷰는 로그인 후 작성가능합니다</h3>
-		</c:otherwise>
-	</c:choose>
+	<!-- 리뷰 관련 -->
 
-	
-	
+		<!-- 리뷰 작성 버튼  -->	
+		<c:choose>
+			<c:when test="${ s_mem_lv=='B' }">
+				<button class="btn btn-danger" onclick="location.href='<%=request.getContextPath()%>/contlist/reviewForm.do?mcode=${ dto.mcode }'">리뷰작성하기</button>
+			</c:when>
+			<c:otherwise>
+				<h3>리뷰는 로그인 후 작성가능합니다</h3>
+			</c:otherwise>
+		</c:choose>
+
+		<!-- 리뷰 및 수정 삭제 버튼 -->
 	<hr>
 	<div class="mem_id">ID : ${dto2.mem_id}</div>
 	<div class="rev_title">후기 제목 : ${dto2.rev_title}</div>
@@ -138,6 +138,18 @@
 	<div class="rev_cont">한줄평 : ${dto2.rev_cont}</div>
 	<div class="rev_rate">개인 평점 : ${dto2.rev_rate}</div>
 	<div class="rev_spo">스포 여부 : ${dto2.rev_spo }</div>
+   <form method="post" action="<%=request.getContextPath()%>/reviewupdate.do?mcode=${dto.mcode}&rev_code=${dto2.rev_code } " method="POST">
+       <input type="hidden" id="rev_code" name="rev_code" value="${rev_code}">
+       <input type="submit" value="update">
+   </form>
+ 
+   <form method="post" action="reviewdelete.do?mcode=${dto.mcode}&rev_code=${dto2.rev_code } " method="POST">
+       <input type="hidden" id="rev_code" name="rev_code" value="${rev_code}">
+       <input type="submit" value="delete">
+   </form>
+
+	<!-- 리뷰 관련 끝 -->
+
 
 </div>
 
