@@ -1,5 +1,6 @@
 package kr.co.finalproject.member;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -287,6 +288,7 @@ public class MemberCont {
 		return "m_manage/member_retire";
 	}
 
+	
 	@RequestMapping(value = "/member_retire.do", method = RequestMethod.POST)
 	public ModelAndView mem_reitreProc(HttpServletRequest req) {
 		ModelAndView mav = new ModelAndView();
@@ -397,7 +399,50 @@ public class MemberCont {
 	
 	
 	
+
 	
+	
+	@RequestMapping("find_info.do")
+	public String find_info() {
+		return "m_manage/find_info";
+	}
+	
+	@RequestMapping(value = "/findidscr.do", method = RequestMethod.GET)
+	public String find_id_form() {
+		return "m_manage/findidscr";
+	}
+	
+	@RequestMapping(value = "/findpwscr.do", method = RequestMethod.GET)
+	public String find_pw_form() {
+		return "m_manage/findpwscr";
+	}
+	
+	@RequestMapping(value="/IdCheck.do", method = RequestMethod.POST)
+	public void idcheck(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			req.setCharacterEncoding("UTF-8");
+			resp.setCharacterEncoding("UTF-8");
+			
+			String mem_id = req.getParameter("mem_id");
+			PrintWriter out=resp.getWriter();
+			
+			MemberDAO dao = new MemberDAO();
+			
+			int result = dao.ckId(mem_id);
+			if(result ==1){
+				System.out.println("사용가능한 아이디입니다");
+			}else if(result == 0){
+				System.out.println("중복된 아이디입니다");
+			}
+			System.out.println(result);
+			out.write(result + "");
+			out.flush(); 
+            out.close();
+            
+		}catch (Exception e) {
+			System.out.println("응답실패: " + e);
+		}
+	}
 	
 	
 		
