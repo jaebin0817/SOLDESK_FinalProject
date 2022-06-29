@@ -7,22 +7,19 @@
 	
 	<div class="container-fluid text-center">	
 		<div class="container text-center">	
-		<table class="table">
+		<table class="table" >
 		<tr>
-			<th>글번호</th>
-			<td>${dto.qna_num}</td>
+			<td colspan="2"><h1>${dto.qna_title}</h1></td>
 		</tr>
 		<tr>
-			<th>글제목</th>
-			<td>${dto.qna_title}</td>
-		</tr>
-		<tr>
-			<th>등록일</th>
+			<th>문의날짜</th>
 			<td>${dto.qna_date}</td>
 		</tr>
 		<tr>
-			<th>내용</th>
-			<td>${dto.qna_content}</td>
+			<th colspan="2" ><h4>내용</h4></th>
+		</tr>
+		<tr height=500>
+			<td colspan="2"><h3>${dto.qna_content}</h3></td>
 		</tr>
 		<tr>
 			<th>작성자</th>
@@ -34,22 +31,42 @@
 		</tr>
 		</table>
 		${mem_id}
+		${mem_pw}
 		${msg}
 		</div>
 		
-		<form name="frm" id="frm" action="qnadelete.do" method="post" onsubmit="return IDlog()">
-            <input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
-            <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
-            <input type="hidden" id="qna_num" name="qna_num" value="${dto.qna_num}">
-            비밀번호 입력<input type="password" name="qna_pw" id="qna_pw"><br><br>
-            <input type="submit" value="문의사항삭제"  class="btn btn-danger"><br>
-            
-        </form>	
-        <form name="frm" id="frm" action="qnaupdate.do?qna_num=${dto.qna_num}" method="post" onsubmit="return IDlog2()">
-        	<input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
-            <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
-        	<input type="submit" value="문의사항수정"  class="btn btn-danger">
-        </form>
+        <c:choose>
+	          <c:when test="${ mem_id=='webmaster' }">
+	            <form name="frm" id="frm" action="qnadelete.do" method="post" onsubmit="return IDlog()">
+		            <input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
+		            <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
+		            <input type="hidden" id="qna_num" name="qna_num" value="${dto.qna_num}">
+		            <input type="submit" value="웹마스터문의사항삭제"  class="btn btn-danger">
+		        </form>	
+	            <form name="frm" id="frm" action="qnaupdate.do?qna_num=${dto.qna_num}" method="post" onsubmit="return IDlog2()">
+		        	<input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
+		            <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
+		        	<input type="submit" value="웹마스터문의사항수정"  class="btn btn-warning">
+		        </form>       
+	          </c:when>
+	          <c:otherwise>
+	          	<form name="frm" id="frm" action="qnadelete.do" method="post" onsubmit="return IDlog()">
+		            <input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
+		            <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
+		            <input type="hidden" id="qna_num" name="qna_num" value="${dto.qna_num}">
+		            <input type="hidden" name="qna_pw" id="qna_pw" value="${mem_pw}">
+		            <input type="submit" value="문의사항삭제"  class="btn btn-danger">
+		        </form>	
+	            <form name="frm" id="frm" action="qnaupdate.do?qna_num=${dto.qna_num}" method="post" onsubmit="return IDlog2()">
+		        	<input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
+		            <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
+		        	<input type="submit" value="문의사항수정"  class="btn btn-warning">
+		        </form>
+	          </c:otherwise>
+	        </c:choose>
+	        <input type="button" value="홈으로"  onclick="location.href='/home.do'" class="btn btn-success">
+		<input type="button" value="공지목록" onclick="location.href='/notice/notice.do'" class="btn btn-success">
+        
 
 	</div>
 		

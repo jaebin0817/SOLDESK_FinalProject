@@ -51,7 +51,7 @@ public class QnaCont {
 			mav.addObject("mem_lv", mem_lv);
 		}
 		mav.setViewName("qna/qnalist");
-		String paging=new Paging().paging3(totalRecord, nowPage, recordPerPage, col, word, "qna.do");
+		String paging=new Paging().paging2(totalRecord, nowPage, recordPerPage, col, word, "qna.do");
 		mav.addObject("paging",paging);
 		mav.addObject("list", dao.list3(col, word, nowPage, recordPerPage));
 
@@ -84,7 +84,9 @@ public class QnaCont {
 				String msg="<p>로그인 됨</p>";
 		        mav.addObject("msg", msg);
 		        String mem_id=session.getAttribute("s_mem_id").toString();
+		        String mem_pw=session.getAttribute("s_mem_pw").toString();
 				mav.addObject("mem_id", mem_id);
+				mav.addObject("mem_pw", mem_pw);
 			}//if end
 		}//if end
 		
@@ -93,11 +95,17 @@ public class QnaCont {
 	}//read() end
 	
 	@RequestMapping(value = "qna/qnaForm.do", method = RequestMethod.POST)
-	public ModelAndView Form() {
+	public ModelAndView Form(HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
+		
+		HttpSession session = req.getSession();
+		
+		String mem_pw=session.getAttribute("s_mem_pw").toString();
+		mav.addObject("mem_pw", mem_pw);
+		
 		mav.setViewName("qna/qnaForm");
 		return mav;
-	}//notice() end
+	}//form() end
 	
 	@RequestMapping(value = "qna/qnaProc.do", method = RequestMethod.POST)
 	public ModelAndView create(@ModelAttribute QnaDTO dto, HttpServletRequest req) {

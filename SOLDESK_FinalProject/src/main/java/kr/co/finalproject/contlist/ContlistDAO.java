@@ -708,6 +708,30 @@ public class ContlistDAO {
 			}//end
 	    	return cnt;
 	    }//end
+
+		
+		public void mrateUpdate(double mrate, int mcode) {
+	         
+	         try {
+	            con=dbopen.getConnection();
+	            
+	            sql=new StringBuilder();
+	            sql.append(" update contlist ");
+	            sql.append(" set mrate=?  ");
+	            sql.append(" where mcode=? ");
+	            
+	            pstmt=con.prepareStatement(sql.toString());
+	            pstmt.setDouble(1, mrate);
+	            pstmt.setInt(2, mcode);
+	            
+	            pstmt.executeUpdate();
+	         } catch (Exception e) {
+	            System.out.println("평점 평균 내기 실패 : " + e);
+	         }finally {
+	            DBclose.close(con,pstmt);
+	            
+	         }//end
+	      }
 		
 	    
 
