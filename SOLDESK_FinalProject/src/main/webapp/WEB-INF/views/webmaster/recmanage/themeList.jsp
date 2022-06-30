@@ -11,7 +11,7 @@
 	
 <!-- 관리자페이지 : 추천 테마 리스트 -->
 	
-  <div class="container-fluid text-center">	
+  <div class="container text-center">	
 	
 	
 	<div class="pagetitle">
@@ -20,10 +20,23 @@
 		<span><strong> 추천 테마 리스트 </strong></span>
 		<br>
 	</div>
-	
-	<input type="button" value="테마추가" onclick="location.href='/themeadd.do'" class="btn btn-danger"><br><br>
+	<br><br>
+	<input type="button" value="테마추가" onclick="location.href='/themeadd.do'" class="btn btn-danger">
 	<input type="button" value="추천글추가" onclick="location.href='/recadd.do'" class="btn btn-danger"><br><br>
 	
+	
+	<div class="row text-center">
+		<c:forEach var="dto" items="${ list }">
+	
+	      <div class="col-sm-4">
+	        <div class="thumbnail">
+	          <img src="../../storage/${ dto.t_photo }" alt="themes" width="400" height="300">
+	          <p><strong>${ dto.t_title }</strong></p>
+	          <button class="btn" onclick="location.href='theme.do?theme=${ dto.t_num }'">보러 가기</button>
+	        </div>
+	      </div>
+		</c:forEach>
+    </div>
 		
 
 
