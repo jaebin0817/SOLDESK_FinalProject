@@ -1,21 +1,18 @@
-$(document).ajaxStart(function(e) {
-	window.ajaxCheck = 1;								
-});					
-$(document).ajaxStop(function(e) { 								
-	window.ajaxCheck = null; 								
-});
+var mem_id = $(document).attr('mem_id');
+var url_href = window.location.href;
+var url = new URL(url_href);
+var isRun = false;	
+var mcode = url.searchParams.get("mcode");
+var form = { mcode : mcode, mem_id : mem_id };
 
-var form = { 
-				mcode : mcode, 
-			    mem_id : mem_id 
-		}
+function reloadDivArea(){
+	location.reload();
+}
 
 function likeCheck(){
+
 	$(document).off('click').on('click', '#likeBtn',function(){
-		var form = { 
-				mcode : mcode, 
-			    mem_id : mem_id 
-		} 
+
 		if( isRun ){
 			alert("처리중");
 			return;
@@ -29,13 +26,15 @@ function likeCheck(){
 			contentType: 'application/x-www-form-urlencoded; charset=utf-8',
 			success: function (result){
 				isRun = false;
-				if(likecnt == 0){
-					likecnt += 1;
-					alert("좋아요가 추가 되었습니다." + result);
+				if(result.like_check == 1){
+					alert("좋아요가 추가되었습니다." + result.like_check);
+					result.like_check = 0; 
 				}else {
-					likecnt -= 1;
-					alert("좋아요가 취소 되었습니다." + result)
+					alert("좋아요가 취소되었습니다." + result.like_check);
+					result.like_check = 1;
 				}
+				
+				reloadDivArea();
 			},
 			error : function(error){
 				isRun = false;
@@ -54,7 +53,7 @@ function watchCheck(){
 			return;
 		}
 		isRun = true;
-		
+		var watchcnt = $('#watchcheck').val();
 		$.ajax({
 			url : "/content_criwatch.do",
 			type : "post",
@@ -65,11 +64,12 @@ function watchCheck(){
 				isRun = false;
 				if(watchcnt == 0){
 					watchcnt += 1;
-					alert("이 컨텐츠를 보았습니다. " + result);
+					alert("이 컨텐츠를 보았습니다. " + watchcnt);
 				}else {
 					watchcnt -= 1;
-					alert("이 컨텐츠를 보질 않았습니다." + result)
+					alert("이 컨텐츠를 보질 않았습니다." + watchcnt)
 				}
+				reloadDivArea();
 				
 				
 			},
@@ -90,6 +90,7 @@ function pointCheck(){
 			return;
 		}
 		isRun = true;
+ehch
 		$.ajax({ 
 			url : "/content_cripoint.do",
 			type : "POST",
@@ -98,13 +99,8 @@ function pointCheck(){
 			contentType: 'application/x-www-form-urlencoded; charset=utf-8',
 			success: function (result){
 				isRun = false;
-				if(pointcnt == 0){
-					pointcnt += 1;
-					alert("찜 하였습니다." + result);
-				}else {
-					pointcnt -= 1;
-					alert("찜하지 않았습니다." + result)
-				}
+				
+				reloadDivArea();
 			},
 			error : function(error){
 				isRun = false;
