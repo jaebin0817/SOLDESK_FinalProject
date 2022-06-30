@@ -21,7 +21,7 @@
 		<br>
 	</div>
 	
-		<button class="btn btn-danger" onclick="location.href='<%=request.getContextPath()%>/reclist.do'">글목록</button><br><br>
+		<button class="btn btn-danger" onclick="location.href='<%=request.getContextPath()%>/themelist.do'">테마목록</button><br><br>
 
 	<div id="recfrmarea">
 	

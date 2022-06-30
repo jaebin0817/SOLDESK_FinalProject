@@ -16,10 +16,10 @@
 			${dto.n_readcnt}
 			${msg}
 			<form name="frm" method="post" action="<%=request.getContextPath()%>/notice/noticedelelte.do?n_num=${dto.n_num}">
-			<input type="submit" value="공지삭제하기"  class="btn btn-success">
+			<input type="submit" value="공지삭제하기"  class="btn btn-default">
 			</form>
 			<form name="frm" method="post" action="<%=request.getContextPath()%>/notice/noticeupdate.do?n_num=${dto.n_num}">
-			<input type="submit" value="공지수정하기"  class="btn btn-success">
+			<input type="submit" value="공지수정하기"  class="btn btn-default">
 			</form>
 			<a href="<%=request.getContextPath()%>/notice/noticeupdate.do?n_num=${dto.n_num}">수정하기</a>
 			<a href="<%=request.getContextPath()%>/notice/noticedelelte.do?n_num=${dto.n_num}">삭제하기</a>

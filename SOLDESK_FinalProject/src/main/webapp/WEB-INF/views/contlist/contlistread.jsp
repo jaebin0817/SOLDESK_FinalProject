@@ -60,9 +60,9 @@
 		</c:when>
 		<c:otherwise>
 			<div class="btn-group">
-				<button class="btn btn-danger btn-lg" onclick="likeCheck()">😍 좋아요</button>
-				<button class="btn btn-danger btn-lg" onclick="watchCheck()">✔ 봤어요</button>
-				<button class="btn btn-danger btn-lg" onclick="pointCheck()">♥ 찜하기</button>
+				<button class="btn btn-danger btn-lg" type="button" id="likeBtn" onclick="likeCheck()">😍 좋아요</button>
+				<button class="btn btn-danger btn-lg" type="button" id="watchBtn" onclick="watchCheck()">✔ 봤어요</button>
+				<button class="btn btn-danger btn-lg" type="button" id="pointBtn" onclick="pointCheck()">♥ 찜하기</button>
 		 	</div>
 		</c:otherwise>
 		</c:choose>
@@ -121,7 +121,7 @@
 
 		<!-- 리뷰 작성 버튼  -->	
 		<c:choose>
-			<c:when test="${ s_mem_lv=='B' }">
+			<c:when test="${ s_mem_lv=='B' || s_mem_lv=='A' }">
 				<button class="btn btn-danger" onclick="location.href='<%=request.getContextPath()%>/contlist/reviewForm.do?mcode=${ dto.mcode }'">리뷰작성하기</button>
 			</c:when>
 			<c:otherwise>
@@ -161,7 +161,12 @@
 		}
 		return true;
 	}//IDlog() end
-
+	var pointcnt = 0, likecnt = 0, watchcnt=0;
+	var mem_id = $(document).attr('mem_id');
+	var url_href = window.location.href;
+	var url = new URL(url_href);
+	var isRun = false;	
+	var mcode = url.searchParams.get("mcode");
 	</script>
 
 <!-- 본문끝 -->

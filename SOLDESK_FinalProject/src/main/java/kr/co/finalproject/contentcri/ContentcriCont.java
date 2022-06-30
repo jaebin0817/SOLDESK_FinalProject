@@ -12,23 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.finalproject.contlist.ContlistDTO;
+
 
 @Controller
 public class ContentcriCont {
 	private ContentcriDAO dao = null;
-
+	
 	int cnt = 0, like_check, watch_check, point_check;
 	public ContentcriCont() {
 		dao = new ContentcriDAO();
 		System.out.println("-----ContentcriCont() 객체 생성");
 	}
-	@RequestMapping(value= "content_cri.do", method = RequestMethod.GET)
-	public String content_cri() {
-		return "content_cri/content_cri";
-	}
+
 	
 	@ResponseBody
-	@RequestMapping(value= "content_crilike.do", method = RequestMethod.POST)
+	@RequestMapping(value= "/content_crilike.do", method = RequestMethod.POST)
 	public void cri_like(HttpServletRequest req, ContentcriDTO dto, HttpServletResponse resp) {
 		
 		try {
@@ -41,6 +40,8 @@ public class ContentcriCont {
 			ContentcriDTO cri_dto = dto;
 			cri_dto.setMem_id(mem_id);
 			cri_dto.setMcode(mcode);
+			ContlistDTO listdto = new ContlistDTO();
+			listdto.setMcode(mcode);
 			
 			//System.out.println(mcode);
 			//System.out.println(mem_id);
@@ -50,6 +51,7 @@ public class ContentcriCont {
 				like_check = 1;
 				cri_dto.setCri_like(like_check);
 				dao.insert(cri_dto);
+				dao.listlike_update(cri_dto, listdto);
 			}else {
 				if(like_check == 1) {
 					like_check = 0;
@@ -60,6 +62,7 @@ public class ContentcriCont {
 				System.out.println(like_check);
 				cri_dto.setCri_like(like_check);
 				dao.like_update(cri_dto);
+				dao.listlike_update(cri_dto, listdto);
 			}
 			
 			System.out.println("like_check: "+like_check+" watch_check: "+ watch_check + " point_check: " + point_check);
@@ -73,12 +76,13 @@ public class ContentcriCont {
 			
 			System.out.println("서버 응답 실패");
 			
-		}		
+		}
+
 		
 	}//cri_like() end
 
 	@ResponseBody
-	@RequestMapping(value= "content_criwatch.do", method = RequestMethod.POST)
+	@RequestMapping(value= "/content_criwatch.do", method = RequestMethod.POST)
 	public void cri_watch(HttpServletRequest req, ContentcriDTO dto, HttpServletResponse resp) {
 		try {
 			
@@ -124,7 +128,7 @@ public class ContentcriCont {
 	}//cri_watch() end
 	
 	@ResponseBody
-	@RequestMapping(value= "content_cripoint.do", method = RequestMethod.POST)
+	@RequestMapping(value= "/content_cripoint.do", method = RequestMethod.POST)
 	public void cri_point(HttpServletRequest req, ContentcriDTO dto, HttpServletResponse resp) {
 		
 		try {

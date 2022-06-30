@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-
+import kr.co.finalproject.contlist.ContlistDTO;
 import net.utility.DBclose;
 import net.utility.DBopen;
 
@@ -70,6 +70,34 @@ public class ContentcriDAO {
     	
     	return cnt;
     }//like_update() end
+    
+    public int listlike_update(ContentcriDTO dto, ContlistDTO dto2) {
+    	int cnt = 0;
+    	try {
+    		con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" UPDATE contlist JOIN content_critic ");
+			sql.append(" ON contlist.mcode = content_critic.mcode ");
+			sql.append(" SET contlist.cri_like = "
+					+ "(SELECT SUM(content_critic.cri_like) FROM content_critic "
+					+ "WHERE content_critic.mcode = ?) ");
+			sql.append(" WHERE contlist.mcode = ? ");
+			
+			pstmt=con.prepareStatement(sql.toString());
+			
+			pstmt.setInt(1, dto.getMcode());
+			pstmt.setInt(2, dto2.getMcode());
+			
+			cnt = pstmt.executeUpdate();
+			System.out.println("dao 성공");
+    	}catch (Exception e) {
+			System.out.println("컨텐츠 좋아요 합 수정 실패: "+ e);
+		}finally {
+			DBclose.close(con, pstmt);
+		}
+    	
+    	return cnt;
+    }//listlike_update() end
     
     public int watch_update(ContentcriDTO dto) {
 		int cnt = 0;

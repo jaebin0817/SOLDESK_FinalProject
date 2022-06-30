@@ -21,16 +21,18 @@
 		<br>
 	</div>
 	<br><br>
-	<input type="button" value="테마추가" onclick="location.href='/themeadd.do'" class="btn btn-danger">
-	<input type="button" value="추천글추가" onclick="location.href='/recadd.do'" class="btn btn-danger"><br><br>
-	
+	<c:if test="${ s_mem_lv=='A' }">
+	<input type="button" value="테마추가" onclick="location.href='/themeadd.do'" class="btn btn-danger"><hr>	
+	</c:if>
 	
 	<div class="row text-center">
 		<c:forEach var="dto" items="${ list }">
 	
 	      <div class="col-sm-4">
 	        <div class="thumbnail">
+	          <a href='theme.do?theme=${ dto.t_num }'>
 	          <img src="../../storage/${ dto.t_photo }" alt="themes" width="400" height="300">
+	          </a>
 	          <p><strong>${ dto.t_title }</strong></p>
 	          <button class="btn" onclick="location.href='theme.do?theme=${ dto.t_num }'">보러 가기</button>
 	        </div>

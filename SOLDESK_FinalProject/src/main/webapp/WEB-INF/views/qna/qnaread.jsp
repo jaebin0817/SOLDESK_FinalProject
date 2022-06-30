@@ -46,7 +46,7 @@
 	            <form name="frm" id="frm" action="qnaupdate.do?qna_num=${dto.qna_num}" method="post" onsubmit="return IDlog2()">
 		        	<input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
 		            <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
-		        	<input type="submit" value="웹마스터문의사항수정"  class="btn btn-warning">
+		        	<input type="submit" value="웹마스터문의사항수정"  class="btn btn-danger">
 		        </form>       
 	          </c:when>
 	          <c:otherwise>
@@ -55,17 +55,18 @@
 		            <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
 		            <input type="hidden" id="qna_num" name="qna_num" value="${dto.qna_num}">
 		            <input type="hidden" name="qna_pw" id="qna_pw" value="${mem_pw}">
-		            <input type="submit" value="문의사항삭제"  class="btn btn-danger">
+		            <input type="submit" value="문의사항삭제"  class="btn btn-default">
 		        </form>	
 	            <form name="frm" id="frm" action="qnaupdate.do?qna_num=${dto.qna_num}" method="post" onsubmit="return IDlog2()">
 		        	<input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
 		            <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
-		        	<input type="submit" value="문의사항수정"  class="btn btn-warning">
+		        	<input type="submit" value="문의사항수정"  class="btn btn-default">
 		        </form>
 	          </c:otherwise>
 	        </c:choose>
-	        <input type="button" value="홈으로"  onclick="location.href='/home.do'" class="btn btn-success">
-		<input type="button" value="공지목록" onclick="location.href='/notice/notice.do'" class="btn btn-success">
+	    <hr>
+	    <input type="button" value="홈으로"  onclick="location.href='/home.do'" class="btn btn-default">
+		<input type="button" value="Q&A목록" onclick="location.href='/qna/qna.do'" class="btn btn-default">
         
 
 	</div>
