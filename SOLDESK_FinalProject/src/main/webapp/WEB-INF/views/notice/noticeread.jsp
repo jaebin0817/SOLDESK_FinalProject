@@ -28,8 +28,8 @@
 			<td>${dto.n_readcnt}</td>
 		</tr>
 		</table>
-		<input type="button" value="홈으로"  onclick="location.href='/home.do'" class="btn btn-success">
-		<input type="button" value="공지목록" onclick="location.href='/notice/notice.do'" class="btn btn-success">
+		<input type="button" value="홈으로"  onclick="location.href='/home.do'" class="btn btn-default">
+		<input type="button" value="공지목록" onclick="location.href='/notice/notice.do'" class="btn btn-default">
 		</div>
 	</div>
 

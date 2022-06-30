@@ -32,6 +32,7 @@
     <div>
       <ul class="nav navbar-nav navbar-right">
 	      	<li><a href="<%=request.getContextPath()%>/contlist/contlist.do">컨텐츠</a></li>
+	      	<li><a href="<%=request.getContextPath()%>/themelist.do">추천작</a></li>
 	        <li><a href="<%=request.getContextPath()%>/party/partyadd.do">파티매칭</a></li>
 	        <c:choose>
 	          <c:when test="${ s_mem_id==null || s_mem_pw==null || s_mem_lv==null }">

@@ -6,22 +6,9 @@
 
 <%@ include file="../../header.jsp"%>
 
-<script src="../ckeditor/ckeditor.js"></script>
-<script>CKEDITOR.replace( 'ckeditor', {});</script>
-<script> 
+<script type="text/javascript" src="../../js/search_suggest.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
 
-	ClassicEditor 
-		.create( document.querySelector( '#content' ),{
-			language: 'ko',
-			removePlugins: [ 'ImageUpload' ]
-		} )
-		.then( newEditor => {
-	    	editor = newEditor;
-		} )
-		.catch( error => { console.error( error ); } 
-		); 
-
-</script>
 <!-- 본문시작 recForm.jsp -->
 	
 	
@@ -37,33 +24,94 @@
 		<br><br>
 	</div>
 	
-	<button class="btn btn-danger" onclick="location.href='<%=request.getContextPath()%>/reclist.do'">글목록</button><br><br>
+	<button class="btn btn-danger" onclick="location.href='<%=request.getContextPath()%>/themelist.do'">테마목록</button><br><br>
 
 	<div id="recfrmarea">
 	
-		<form name="recfrm" id="recfrm" method="post" action="recins.do" onsubmit="return recCheck()"> <!-- myscript.js에 함수 작성함 -->
+		<form name="recfrm" id="recfrm" method="post" action="recins.do" enctype="multipart/form-data" onsubmit="return recCheck()"> <!-- myscript.js에 함수 작성함 -->
 		<table class="table" style="margin:auto;">
-		<tr>
-		   <th>제목</th>
-		   <td><input type="text" name="subject" id="subject" class="form-control" maxlength="100" required></td>
-		</tr>
-		<tr><td colspan="2"></td></tr>
+			<tr>
+			   <th>제목</th>
+			   <td colspan="2"><input type="text" name="r_title" id="r_title" class="form-control" maxlength="30" required></td>
+			</tr>
+			<tr>
+			   <th rowspan="2">추천콘텐츠</th>
+			   <td id="">
+			     <input type="text" name="mcodes" id="mcodes" class="form-control" maxlength="30" placeholder="추천컨텐츠1: 콘텐츠제목을 입력해주세요" onkeydown="search(this.value)" required>
+			   </td>
+			   <td>
+			    	<img src="../../images/plus_icon.png" id="content_plus" name="director_plus" width="20px">	      	    
+			    	<img src="../../images/minus_icon.png" id="content_minus" name="director_minus" width="20px">	      	    
+			   </td>
+			</tr>
+			<tr>
+			   <td colspan="2" id="suggest">
+
+			   </td>
+			</tr>
+			<tr>
+			   <th>대표사진</th>
+			   <td colspan="2"><input type="file" name="r_photoMF" id="r_photoMF" class="form-control" required></td>
+			</tr>			
+			<tr>
+			   <th colspan="3"></th>
+			</tr>
 		</table> 
 		
-		<textarea name="content" id="content"></textarea>
+		<textarea name="r_content" id="r_content"></textarea>
+		<input type="hidden" name="m" id="m" value="1">
+		<input type="hidden" name="t_num" id="t_num" value="${ t_num }">
 		
 		<br>
 		<div id="btnArea">
-			<input id="bbsBtn" type="submit" value="쓰기" class="btn">
-		    <input id="bbsBtn" type="reset"  value="취소" class="btn">
+			<input type="submit" value="쓰기" class="btn btn-default">
+		    <input type="reset"  value="취소" class="btn btn-default">
 		</div>
+
 		</form>
 		
 	</div>	
 
+<script> 
 
-
+	ClassicEditor 
+	.create( document.querySelector( '#r_content' ),{
+		language: 'ko',
+		removePlugins: [ 'MediaEmbed', 'ImageUpload', 'EasyImage' ],		
+	} )
+	.then( newEditor => {
+		editor = newEditor;
+	} )
+	.catch( error => { console.error( error ); } 
+	); 
 	
+	
+    var m=1;
+    
+    $("#content_plus").click(function(){
+		
+    	m++;        	
+    	$("#mcodes").append("<input type='text' name='mcode"+m+"' id='mcode"+m+"' class='form-control' onkeydown='search(this.value)' placeholder='추천컨텐츠"+m+": 콘텐츠제목을 입력해주세요'>");
+    	$("#m").attr('value', m);
+       
+    });      
+
+    
+    $("#content_minus").click(function(){			
+    	
+    	if(m>1){
+        	$("#mcode"+m).remove();
+        	m--; 
+        	$("#m").attr('value', m);
+    	}else{
+        	$("#mcode"+m).attr('value', '');
+    		alert("최소 1개 이상의 추천 콘텐츠를 입력해주세요");
+    	}
+    });   
+
+
+
+</script>
 
 
 </div>

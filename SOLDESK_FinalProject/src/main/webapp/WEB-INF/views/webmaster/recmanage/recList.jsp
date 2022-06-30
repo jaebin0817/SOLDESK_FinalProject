@@ -18,25 +18,31 @@
 		<br>
 		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
 		<span><strong> 추천글 리스트 </strong></span>
-		<br>
+		<h4>${ dto.t_title }</h4>
 	</div>
 
-	<br><br>
-	<input type="button" value="테마추가" onclick="location.href='/themeadd.do'" class="btn btn-danger">
-	<input type="button" value="추천글추가" onclick="location.href='/recadd.do'" class="btn btn-danger"><br><br>
-	
+	<br>
+	<c:if test="${ s_mem_lv=='A' }">	
+		<input type="button" value="테마추가" onclick="location.href='/themeadd.do'" class="btn btn-danger">
+		<input type="button" value="추천글추가" onclick="location.href='/recadd.do?t_num=${ dto.t_num }'" class="btn btn-danger"><br><br>
+	</c:if>
 	<div class="row text-center">
 		<c:forEach var="dto" items="${ list }">
 
 
 			    <div class="col-sm-3">
-			      <img src="../../storage/${ dto.r_photo }" alt="theme" class="img-responsive margin" style="width:100%">
+			      
+			      <a href="/themeread.do?r_num=${ dto.r_num }">
+			      	<img src="../../storage/${ dto.r_photo }" alt="theme" class="img-responsive margin" style="width:100%">
+			      </a>
 			      <p>${ dto.r_title }</p>
 
 			    </div>
 
 		</c:forEach>
     </div>
+
+	<button class="btn btn-danger" onclick="location.href='themelist.do'">테마목록</button>
 
 
   </div>	

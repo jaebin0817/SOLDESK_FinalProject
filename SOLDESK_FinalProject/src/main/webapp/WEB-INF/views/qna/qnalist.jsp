@@ -59,7 +59,7 @@
 		</table>
 		</div>
 		<form name="frm" id="frm" method="post" action="qnaForm.do" onsubmit="return IDlog(${mem_lv})">
-            <input type="submit" value="문의사항등록"  class="btn btn-danger">
+            <input type="submit" value="문의사항등록"  class="btn btn-default">
         </form>
 	</div>
 		
