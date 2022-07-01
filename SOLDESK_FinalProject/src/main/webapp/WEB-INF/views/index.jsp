@@ -30,6 +30,7 @@
     </div>
     <div>
       <ul class="nav navbar-nav navbar-right">
+	      	<li><a href="contlist/contlistajax.do">컨텐츠AJAX</a></li>
 	      	<li><a href="contlist/contlist.do">컨텐츠</a></li>
 	      	<li><a href="themelist.do">추천작</a></li>
 	        <li><a href="party/partyadd.do">파티매칭</a></li>
@@ -100,7 +101,27 @@
 	</div>
 	<!-- OTT랭킹 끝 -->
 	
-	<!-- 추천 컨텐츠 -->
+	<!-- 추천작 테마 -->
+	<div id="rec_list" class="container-fluid text-center">
+		<h3>볼까말까 고민된다면⁉</h3><br>	
+		<div class="row text-center">
+			<c:forEach var="dto" items="${ themes }">
+		
+		      <div class="col-sm-4">
+		        <div class="thumbnail">
+		          <a href='themeread.do?r_num=${ dto.r_num }'>
+		          <img src="../../storage/${ dto.r_photo }" alt="themes" width="400" height="300">
+		          </a>
+		          <p><strong>${ dto.r_title }</strong></p>
+		        </div>
+		      </div>
+			</c:forEach>
+	    </div>
+	</div>    	
+	<!-- 추천작 테마 끝 -->
+	
+	
+	<!-- 최신 컨텐츠 -->
 		
 	<div id="cont_list" class="container-fluid text-center">
 		<h3>오늘 이거 볼까요? 👀</h3><br>

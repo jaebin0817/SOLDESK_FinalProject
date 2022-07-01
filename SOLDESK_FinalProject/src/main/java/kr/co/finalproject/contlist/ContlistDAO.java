@@ -596,7 +596,7 @@ public class ContlistDAO {
 				if(word.length()>=1) {
 					String search="";
 					if(col.equals("mcode")) {
-						search+= " WHERE mcode LIKE '%" + word + "%' ";
+						search+= " WHERE mcode=" + word;
 					}else if(col.equals("mtitle")) {
 						search+= " WHERE mtitle LIKE '%" + word + "%' ";
 					}//if end
@@ -622,37 +622,27 @@ public class ContlistDAO {
 		public ArrayList<ContlistDTO> list(String col,String word, int nowPage, int recordPerPage){
 	    	ArrayList<ContlistDTO> list=null;
 	    	
-	    	int startRow = ((nowPage-1) * recordPerPage) + 1 ;
-	        int endRow   = nowPage * recordPerPage;
+	    	int startRow = ((nowPage-1) * recordPerPage) ;
 	    	try {
 	    		con=dbopen.getConnection(); 
 				sql=new StringBuilder();
-				
-				if(word.length()==0) { 
-					sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor ");
-		            sql.append(" FROM( SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor, @RNO := @RNO + 1 AS r ");
-		            sql.append("       FROM ( ");
-		            sql.append("              SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor ");
-		            sql.append("              FROM contlist ORDER BY mcode DESC)A, (SELECT @RNO := 0) B ");
-		            sql.append("           )C");
-		            sql.append(" WHERE r>=" + startRow + " AND r<=" + endRow) ;
-				}else {
-					sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor ");
-		            sql.append(" FROM( SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor, @RNO := @RNO + 1 AS r ");
-		            sql.append("       FROM ( ");
-		            sql.append("              SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor ");
-		            sql.append("              FROM contlist  ");
-		            String search="";
+
+				sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor ");
+	            sql.append(" FROM contlist ");
+					            
+	            if(word.length()!=0) { 
+			        String search="";
 					if(col.equals("mcode")) {
-						search+= " WHERE mcode LIKE '%" + word + "%' ";
+						search+= " WHERE mcode=" + word ;
 					}else if(col.equals("mtitle")) {
 						search+= " WHERE mtitle LIKE '%" + word + "%' ";
-					}//if end
-					sql.append(search);
-		            sql.append("              				ORDER BY mcode DESC)A, (SELECT @RNO := 0) B ");
-		            sql.append("           )C");
-		            sql.append(" WHERE r>=" + startRow + " AND r<=" + endRow) ;
-				}
+					}
+					sql.append(search);	            
+	            }	
+
+	            sql.append(" ORDER BY mcode DESC ");
+	            sql.append(" LIMIT " + startRow + ", " + recordPerPage);
+				
 			pstmt=con.prepareStatement(sql.toString());
 		    rs=pstmt.executeQuery();
 		    if(rs.next()) {

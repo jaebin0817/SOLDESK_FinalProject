@@ -5,6 +5,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>    
     
 <%@ include file="../header.jsp"%>
+
+<script type="text/javascript" src="../js/member_action.js"></script>
+
 <!-- 본문시작 member_join.jsp -->
 	
 <!-- 회원 가입 시작 -->
@@ -26,27 +29,29 @@
 		    <th>아이디*</th>
 		    <td>
 		      <input type="text" class="form-control" name="mem_id" id="mem_id" size="10" required>
+		      <font id="checkId" size="2"></font>
 		    </td>
-		    <td>  
-		      <input type="button" class="btn" value="ID 중복확인" onclick="">
+		    <td>
+		      <input type="button" class="btn" value="ID 중복확인" id="idcheck" onclick="idCheck()">
 		    </td>
 		</tr>
 		<tr>
 		    <th>이메일*</th>
 		    <td>
-      		  <input type="text" class="form-control" name="mem_phone" id="mem_phone" required>
+      		  <input type="email" class="form-control" name="mem_email" id="mem_email" required>
 		    </td>
 		    <td>
-		      <input type="button" class="btn" value="Email 중복확인" onclick="" required>
+		      <input type="button" class="btn" value="Email 중복확인" id="emailcheck" onclick="emailCheck()">
 		    </td>
 		</tr>
 		<tr>
 		    <th>생년월일*</th>
 		    <td>
-		      <input type="text" class="form-control" name="mem_birth" id="mem_birth" size="8" placeholder="예) 800101-1">
+		      <input type="text" class="form-control" name="mem_birth" id="mem_birth" size="8" placeholder="예) 800101-1" onmousedown="">
+		   
 		    </td>
 		    <td>  
-
+			  <input type="button" class ="btn" value="생일 유형 체크" onclick="birthCheck()">
 		    </td>
 		</tr>
 		<tr>
@@ -61,14 +66,16 @@
 		    <td>
 		      <input type="password" class="form-control" name="re_pw" id="re_pw" size="20" required>
 		    </td>
-		    <td></td>
+		    <td>
+		      <input type="button" class="btn" value="비밀번호 일치 " onclick="pwCheck()">
+		    </td>
 		</tr>
 		<tr>
 		    <th>연락처*</th>
 		    <td>
 		      <input type="text" class="form-control" name="mem_phone" id="mem_phone" required>
+		      <font id ="checkphone" size="2"></font>
 		    </td>
-		    <td></td>
 		</tr>
 
 		

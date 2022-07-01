@@ -400,17 +400,45 @@ public class MemberCont {
 	
 	
 
-	
-	
 	@RequestMapping("find_info.do")
 	public String find_info() {
 		return "m_manage/find_info";
 	}
 	
 	@RequestMapping(value = "/findidscr.do", method = RequestMethod.GET)
-	public String find_id_form() {
+	public String findid_form() {
 		return "m_manage/findidscr";
 	}
+	
+	@RequestMapping(value="/find_id.do", method = RequestMethod.POST)
+	public void findid_Proc(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			req.setCharacterEncoding("UTF-8");
+			resp.setCharacterEncoding("UTF-8");
+			
+			String mem_email = req.getParameter("mem_email");
+			String mem_phone = req.getParameter("mem_phone");
+			PrintWriter out = resp.getWriter();
+			
+			MemberDAO dao = new MemberDAO();
+			
+			int result = dao.findId(mem_phone, mem_email);
+			if(result == 0) {
+				System.out.println("아이디를 찾았습니다.");
+			}else {
+				System.out.println("아이디가 없습니다.");
+			}
+			
+			System.out.println(result);
+			out.write(result + "");
+			out.flush(); 
+            out.close();
+			
+		}catch(Exception e) {
+			System.out.println("서버 연결 실패");
+		}
+	}
+	
 	
 	@RequestMapping(value = "/findpwscr.do", method = RequestMethod.GET)
 	public String find_pw_form() {
@@ -419,6 +447,7 @@ public class MemberCont {
 	
 	@RequestMapping(value="/IdCheck.do", method = RequestMethod.POST)
 	public void idcheck(HttpServletRequest req, HttpServletResponse resp) {
+		
 		try {
 			req.setCharacterEncoding("UTF-8");
 			resp.setCharacterEncoding("UTF-8");
@@ -433,6 +462,35 @@ public class MemberCont {
 				System.out.println("사용가능한 아이디입니다");
 			}else if(result == 0){
 				System.out.println("중복된 아이디입니다");
+			}
+			System.out.println(result);
+			out.write(result + "");
+			out.flush(); 
+            out.close();
+            
+		}catch (Exception e) {
+			System.out.println("응답실패: " + e);
+		}
+	}
+	
+	
+	@RequestMapping(value="/EmailCheck.do", method = RequestMethod.POST)
+	public void emailcheck(HttpServletRequest req, HttpServletResponse resp) {
+		
+		try {
+			req.setCharacterEncoding("UTF-8");
+			resp.setCharacterEncoding("UTF-8");
+			
+			String mem_email = req.getParameter("mem_email");
+			PrintWriter out=resp.getWriter();
+			
+			MemberDAO dao = new MemberDAO();
+			
+			int result = dao.ckEmail(mem_email);
+			if(result ==1){
+				System.out.println("사용가능한 이메일입니다");
+			}else if(result == 0){
+				System.out.println("중복된 이메일입니다");
 			}
 			System.out.println(result);
 			out.write(result + "");

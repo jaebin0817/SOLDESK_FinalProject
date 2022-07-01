@@ -55,6 +55,60 @@ public class ContlistController {
       return mav;
    }
    
+   
+   @RequestMapping("/contlist/contlistajax.do")
+   public ModelAndView contlistAjax() {
+      ModelAndView mav = new ModelAndView();
+
+      ArrayList<ContlistDTO> list = null;
+      
+      int nowPage=1;
+      int recordPerPage=8;
+      String col ="";
+      String word="";
+      
+      list = dao.list(col, word, nowPage, recordPerPage);
+      
+      mav.setViewName("contlist/contlistAjax");
+      mav.addObject("list", list);
+      mav.addObject("nowPage", nowPage);
+
+      return mav;
+   }
+   
+   
+   
+    @ResponseBody	
+	@RequestMapping("contlist/morecontents.do")
+	private ArrayList<ContlistDTO> morecontents(@RequestParam Map<String, Object> map) {
+		
+       ArrayList<ContlistDTO> list = null;
+   	
+		try {
+			
+			String strNowPage= (String)map.get("nowPage");
+			int nowPage = Integer.parseInt(strNowPage);
+			
+			//System.out.println(nowPage);
+			
+		      int recordPerPage=8;
+		      String col ="";
+		      String word="";
+			
+		    list = dao.list(col, word, nowPage, recordPerPage);
+		    
+		    //System.out.println(list);
+		    
+		}catch (Exception e) {
+			System.out.println("응답실패: " + e);
+		}
+		
+		return list;
+		
+	}//morecontents() end
+   
+   
+   
 
    @RequestMapping("contlist/contlistread.do")
    public ModelAndView contlistread(ContlistDTO dto, ReviewDTO dto2, SearchKeyDTO dto3, PeopleDTO pdto, HttpServletRequest req) {
@@ -110,15 +164,18 @@ public class ContlistController {
 
     	  actorlist.add(pdao.readActor(pno));
       }
-     
-      dto2 = dao2.reviewAll(mcode);
+      
+      ArrayList<ReviewDTO> reviewlist = new ArrayList<ReviewDTO>();
+      
+      reviewlist = dao2.reviewRead(mcode);
       mav.setViewName("contlist/contlistread");
       mav.addObject("dto", dto);
-      mav.addObject("dto2", dto2);
       mav.addObject("keylist",keylist);
       mav.addObject("keycodelist",keycodelist);
       mav.addObject("directorlist",directorlist);
       mav.addObject("actorlist",actorlist);
+      mav.addObject("reviewlist",reviewlist);
+
       
       return mav;
    }

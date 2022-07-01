@@ -36,8 +36,8 @@
 			</tr>
 			<tr>
 			   <th rowspan="2">추천콘텐츠</th>
-			   <td id="">
-			     <input type="text" name="mcodes" id="mcodes" class="form-control" maxlength="30" placeholder="추천컨텐츠1: 콘텐츠제목을 입력해주세요" onkeydown="search(this.value)" required>
+			   <td id="recContents">
+			     <input type="text" name="content1" id="content1" class="form-control" maxlength="30" placeholder="추천컨텐츠1: 콘텐츠제목을 입력해주세요" onkeydown="search(this.value)" required>
 			   </td>
 			   <td>
 			    	<img src="../../images/plus_icon.png" id="content_plus" name="director_plus" width="20px">	      	    
@@ -91,7 +91,7 @@
     $("#content_plus").click(function(){
 		
     	m++;        	
-    	$("#mcodes").append("<input type='text' name='mcode"+m+"' id='mcode"+m+"' class='form-control' onkeydown='search(this.value)' placeholder='추천컨텐츠"+m+": 콘텐츠제목을 입력해주세요'>");
+    	$("#recContents").append("<input type='text' name='content"+m+"' id='content"+m+"' class='form-control' onkeydown='search(this.value)' placeholder='추천컨텐츠"+m+": 콘텐츠제목을 입력해주세요'>");
     	$("#m").attr('value', m);
        
     });      
@@ -100,11 +100,11 @@
     $("#content_minus").click(function(){			
     	
     	if(m>1){
-        	$("#mcode"+m).remove();
+        	$("#content"+m).remove();
         	m--; 
         	$("#m").attr('value', m);
     	}else{
-        	$("#mcode"+m).attr('value', '');
+        	$("#content"+m).attr('value', '');
     		alert("최소 1개 이상의 추천 콘텐츠를 입력해주세요");
     	}
     });   

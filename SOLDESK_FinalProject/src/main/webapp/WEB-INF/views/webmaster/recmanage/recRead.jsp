@@ -6,10 +6,8 @@
 
 <%@ include file="../../header.jsp"%>
 
-<!-- 본문시작 recList.jsp -->
-	
-	
-<!-- 관리자페이지 : 테마별 추천글 리스트 -->
+<!-- 본문시작 recRead.jsp -->
+<!-- 테마별 추천글 상세보기 -->
 	
   <div class="container text-center">	
 	
@@ -63,7 +61,32 @@
     <button class="btn btn-danger" onclick="location.href='theme.do?theme=${ dto.t_num }'">추천글목록</button>
 
 
-  </div>	
+	<!-- 수정 삭제 버튼 -->	
+	<c:if test="${ s_mem_lv=='A' }">
+		<hr>	
+		<input type="button" value="삭제" class="btn btn-default"  onclick="deleteCheck()">
+		<input type="button" value="수정" onclick="location.href='/recupdate.do?t_num=${ dto.t_num }&r_num=${ dto.r_num }'" class="btn btn-default"><br><br>
+	</c:if>
+
+
+  </div>
+  
+  <script>
+  
+  	function deleteCheck(){  		
+  		var result = confirm("관련 파일도 모두 삭제 됩니다.\n정말로 삭제하시겠습니까?"); 		
+  		if(result){
+  			location.replace('/recdelete.do?t_num=${ dto.t_num }&r_num=${ dto.r_num }');
+  		}		
+  	}//deleteCheck() end
+  	
+  	
+  	
+  	
+  	
+  
+  </script>
+  	
 
 
 <!-- 본문끝 -->
