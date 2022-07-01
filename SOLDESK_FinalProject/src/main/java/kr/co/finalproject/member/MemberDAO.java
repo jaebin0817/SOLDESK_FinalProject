@@ -361,6 +361,62 @@ public class MemberDAO {
 		
 		return result;
 	}
+
+	
+	public int ckEmail(String mem_email) {
+		int result = -1;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT mem_email ");
+			sql.append(" FROM member_info ");
+			sql.append(" WHERE mem_email=? ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, mem_email);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = 0;
+			}else {
+				result = 1;
+			}
+			
+		}catch (Exception e) {
+			System.out.println("이메일 체크 실패: "+e);
+		}
+		
+		return result;
+	}
+
+	public int findId(String mem_phone, String mem_email) {
+		int result = 0;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT mem_id ");
+			sql.append(" FROM member_info ");
+			sql.append(" WHERE mem_email=? AND mem_phone=? ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, mem_phone);
+			pstmt.setString(2, mem_email);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = 0;
+			}else {
+				result = 1;
+			}
+			
+		}catch (Exception e) {
+			System.out.println("이메일 체크 실패: "+e);
+		}
+		
+		return result;
+	}
 	
 	
 }//class end

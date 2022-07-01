@@ -89,7 +89,7 @@ public class WebmasterCont {
       word=Utility.checkNull(word);
       col=Utility.checkNull(col);
       
-      int recordPerPage=5;
+      int recordPerPage=20;
       
       int nowPage=1;
       if(req.getParameter("nowPage")!=null){
@@ -131,7 +131,7 @@ public class WebmasterCont {
       word=Utility.checkNull(word);
       col=Utility.checkNull(col);
       
-      int recordPerPage=10;
+      int recordPerPage=15;
       
       int nowPage=1;
       if(req.getParameter("nowPage")!=null){
@@ -140,7 +140,7 @@ public class WebmasterCont {
       //int totalRecord=contdao.count1(); 수정해야함
       ArrayList<ContlistDTO> list = new ArrayList<>();
       list=contdao.list(col, word,nowPage, recordPerPage);
-      int totalRecord=contdao.count();
+      int totalRecord=contdao.count(col, word);
       
       contdao = new ContlistDAO();
       String paging=new Paging().paging2(totalRecord, nowPage, recordPerPage, col, word,"contmanage.do");

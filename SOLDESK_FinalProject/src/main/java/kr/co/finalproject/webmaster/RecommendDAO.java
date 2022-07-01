@@ -101,6 +101,48 @@ public class RecommendDAO {
 	}
 
 	
+	public ArrayList<RecommendDTO> readRecThemes() {
+
+		ArrayList<RecommendDTO> list=null;		
+		RecommendDTO dto=null;
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" SELECT t_num, r_num, r_title, r_date, r_content, r_photo, mcodes ");
+			sql.append(" FROM rec_theme ");
+			sql.append(" ORDER BY r_date DESC ");			
+			sql.append(" LIMIT 3 ");			
+			pstmt = con.prepareStatement(sql.toString());
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+					list=new ArrayList<RecommendDTO>();
+				do {
+					
+					dto = new RecommendDTO();//커서가 가리키는 한 줄 저장					
+					dto.setT_num(rs.getInt("t_num"));
+					dto.setR_num(rs.getInt("r_num"));
+					dto.setR_title(rs.getString("r_title"));
+					dto.setR_date(rs.getString("r_date"));
+					dto.setR_content(rs.getString("r_content"));
+					dto.setR_photo(rs.getString("r_photo"));
+					dto.setMcodes(rs.getString("mcodes"));
+					
+					list.add(dto);
+				}while(rs.next());
+				
+			}//if end
+		}catch (Exception e) {
+			System.out.println("테마별 추천글 인덱스용 불러오기 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);
+		}//try end
+		
+		return list;
+	}
+	
+	
 	
 	public int insert(ThemesDTO dto) {
 		int cnt=0;
@@ -190,8 +232,6 @@ public class RecommendDAO {
 		
 		return dto;
 	}
-
-	
 	
 	
 	public int insert(RecommendDTO dto) {
@@ -220,6 +260,30 @@ public class RecommendDAO {
 		return cnt;
 		
 	}//insert() end
+	
+	
+	public int recDelete(int r_num) {
+		int cnt=0;
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" DELETE FROM rec_theme ");
+			sql.append(" WHERE r_num=? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, r_num);			
+		
+			cnt=pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("추천글 삭제 실패: " + e);
+		} finally {
+			DBclose.close(con, pstmt);
+		}//try end		
+		
+		return cnt;
+	}
 	
 	
 }//class end

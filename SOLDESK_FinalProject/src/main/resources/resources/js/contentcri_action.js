@@ -10,7 +10,6 @@ function reloadDivArea(){
 }
 
 function likeCheck(){
-
 	$(document).off('click').on('click', '#likeBtn',function(){
 
 		if( isRun ){
@@ -26,19 +25,12 @@ function likeCheck(){
 			contentType: 'application/x-www-form-urlencoded; charset=utf-8',
 			success: function (result){
 				isRun = false;
-				if(result.like_check == 1){
-					alert("좋아요" + result.like_check);
-					result.like_check = 0; 
-				}else {
-					alert("좋아요 취소" + result.like_check);
-					result.like_check = 1;
-				}
+				alert("성공했습니다");
 				
-				reloadDivArea();
 			},
 			error : function(error){
 				isRun = false;
-				alert("실패"+error);
+				alert("실패하였습니다."+error);
 				
 			}
 			
@@ -53,7 +45,8 @@ function watchCheck(){
 			return;
 		}
 		isRun = true;
-		var watchcnt = $('#watchcheck').val();
+		
+
 		$.ajax({
 			url : "/content_criwatch.do",
 			type : "post",
@@ -62,22 +55,16 @@ function watchCheck(){
 			contentType: 'application/x-www-form-urlencoded; charset=utf-8',
 			success: function (result){
 				isRun = false;
-				if(watchcnt == 0){
-					watchcnt += 1;
-					alert("봤어요" + watchcnt + result);
-				}else {
-					watchcnt -= 1;
-					alert("봤어요 취소" + watchcnt + result)
-				}
+				alert("성공했습니다");
+				
 				reloadDivArea();
-				
-				
 			},
 			error : function(error){
 				isRun = false;
-				alert("실패" + error);
+				alert("실패하였습니다." + error);
 				
-			}
+			},
+			
 			
 		});
 	});	
@@ -90,7 +77,7 @@ function pointCheck(){
 			return;
 		}
 		isRun = true;
-ehch
+
 		$.ajax({ 
 			url : "/content_cripoint.do",
 			type : "POST",
@@ -99,6 +86,7 @@ ehch
 			contentType: 'application/x-www-form-urlencoded; charset=utf-8',
 			success: function (result){
 				isRun = false;
+				alert("성공했습니다");
 				
 				reloadDivArea();
 			},

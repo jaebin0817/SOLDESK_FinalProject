@@ -162,7 +162,20 @@ public class RecommendCont {
 	    String basePath=req.getSession().getServletContext().getRealPath("/storage");
 	    MultipartFile r_photoMF=dto.getR_photoMF();
 	    
+	    int recContents=Integer.parseInt(req.getParameter("m"));
+
+	    String mcodes="";
+	    String content="";
+
 	    
+	    for(int m=1; m<=recContents; m++) {
+	    	
+	    	content=req.getParameter("content"+m).trim();	    	
+	    	mcodes+=content+" || ";
+	    	
+	    }
+	    
+	    dto.setMcodes(mcodes);
 	    
 	    String r_photo=UploadSaveManager.saveFileSpring30(r_photoMF, basePath);
 	    dto.setR_photo(r_photo);
@@ -170,10 +183,38 @@ public class RecommendCont {
 	    int cnt= dao.insert(dto);
 	    
         if(cnt==0){
-            String msg="<p>테마 등록 실패</p>";
+            String msg="<p>추천글 등록 실패</p>";
             mav.addObject("msg", msg);
          }else {
-            String msg="<p>테마 등록 성공</p>";
+            String msg="<p>추천글 등록 성공</p>";
+            mav.addObject("msg", msg);
+         }
+	    
+	    mav.setViewName("webmaster/msgView");
+        return mav;
+	}
+	
+	
+	
+	@RequestMapping("recdelete.do")
+	public ModelAndView recDelete(int t_num, int r_num, RecommendDTO dto, HttpServletRequest req) {
+	    ModelAndView mav = new ModelAndView();
+	    
+	    dto=dao.readRecTheme(r_num);
+	    String folder=req.getSession().getServletContext().getRealPath("/storage");
+	    String r_photo=dto.getR_photo();
+	    
+	    
+	    int cnt= dao.recDelete(r_num);
+	    
+        if(cnt==0){
+            String msg="<p>추천글 삭제 실패</p>";
+            mav.addObject("msg", msg);
+         }else {
+        	 
+        	UploadSaveManager.deleteFile(folder, r_photo);
+        	 
+            String msg="<p>추천글 삭제 성공</p>";
             mav.addObject("msg", msg);
          }
 	    

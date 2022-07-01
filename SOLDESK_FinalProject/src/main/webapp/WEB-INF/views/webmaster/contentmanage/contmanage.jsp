@@ -11,7 +11,7 @@
 	
 <!-- 관리자페이지 : 콘텐츠 리스트 읽어오기 -->
 	
-  <div class="container-fluid text-center">	
+  <div class="container text-center">	
 	
 	
 	<div class="pagetitle">
@@ -24,7 +24,7 @@
 	<input type="button" value="콘텐츠추가" onclick="location.href='/addcontent.do'" class="btn btn-danger"><br><br>
 	
 		
-	<table class="table table-hover">
+	<table class="table">
 		<tr>
 
 			<th>콘텐츠코드</th>
@@ -43,8 +43,8 @@
 			<td colspan='2' style='text-align:center; height: 50px'>
 				<form action="contmanage.do">
 					<select name="col">
+						<option value="mtitle" >콘텐츠제목
 						<option value="mcode">콘텐츠코드
-						<option value="mtitle">콘텐츠제목
 					</select>
 					<input type="text" name="word" id="word">
 					<input type="submit" value="검색" class="btn btn-danger">

@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.co.finalproject.contlist.ContlistDAO;
 import kr.co.finalproject.contlist.WatchListDAO;
 import kr.co.finalproject.search.SearchKeyDAO;
+import kr.co.finalproject.webmaster.RecommendDAO;
 
 @Controller
 public class HomeController {
@@ -22,10 +23,13 @@ public class HomeController {
 		ContlistDAO dao=new ContlistDAO();
 		WatchListDAO watchdao=new WatchListDAO();
 		SearchKeyDAO searchdao=new SearchKeyDAO();
+		RecommendDAO recdao=new RecommendDAO();
 		
 		mav.addObject("list", dao.contlistAll());
 		mav.addObject("rank", watchdao.rankRead());
 		mav.addObject("keywords", searchdao.readRandom());
+		mav.addObject("themes", recdao.readRecThemes());
+
 		mav.setViewName("index");
 		return mav;
 	}//home() end

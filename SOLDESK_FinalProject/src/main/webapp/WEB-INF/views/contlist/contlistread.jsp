@@ -161,12 +161,7 @@
 		}
 		return true;
 	}//IDlog() end
-	var pointcnt = 0, likecnt = 0, watchcnt=0;
-	var mem_id = $(document).attr('mem_id');
-	var url_href = window.location.href;
-	var url = new URL(url_href);
-	var isRun = false;	
-	var mcode = url.searchParams.get("mcode");
+
 	</script>
 
 <!-- 본문끝 -->

@@ -36,8 +36,8 @@
 			</tr>
 			<tr>
 			   <th rowspan="2">추천콘텐츠</th>
-			   <td id="mcodes">
-			     <input type="text" name="mcode1" id="mcode1" class="form-control" maxlength="30" placeholder="추천컨텐츠1: 콘텐츠제목을 입력해주세요" onkeydown="search(this.value)" required>
+			   <td id="">
+			     <input type="text" name="mcodes" id="mcodes" class="form-control" maxlength="30" placeholder="추천컨텐츠1: 콘텐츠제목을 입력해주세요" onkeydown="search(this.value)" required>
 			   </td>
 			   <td>
 			    	<img src="../../images/plus_icon.png" id="content_plus" name="director_plus" width="20px">	      	    
@@ -58,8 +58,9 @@
 			</tr>
 		</table> 
 		
-		<textarea name="content" id="content"></textarea>
+		<textarea name="r_content" id="r_content"></textarea>
 		<input type="hidden" name="m" id="m" value="1">
+		<input type="hidden" name="t_num" id="t_num" value="${ t_num }">
 		
 		<br>
 		<div id="btnArea">
@@ -74,7 +75,7 @@
 <script> 
 
 	ClassicEditor 
-	.create( document.querySelector( '#content' ),{
+	.create( document.querySelector( '#r_content' ),{
 		language: 'ko',
 		removePlugins: [ 'MediaEmbed', 'ImageUpload', 'EasyImage' ],		
 	} )

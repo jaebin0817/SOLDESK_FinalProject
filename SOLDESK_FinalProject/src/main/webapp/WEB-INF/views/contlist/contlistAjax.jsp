@@ -13,11 +13,13 @@
 	<div class="pagetitle">
 		<br>
 		<span><strong> 👀 컨텐츠들을 구경해보세요! 👀 </strong></span>
-		<h5>${ msg }</h5>
+		<h5 class="searchkey">${ msg }</h5>
+		<h5 class="searchedott"></h5>
+
 		<br>
 	</div>
-	
-	
+	<input type="hidden" id="nowPage" value="1">
+			
 		<div class="ott_search">
 			
 			<button class="ott_search_btn" id="netflix_btn" name="netflix_btn" value="netflix"><img src="../../images/icon_netflix_search.png"></button>
@@ -60,7 +62,8 @@
 				</div>
 				<span class="hide">${ no=no+1 }</span>
  			</c:forEach>
-		
+ 			<input type="hidden" id="no" value="9">
+ 			 					
 		</div>	
 		
     
@@ -68,31 +71,37 @@
 
 	<script>	
 	
+	function searchParam(key) {
+		  return new URLSearchParams(location.search).get(key);
+	};
+	
 	$(".ott_search_btn").click(function(){
 			
-		//alert($(this).val());				
+		//alert($(this).val());
+		var msg = $(this).val();
 		
 	    $.ajax({
             url:"ottsearch.do",  //요청명령어 
             type:"get",        //get방식
         	data : {
 				ott : $(this).val(),
+				searchkey : searchParam('searchkey'),
+				key_code : searchParam('key_code'),
+				key_name : searchParam('key_name'),				
         	},		
             success:function(data){//success callback함수
                 
                 $(".thumb").empty();
+                $(".searchedott").empty();
+                $(".searchedott").append(msg+" : 검색결과");
+
    			    var no=0;
             	$.each(data,function(index, value) { // 값이 여러개 일 때는 반복문 사용
 	      			
 	      			var stars="";
 	                for(i=1; i<=value.mrate; i++){ stars+="★"; }
 	                for(i=value.mrate+1; i<=5; i++){ stars+="☆"; }
-            		
-            		mimg=$('<img>', {
-            			'src' : '../../storage/'+value.mthum,
-            			'width' : '300px',
-            			'id' : value.mcode
-            		});
+            	
             	
             		netfliximg=$('<img>', {
             			'src' : '../../images/icon_netflix.png',
@@ -116,7 +125,6 @@
 
       			   	var identifier = ".thumb";
             		
-          			//$(".thumb:eq("+i+")").append(mimg);
           			$(identifier).eq(no).append("<input type='image' id='"+value.mcode+"' name='"+value.mcode+"' src='../../storage/"+value.mthum+"' alt='movie' width='300px' onclick=''>");
 
 	      			$(identifier).eq(no).append("<div class='mtitle'><strong>"+value.mtitle+"</strong></div>");
@@ -140,6 +148,94 @@
    		});//ajax() end
 			
 	});	
+	
+	
+	$(window).scroll(function(){  
+		if($(document).height() <= $(window).scrollTop() + $(window).height()){    
+			
+			var nowPage=parseInt($('#nowPage').val());
+			var newNowPage = nowPage+1;				
+			$('#nowPage').attr('value', newNowPage);
+		
+			loadNext();  
+		}
+	});
+	
+	function loadNext(){  
+		//alert("스크롤 이벤트");
+		//alert($('#nowPage').val());
+		var num=parseInt($("#no").val());
+		//alert(num);
+		for(i=num; i<=num+8; i++){
+			$(".contents").append("<div class='col-lg-3 col-md-4 col-sm-6'><div class='thumb' id='content"+i+"'>")
+		}
+		
+		
+		$.ajax({
+			url: "morecontents.do",     
+			type:"get",   
+			data: {
+				nowPage : $('#nowPage').val(),
+        	},   
+			success: function(data){
+				
+				$.each(data,function(index, value) {
+	      			
+					var stars="";
+	                for(i=1; i<=value.mrate; i++){ stars+="★"; }
+	                for(i=value.mrate+1; i<=5; i++){ stars+="☆"; }
+            	
+            		netfliximg=$('<img>', {
+            			'src' : '../../images/icon_netflix.png',
+            			'width' : '50px',
+            		});
+            		
+            		tvingimg=$('<img>', {
+            			'src' : '../../images/icon_tving.png',
+            			'width' : '50px',
+            		});
+            		
+            		watchaimg=$('<img>', {
+            			'src' : '../../images/icon_watcha.png',
+            			'width' : '50px',
+            		});
+            		
+            		disneyimg=$('<img>', {
+            			'src' : '../../images/icon_disney.png',
+            			'width' : '50px',
+            		});
+
+      			   	var identifier = "#content"+num;
+            		
+          			$(identifier).append("<input type='image' id='"+value.mcode+"' name='"+value.mcode+"' src='../../storage/"+value.mthum+"' alt='movie' width='300px' onclick=''>");
+
+	      			$(identifier).append("<div class='mtitle'><strong>"+value.mtitle+"</strong></div>");
+	      			$(identifier).append("<div class='stars'>"+stars+value.mrate+"</div>");
+	      			if(value.netflix=="O"){$(identifier).append(netfliximg);}
+	      			if(value.tving=="O"){$(identifier).append(tvingimg);}
+	      			if(value.watcha=="O"){$(identifier).append(watchaimg);}
+	      			if(value.disney=="O"){$(identifier).append(disneyimg);}
+					
+	      			$("input[name="+value.mcode+"]").attr('onclick', 'location.href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode='+value.mcode+'"');
+	      			
+					num++;
+					//alert(no);
+				      
+				 })
+				 
+				 $('#no').attr('value', num);
+				   
+			},
+            error:function(error){
+				alert("에러: " + error);
+            }	
+		});
+		
+	}
+
+	
+	
+	
 		
 	</script>
 
