@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script type="text/javascript" src="./js/member_action.js" ></script>     
 <!DOCTYPE html>
 <html>
 <head>
+	<script src="../js/member_action.js"></script>
 	<meta charset="UTF-8">
 	<title>아이디/비밀번호 찾기</title>
 </head>

@@ -47,7 +47,7 @@
 		<tr>
 		    <th>생년월일*</th>
 		    <td>
-		      <input type="text" class="form-control" name="mem_birth" id="mem_birth" size="8" placeholder="예) 800101-1">
+		      <input type="text" class="form-control" name="mem_birth" id="mem_birth" size="8" placeholder="예) 800101-1" onmousedown="">
 		   
 		    </td>
 		    <td>  

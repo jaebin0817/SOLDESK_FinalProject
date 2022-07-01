@@ -4,7 +4,7 @@ public class SubscribeInfoDTO {
 
     private String subscribe_no;
     private String mem_id;
-    private int party_id;
+    private String party_id;
     private String party_role;
     private String subscribe_start;
     private String subscribe_end;
@@ -32,11 +32,13 @@ public class SubscribeInfoDTO {
 		this.mem_id = mem_id;
 	}
 
-	public int getParty_id() {
+
+
+	public String getParty_id() {
 		return party_id;
 	}
 
-	public void setParty_id(int party_id) {
+	public void setParty_id(String party_id) {
 		this.party_id = party_id;
 	}
 

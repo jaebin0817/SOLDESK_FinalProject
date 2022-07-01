@@ -9,6 +9,14 @@
 
 <div class="container text-center">
 
+	<div class="pagetitle">
+		<br>
+		<span><img src="/images/person_icon.png" alt="person" width="50px"></span>
+		<span><strong> LOGIN </strong></span>
+		<br>
+	</div>
+
+
 	<c:set var="s_mem_id" value="${ s_mem_id }"></c:set>
 	<c:set var="s_mem_pw" value="${ s_mem_pw }"></c:set>
 	<c:set var="s_mem_lv" value="${ s_mem_lv }"></c:set>
@@ -19,12 +27,11 @@
 		<!-- ${ fn:length(msg) } -->
 				
 		<!-- 게스트일 때, 로그인 폼 출력 -->
-		<img src="../images/login.png" style="margin: auto; width: 300px" >
 		<form name="loginfrm" id="loginfrm" method="post" action="<%=request.getContextPath()%>/login.do" onsubmit="return">
 			<table class="table table-bordered" id="login_table">
 			<tr>
 			    <td>
-				   <input type="text" name="id" id="id" class="form-control" placeholder="아이디" maxlength="10" required>
+				   <input type="text" name="id" id="id" class="form-control" placeholder="아이디" maxlength="10" value="${ c_id }" required>
 			    </td>
 	
 			    <td rowspan="2" width="90px">
@@ -39,9 +46,15 @@
 			</tr>
 			<tr>
 			   <td colspan="2">
-			      <label><input type="checkbox" name="c_id" value="SAVE">아이디 저장</label>	<!-- label로 감싸면 글씨 클릭해도 체크박스 체크됨 -->		  
+			   	  	<c:choose>
+			   	  		<c:when test="${ c_id=='' }"><c:set var="check"></c:set></c:when>
+			   	  		<c:otherwise><c:set var="check">checked</c:set></c:otherwise>
+			   	  	</c:choose>
+			   	  
+			   	  
+			      <label><input type="checkbox" name="c_id" value="SAVE" ${ check } >아이디 저장</label>	<!-- label로 감싸면 글씨 클릭해도 체크박스 체크됨 -->		  
 				  &nbsp;&nbsp;&nbsp;
-				  <a href="agreement.do">회원가입</a>
+				  <a href="<%=request.getContextPath()%>/agreement.do">회원가입</a>
 				  &nbsp;&nbsp;&nbsp;
 				  <a href="find_info.do">아이디/비밀번호찾기</a>
 			   </td>

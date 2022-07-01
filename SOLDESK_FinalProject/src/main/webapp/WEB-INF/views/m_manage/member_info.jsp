@@ -27,9 +27,6 @@
 		    <td>
 		      <input type="text" class="form-control" name="mem_id" id="mem_id" value="${ dto.mem_id }" size="10" readonly>
 		    </td>
-		    <td>  
-		      <input type="button" class="btn" value="ID 중복확인" onclick="">
-		    </td>
 		</tr>
 		<tr>
 		    <th>생년월일</th>
@@ -57,21 +54,21 @@
 		<tr>
 		    <th>신규비밀번호확인</th>
 		    <td>
-		      <input type="password" class="form-control" name="re_pw" id="re_pw" size="20">
+		      <input type="password" class="form-control" name="re_pw" id="renew_pw" size="20" onclick="pwCheck()">
 		    </td>
 		    <td></td>
 		</tr>
 		<tr>
 		    <th>연락처*</th>
 		    <td>
-		      <input type="text" class="form-control" name="mem_phone" id="mem_phone" value="${ dto.mem_phone }" required>
+		      <input type="text" class="form-control" name="mem_phone" id="mem_phone" value="${ dto.mem_phone }" onclick="phoneCheck()" required>
 		    </td>
 		    <td></td>
 		</tr>
 		<tr>
 		    <th>이메일*</th>
 		    <td>
-      		  <input type="text" class="form-control" name="mem_phone" id="mem_phone"  value="${ dto.mem_email }" required>
+      		  <input type="text" class="form-control" name="mem_phone" id="mem_phone"  value="${ dto.mem_email }" onclick="emailCheck()" required>
 		    </td>
 		    <td>
 		      <input type="button" class="btn" value="Email 중복확인" onclick="">

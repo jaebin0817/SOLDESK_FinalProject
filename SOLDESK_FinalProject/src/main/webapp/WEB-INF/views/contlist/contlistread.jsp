@@ -63,6 +63,7 @@
 				<button class="btn btn-danger btn-lg" type="button" id="likeBtn" onclick="likeCheck()">😍 좋아요</button>
 				<button class="btn btn-danger btn-lg" type="button" id="watchBtn" onclick="watchCheck()">✔ 봤어요</button>
 				<button class="btn btn-danger btn-lg" type="button" id="pointBtn" onclick="pointCheck()">♥ 찜하기</button>
+			
 		 	</div>
 		</c:otherwise>
 		</c:choose>
@@ -149,12 +150,7 @@
 		}
 		return true;
 	}//IDlog() end
-	var pointcnt = 0, likecnt = 0, watchcnt=0;
-	var mem_id = $(document).attr('mem_id');
-	var url_href = window.location.href;
-	var url = new URL(url_href);
-	var isRun = false;	
-	var mcode = url.searchParams.get("mcode");
+	var watchcnt = 0, pointcnt=0;
 	</script>
 
 <!-- 본문끝 -->

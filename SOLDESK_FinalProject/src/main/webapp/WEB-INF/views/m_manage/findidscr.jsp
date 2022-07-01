@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<script type="text/javascript" src="./js/member_action.js" ></script>    
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>아이디/비밀번호 찾기</title>
-</head>
-<body>
+	pageEncoding="UTF-8"%>
+<%@ include file="../header.jsp"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<script type="text/javascript" src="../js/member_action.js"></script>
+
 	<h3>아이디 찾기</h3>
 	 전화번호 : <input type="text" id="idphone" name="findid_phone">	
 	 	
@@ -15,5 +13,6 @@
 	 
 	 <button type="submit" id="findidBtn" onclick="findId()">아이디 찾기</button>
 	 <button type="button" id="cancle" onclick="javascript:history.back()">취소</button>
-</body>
-</html>
+
+
+<%@ include file = "../footer.jsp"%>

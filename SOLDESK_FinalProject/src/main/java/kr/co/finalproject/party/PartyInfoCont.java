@@ -1,6 +1,8 @@
 package kr.co.finalproject.party;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,11 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.finalproject.member.SubscribeInfoDAO;
+import kr.co.finalproject.member.SubscribeInfoDTO;
+
 
 @Controller
 public class PartyInfoCont {
 	
 	PartyInfoDAO dao=null;
+	SubscribeInfoDAO subdao=null;
 	
 	public PartyInfoCont() {
 		dao=new PartyInfoDAO(); 
@@ -122,6 +128,7 @@ public class PartyInfoCont {
 			mav.setViewName("party/host/accountInsert");//등록된 계좌가 없으면 insert로
 			
 		}else {
+			mav.addObject("dto", dto);
 			mav.setViewName("party/host/accountUpdate");//등록된 계좌가 있으면 update로
 		}
 		
@@ -176,7 +183,15 @@ public class PartyInfoCont {
 		String bank_account=req.getParameter("bank_account").trim();
 		String ott_id=req.getParameter("ott_id").trim();
 		String ott_pw=req.getParameter("ott_pw").trim();
-
+		
+		//파티ID생성하기
+		//n20220620130255 (ott명 첫글자+현재시각)
+		String party_id="";
+		party_id += ott_name.substring(0, 1);
+		Date now = new Date();
+		SimpleDateFormat dateFrm = new SimpleDateFormat("yyyyMMddHHmmss");
+		String nowStr = dateFrm.format(now);
+		party_id += nowStr;
 		
 		mav.addObject("ott_name", ott_name);
 		mav.addObject("ott_price", ott_price);
@@ -186,6 +201,7 @@ public class PartyInfoCont {
 		mav.addObject("ott_id", ott_id);
 		mav.addObject("ott_pw", ott_pw);
 		mav.addObject("s_mem_id", s_mem_id);
+		mav.addObject("party_id", party_id);
 		
 		mav.setViewName("party/host/checkout");
 		
@@ -204,7 +220,7 @@ public class PartyInfoCont {
 	
 	
 	@RequestMapping("party/host/create.do")
-	public ModelAndView create(@ModelAttribute PartyInfoDTO dto) {
+	public ModelAndView create(@ModelAttribute PartyInfoDTO dto, SubscribeInfoDTO subdto, PartyWaitingDTO waitdto) {
 
 		ModelAndView mav=new ModelAndView();
 		mav.setViewName("party/host/msgView");
@@ -221,6 +237,41 @@ public class PartyInfoCont {
 			
 			String msg="<p>파티 등록 성공</p>";
 			mav.addObject("msg", msg);
+			
+			//구독 OTT정보 행추가
+			subdao=new SubscribeInfoDAO();
+			
+			String subscribe_no="";
+			
+			Date now = new Date();
+			SimpleDateFormat dateFrm = new SimpleDateFormat("yyyyMMdd");
+			String nowStr = dateFrm.format(now);
+			
+			subscribe_no=subdao.subnoCreate(nowStr);
+			
+			subdto.setSubscribe_no(subscribe_no);
+			
+			int subcnt=subdao.subinsert(subdto);
+			if(subcnt==0) {
+				System.out.println("구독정보 등록 실패");
+			}else{
+				System.out.println("구독정보 등록 성공");
+			}
+			
+			//대기리스트에 현재 파티장이 만든 ott를 희망하는 파티원이 있을 시 매칭시키기
+			//파티원 매칭이 성공하면 파티정보의 매칭인원은 1명 증가시키고 대기리스트에서는 삭제함
+			//매칭인원이 4명이 될 때까지 반복
+			int matching_no = dao.matchingNoRead(dto);
+			
+			System.out.println("매칭인원 : "+matching_no);
+			
+			while(matching_no<4) {
+				int waiting_no=dao.autoMatching(dto, waitdto);
+				if(waiting_no==0) {
+					break;
+				}
+				matching_no++;
+			}
 			
 		}//if end
 		

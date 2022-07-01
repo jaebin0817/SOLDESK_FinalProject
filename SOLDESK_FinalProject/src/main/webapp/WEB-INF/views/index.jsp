@@ -18,6 +18,8 @@
 </head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
 
+
+
 <!-- 메인카테고리 시작 -->
 <nav class="navbar navbar-fixed-top">
   <div class="container">
@@ -35,8 +37,11 @@
 	          <c:when test="${ s_mem_id==null || s_mem_pw==null || s_mem_lv==null }">
 	            <li><a href="login.do">로그인</a></li>	            
 	          </c:when>
+	          <c:when test="${ s_mem_lv=='A' }">
+	            <li><a href="webmaster/webmaster.do">관리자페이지</a></li>	            
+	          </c:when>
 	          <c:otherwise>
-	            <li><a href="mypage.do">마이페이지</a></li>
+	            <li><a href="m_manage/mypage.do">마이페이지</a></li>
 	          </c:otherwise>
 	        </c:choose>
       </ul>
@@ -47,74 +52,87 @@
 
 <!-- 본문 시작 -->
 
-	<!-- 컨텐츠 검색 시작 -->
-	<div class="jumbotron text-center">
-	  <br><br><br><br>	
-	  <form>
+
+<div id="wrap" class="container-fluid bg-1 text-center">
+	
+	<!-- 컨텐츠 검색 -->
+	<div id="searchfield" class="container">   
+	  <form action="mainsearch.do">
 	    <div class="input-group">
-	      <input type="search" class="form-control" size="50" placeholder="컨텐츠 검색" required>
+	      <input type="search" id="searchkey" name="searchkey" class="form-control" size="50" placeholder="작품명, 감독, 배우를 검색해보세요" required>
 	      <div class="input-group-btn">
-	        <button type="button" class="btn btn-danger">검색</button>
+	        <input type="submit" class="btn btn-danger" value="검색">
 	      </div>
 	    </div>
 	  </form>
 	</div>
+	<div id="searchbtns" class="container"><br>&nbsp;&nbsp;   
+		<c:forEach var="dto" items="${ keywords }" begin="1" end="8" step="1">
+				<button class="btn btn-danger" onclick="location.href='/keysearch.do?key_name=${ dto.key_name }&key_code=${ dto.key_code }'">#${ dto.key_name }</button>&nbsp;&nbsp;
+		</c:forEach>	
+	</div>
 	<!-- 컨텐츠 검색 끝 -->
 	
-	<!-- OTT랭킹 -->
+	
+	<!-- OTT랭킹 / 시청목록 count해서 가장 많은 top3 -->	
 	<div id="cont_rank" class="container-fluid text-center">
-		<h3>오늘의 통합 랭킹</h3><br>
-		<div>
-			<a href=""><img src="/images/movie_whyHer.jpeg" alt="movie" width="40"></a>
-			<p>1. 왜 오수재인가?</p>
-		</div>
-		<div>
-			<a href=""><img src="/images/movie_topGun.jpg" alt="movie" width="40"></a>
-			<p>2. 탑 건</p>
-		</div>
-		<div>
-			<a href=""><img src="/images/movie_theRoundup.jpg" alt="movie" width="40"></a>
-			<p>3. 범죄도시2</p>
-		</div>
+	  <h3>오늘의 통합 랭킹</h3><br>
+ 	  <c:set var="no" value="1"></c:set>
+	  <ul>
+		<c:forEach var="dto" items="${ rank }" begin="0" end="${ fn:length(rank) }" step="1">
+			<dl class="ranklist">
+			<a href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode=${ dto.mcode }">
+			  <span class="cont-poster">
+				<img src="../storage/${ dto.mthum }" class="img-circle" alt="movie" width="80" height="80">
+			  </span>
+			  <span class="cont-rank">
+			    ${ no }
+			  </span>
+			  <span class="cont-title">
+			    ${ dto.mtitle }
+			  </span>
+			  <span class="hide">${ no=no+1 }</span>
+			</a>
+			</dl>
+		</c:forEach>
+	  </ul>
 	</div>
 	<!-- OTT랭킹 끝 -->
 	
 	<!-- 추천 컨텐츠 -->
+		
 	<div id="cont_list" class="container-fluid text-center">
 		<h3>오늘 이거 볼까요? 👀</h3><br>
-	    <div class="col-sm-3">
-	      <div class="thumbnail">
-	        <a href=""><img src="/images/movie_greenbook.jpg" alt="movie" width="280"></a>
-            <p><strong>그린북</strong></p>
-	        <p>★★★★★</p>
-	      </div>
-	    </div>
-	    <div class="col-sm-3">
-	      <div class="thumbnail">
-	        <a href=""><img src="/images/movie_soul.jpg" alt="movie" width="280"></a>
-            <p><strong>소울</strong></p>
-	        <p>★★★★★</p>
-	      </div>
-	    </div>
-	    <div class="col-sm-3">
-	      <div class="thumbnail">
-	        <a href=""><img src="/images/movie_jujutsuKaisen.jpg" alt="movie" width="280"></a>
-            <p><strong>주술회전</strong></p>
-	        <p>★★★★★</p>
-	      </div>
-	    </div>
-	    <div class="col-sm-3">
-	      <div class="thumbnail">
-	        <a href=""><img src="/images/movie_dune.jpg" alt="movie" width="280"></a>
-            <p><strong>듄</strong></p>
-	        <p>★★★★☆</p>
-	      </div>
-	    </div>
+	        
+	      <c:set var="maxcontent" value="${ 8 }"></c:set><!-- 노출할 최대 컨텐츠 수 -->
+	        
+	          <c:choose>
+	          	<c:when test="${ fn:length(list)<maxcontent }">
+	          	  <c:set var="end" value="${ fn:length(list) }"></c:set>
+	          	</c:when>
+	          	<c:otherwise>
+	          	  <c:set var="end" value="${ maxcontent-1 }"></c:set>
+	          	</c:otherwise>
+	          </c:choose>
 
+	          	
+	      <c:forEach var="dto" items="${ list }" begin="0" end="${ end }" step="1">
+			
+				<div class="col-sm-3">
+			      <div class="thumbnail">
+			        <a href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode=${ dto.mcode }"><img src="../storage/${dto.mthum }" alt="movie" width="280"></a>
+		            <p><strong>${dto.mtitle }</strong></p>
+			        <p>
+			        	<!-- 평점 별로 바꿔서 출력 -->
+			        	<c:forEach begin="1" end="${ dto.mrate }">★</c:forEach><c:forEach begin="${ dto.mrate+1 }" end="5">☆</c:forEach>
+			        	${ dto.mrate }
+			        </p>
+	        	  </div>
+	    		</div>
+	      </c:forEach>
 	</div>
 	<!-- 추천 컨텐츠 끝 -->
-
-
+</div>
 
 <!-- 본문 끝 -->
 
@@ -122,12 +140,8 @@
 	<footer >
 
 	  <div class="container-fluid bg-3 text-center">
-	    <a href="">공지사항</a> &nbsp;&nbsp;
-	    <a href="">문의사항</a>
-	    <!-- 세션이용해서 회원등급 A(webmaster)일때만 접근 허용 -->
-	    <c:if test="${ s_mem_lv=='A' }">
-	      <br><a href="webmaster/webmaster.do">관리자페이지</a>
-	    </c:if>
+	    <a href="notice/notice.do">공지사항</a> &nbsp;&nbsp;
+	    <a href="qna/qna.do">문의사항</a>
 	  </div>
 	  
 	  <div class="container-fluid bg-4 text-center">
