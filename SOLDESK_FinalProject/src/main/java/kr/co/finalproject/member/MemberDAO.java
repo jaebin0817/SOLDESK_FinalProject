@@ -417,6 +417,29 @@ public class MemberDAO {
 		
 		return result;
 	}
+
+	
+	public int updateLv(MemberDTO dto) {
+		int cnt=0;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" UPDATE member_info" );
+			sql.append(" SET mem_lv=? ");
+			sql.append(" WHERE mem_id=? ");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, dto.getMem_lv());
+            pstmt.setString(2, dto.getMem_id());
+            
+            cnt = pstmt.executeUpdate();
+		}catch(Exception e) {
+			System.out.println("회원등급 수정 실패: "+ e);
+		}finally {
+			DBclose.close(con, pstmt);
+		}
+		return cnt;
+	}
+	
 	
 	
 }//class end

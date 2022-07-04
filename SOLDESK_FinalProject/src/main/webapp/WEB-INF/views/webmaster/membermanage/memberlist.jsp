@@ -11,7 +11,14 @@
 	
 	<!-- 관리자페이지 : 회원정보 읽어오기 -->
 	
-  <div class="container-fluid text-center">	
+  <div class="container text-center">	
+
+	<div class="pagetitle">
+		<br>
+		<span><strong> 회원정보</strong></span>
+		<h5>회원아이디를 누르면 회원레벨수정페이지로 이동합니다</h5>
+		<br>
+	</div>
 		
 	<table class="table table-hover">
 		<tr>
@@ -30,22 +37,7 @@
 				<td>${dto.mem_email }</td>
 				<td>${dto.mem_reg }</td>
 				<td>${dto.mem_birth }</td>
-				<td>
-				  <select class="form-control" id="mem_lv" name="mem_lv">
-                    <c:choose>
-                    	<c:when test="${ dto.mem_lv eq 'A' }"><option value="A" selected>A</option></c:when>
-                    	<c:otherwise><option value="A">A</option></c:otherwise>
-                    </c:choose>
-                    <c:choose>
-                    	<c:when test="${ dto.mem_lv eq 'B' }"><option value="B" selected>B</option></c:when>
-                    	<c:otherwise><option value="B">B</option></c:otherwise>
-                    </c:choose>
-					<c:choose>
-                    	<c:when test="${ dto.mem_lv eq 'F' }"><option value="F" selected>F</option></c:when>
-                    	<c:otherwise><option value="F">F</option></c:otherwise>
-                    </c:choose>
-                  </select>
-				</td>
+				<td>${ dto.mem_lv }</td>
 				
 			</tr>	
 		</c:forEach>
@@ -71,6 +63,11 @@
 		</tr>
 		
 	</table>
+
+	<form name="frm" method="post" action="<%=request.getContextPath()%>/logout.do">		
+		<input class="btn btn-default btn-lg" type="button" value="관리자페이지" onclick="location.href='<%=request.getContextPath()%>/webmaster/webmaster.do'">		
+		<input class="btn btn-default btn-lg" type="submit" value="로그아웃">
+	</form>
 
   </div>	
 	

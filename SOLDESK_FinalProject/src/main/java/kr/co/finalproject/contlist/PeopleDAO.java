@@ -120,7 +120,7 @@ public class PeopleDAO {
 	
 	
 	
-	public PeopleDTO readDirector(String pno) {
+	public PeopleDTO readPeople(String pno) {
 
 		PeopleDTO dto=null;
 		
@@ -145,7 +145,7 @@ public class PeopleDAO {
 			}
 
 		} catch (Exception e) {
-			System.out.println("감독 불러오기 실패 : " + e);
+			System.out.println("감독/배우 불러오기 실패 : " + e);
 		} finally {
 			DBclose.close(con, pstmt, rs);
 		}
@@ -154,35 +154,139 @@ public class PeopleDAO {
 	}
 
 	
-	public PeopleDTO readActor(String pno) {
+	
+	public ArrayList<PeopleDTO> list(String pcode) {
+		
+		ArrayList<PeopleDTO> list=null;
 		PeopleDTO dto=null;
+		
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT pno, pname, pname_eng, pphoto ");
+			sql.append(" FROM people ");
+			sql.append(" WHERE pno LIKE '%"+pcode+"%' ");
+
+			pstmt = con.prepareStatement(sql.toString());
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				list=new ArrayList<PeopleDTO>();
+					
+				do {
+					dto = new PeopleDTO();
+					dto.setPname(rs.getString("pname"));
+					dto.setPname_eng(rs.getString("pname_eng"));
+					dto.setPno(rs.getString("pno"));
+					dto.setPphoto(rs.getString("pphoto"));
+					list.add(dto);
+				}while(rs.next());
+			}
+
+		} catch (Exception e) {
+			System.out.println("배우/감독 목록 불러오기 실패 : " + e);
+		} finally {
+			DBclose.close(con, pstmt, rs);
+		}
+		return list;
+	}
+	
+	
+	
+	public ArrayList<PeopleDTO> list(String pcode, int nowPage, int recordPerPage) {
+		
+		ArrayList<PeopleDTO> list=null;
+		PeopleDTO dto=null;
+    	int startRow = ((nowPage-1) * recordPerPage) ;
 
 		try {
 			con = dbopen.getConnection();
 			sql = new StringBuilder();
 			sql.append(" SELECT pno, pname, pname_eng, pphoto ");
 			sql.append(" FROM people ");
-			sql.append(" WHERE pno=? ");
+			sql.append(" WHERE pno LIKE '%"+pcode+"%' ");
+            sql.append(" LIMIT " + startRow + ", " + recordPerPage);
 
 			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setString(1, pno);
 
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
-
+				list=new ArrayList<PeopleDTO>();
+					
+				do {
 					dto = new PeopleDTO();
 					dto.setPname(rs.getString("pname"));
 					dto.setPname_eng(rs.getString("pname_eng"));
 					dto.setPno(rs.getString("pno"));
 					dto.setPphoto(rs.getString("pphoto"));
+					list.add(dto);
+				}while(rs.next());
 			}
 
 		} catch (Exception e) {
-			System.out.println("배우 불러오기 실패 : " + e);
+			System.out.println("배우/감독 목록 불러오기 실패 : " + e);
 		} finally {
 			DBclose.close(con, pstmt, rs);
 		}
-		return dto;
+		return list;
 	}
+	
+	
+	public int count(String pcode) {
+		
+		int totalRecord=0;
+
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT count(*) as cnt ");
+			sql.append(" FROM people ");
+			sql.append(" WHERE pno LIKE '%"+pcode+"%' ");
+
+			pstmt = con.prepareStatement(sql.toString());
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				totalRecord=rs.getInt("cnt");
+			}
+
+		} catch (Exception e) {
+			System.out.println("배우/감독 카운팅 실패 : " + e);
+		} finally {
+			DBclose.close(con, pstmt, rs);
+		}
+		return totalRecord;
+	}
+	
+	
+	public int update(PeopleDTO dto) {
+		
+		int cnt=0;
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" UPDATE people ");
+			sql.append(" SET pname=?, pname_eng=?, pphoto=? ");
+			sql.append(" WHERE pno=?  ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, dto.getPname());
+			pstmt.setString(2, dto.getPname_eng());
+			pstmt.setString(3, dto.getPphoto());
+			pstmt.setString(4, dto.getPno());
+			
+			cnt=pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("배우/감독 수정 실패: " + e);
+		} finally {
+			DBclose.close(con, pstmt);
+		}//try end
+		
+		return cnt;
+	}
+	
+	
 	
 }//class end

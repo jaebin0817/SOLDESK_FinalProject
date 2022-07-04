@@ -10,9 +10,7 @@
     <div class="content">
     	<dl>
     		<dd>${ msg != null ? img : "" } ${ msg }</dd> <!-- requestScope생략 -->
-    		<dd>${ s_mem_id }</dd>
-    		<dd>${ s_mem_pw }</dd>
-    		<dd>${ s_mem_lv }</dd>
+
     	</dl>
 
     </div>

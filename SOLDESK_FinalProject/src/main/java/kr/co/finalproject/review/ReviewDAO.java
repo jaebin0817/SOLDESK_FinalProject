@@ -238,6 +238,78 @@ public class ReviewDAO {
         return reviewlist;
      }// class end
 
+ 
+    public ArrayList<ReviewDTO> list(int nowPage, int recordPerPage, int mcode){
+        ArrayList<ReviewDTO> list=null;
+        
+        int startRow = ((nowPage-1) * recordPerPage) ;
+        try {
+           con=dbopen.getConnection(); 
+          sql=new StringBuilder();
+
+           sql.append(" SELECT rev_code, mem_id,  mcode,  rev_title, rev_reg, rev_cont, rev_spo, rev_rate ");
+             sql.append(" FROM review ");
+             sql.append(" WHERE mcode=? ");
+              sql.append(" ORDER BY rev_code DESC ");           
+              sql.append(" LIMIT " + startRow + ", " + recordPerPage);
+          
+       pstmt=con.prepareStatement(sql.toString());
+       pstmt.setInt(1, mcode);
+        rs=pstmt.executeQuery();
+        if(rs.next()) {
+           list=new ArrayList<>();
+           do {
+              ReviewDTO dto2 = new ReviewDTO();//커서가 가리키는 한 줄 저장
+                  dto2 = new ReviewDTO();
+                   dto2.setMcode(rs.getInt("mcode"));
+                   dto2.setRev_code(rs.getInt("rev_code"));
+                   dto2.setMem_id(rs.getString("mem_id"));
+                   dto2.setRev_title(rs.getString("rev_title"));
+                   dto2.setRev_reg(rs.getString("rev_reg"));
+                   dto2.setRev_cont(rs.getString("rev_cont"));
+                   dto2.setRev_spo(rs.getString("rev_spo"));
+                   dto2.setRev_rate(rs.getInt("rev_rate"));
+             
+             list.add(dto2);
+           }while(rs.next());
+        }
+           
+        }catch (Exception e) {
+          System.out.println("목록 불러오기 실패 : " + e);
+       }finally {
+          DBclose.close(con,pstmt,rs);
+       }
+        
+        return list;
+     }//list3() end
+    
+    
+    
+    public int count(int mcode) {
+        int cnt=0;
+        try {
+          con=dbopen.getConnection();
+          
+          sql=new StringBuilder();
+          sql.append(" SELECT COUNT(*) as cnt ");
+          sql.append(" FROM review ");
+          sql.append(" WHERE mcode=? ");
+          
+          pstmt=con.prepareStatement(sql.toString());
+          pstmt.setInt(1, mcode);
+          rs=pstmt.executeQuery();
+          if(rs.next()) {
+             cnt=rs.getInt("cnt");
+          }//if end
+          
+       } catch (Exception e) {
+          System.out.println("카운팅 실패 : " + e );
+       }finally {
+          DBclose.close(con,pstmt,rs);
+       }//end
+        return cnt;
+     }//end
+
     
 
 

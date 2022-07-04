@@ -11,7 +11,14 @@
 	
 	<!-- 관리자페이지 : 파티정보 상세보기 -->
 	
-  <div class="container-fluid text-center">	
+  <div class="container text-center">	
+
+	<div class="pagetitle">
+		<br>
+		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
+		<span><strong> 파티 상세 페이지 </strong></span>
+		<br><br>
+	</div>
 	
 	<h2>파티아이디 : ${ partyDTO.party_id }</h2>
 	<h3>구독OTT : ${ partyDTO.ott_name }</h3>

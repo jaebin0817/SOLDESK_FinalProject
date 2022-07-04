@@ -109,7 +109,8 @@
 	      <c:forEach var="list" items="${ actors }" begin="0" end="${ fn:length(actors) }">	
 	        <input type="text" name="actor${n}" id="actor${n}" class="form-control" placeholder="배우${n}" value="${ list }">
 			<span class="hide">${ n=n+1 }</span>
-	      </c:forEach>	    </td>
+	      </c:forEach>	    
+	    </td>
 	    <td>
 	      <img src="../../images/plus_icon.png" id="actor_plus" name="actor_plus" width="20px"> 
 	      <img src="../../images/minus_icon.png" id="actor_minus" name="actor_minus" width="20px">	      	    	           

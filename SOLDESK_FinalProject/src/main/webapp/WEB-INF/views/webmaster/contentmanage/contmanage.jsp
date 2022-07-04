@@ -59,6 +59,12 @@
 		</tr>		
 	</table>
 
+
+	<form name="frm" method="post" action="<%=request.getContextPath()%>/logout.do">		
+		<input class="btn btn-default btn-lg" type="button" value="관리자페이지" onclick="location.href='<%=request.getContextPath()%>/webmaster/webmaster.do'">		
+		<input class="btn btn-default btn-lg" type="submit" value="로그아웃">
+	</form>
+
   </div>	
 	
 

@@ -11,7 +11,14 @@
 	
 	<!-- 관리자페이지 : 대기자정보 읽어오기 -->
 	
-  <div class="container-fluid text-center">	
+  <div class="container text-center">	
+
+	<div class="pagetitle">
+		<br>
+		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
+		<span><strong> 파티 대기자 정보 </strong></span>
+		<br><br>
+	</div>
 		
 	<table class="table table-hover">
 		<tr>
