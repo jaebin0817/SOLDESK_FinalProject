@@ -23,6 +23,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.finalproject.contlist.WatchListDAO;
 import kr.co.finalproject.contlist.WatchListDTO;
+import kr.co.finalproject.party.PartyMemberDAO;
+import kr.co.finalproject.party.PartyMemberDTO;
 import kr.co.finalproject.search.SearchKeyDAO;
 import net.utility.Utility;
 
@@ -34,6 +36,7 @@ public class MemberCont {
 	private SubscribeInfoDAO subdao =null;
 	private WatchListDAO watchdao=null;
 	private SearchKeyDAO skdao =null;
+	private PartyMemberDAO pmdao=null;
 	
 
 	public MemberCont() {
@@ -41,6 +44,7 @@ public class MemberCont {
 		subdao = new SubscribeInfoDAO();
 		watchdao = new WatchListDAO();
 		skdao = new SearchKeyDAO();
+		pmdao = new PartyMemberDAO();
 		System.out.println("-----MemberCont() 객체 생성");
 	}
 
@@ -393,6 +397,46 @@ public class MemberCont {
 
 		return mav;
 		
+	}
+	
+	@RequestMapping(value = "/m_manage/partymemexit.do", method = RequestMethod.POST)
+	public ModelAndView partymemexit(HttpServletRequest req) {
+		ModelAndView mav=new ModelAndView();
+		String party_id=req.getParameter("party_id");
+		String mem_id=req.getParameter("mem_id");
+		
+		int cnt=pmdao.memexit(party_id, mem_id);
+		if(cnt==0) {
+            String msg="<h3>파티 탈퇴 실패</h3>";
+            mav.addObject("msg", msg);
+            mav.setViewName("m_manage/msgView");
+		}else {
+			String msg="<h3>파티 탈퇴 성공</h3>";
+            mav.addObject("msg", msg);
+			mav.setViewName("m_manage/msgView");
+		}//if end
+		return mav;
+	}
+	
+	@RequestMapping(value = "/m_manage/partyexit.do", method = RequestMethod.POST)
+	public ModelAndView partyexit(HttpServletRequest req) {
+		ModelAndView mav=new ModelAndView();
+		String party_id=req.getParameter("party_id");
+		String ott_name=req.getParameter("ott_name");
+		//String mem_id=req.getParameter("mem_id");
+		
+		int cnt=pmdao.partyexit(party_id, ott_name);
+		if(cnt==0) {
+            String msg="<h3>파티장 탈퇴 실패</h3>";
+            mav.addObject("msg", msg);
+            mav.setViewName("m_manage/msgView");
+		}else {
+			String msg="<h3>파티장 탈퇴 성공</h3>";
+            mav.addObject("msg", msg);
+			mav.setViewName("m_manage/msgView");
+		}//if end
+		return mav;
+
 	}
 	
 	

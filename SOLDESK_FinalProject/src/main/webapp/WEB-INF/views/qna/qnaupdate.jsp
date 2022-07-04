@@ -9,12 +9,13 @@
 	<form name="frm" id="frm" method="post" action="qnaupdateProc.do">
 	
 		<div class="container text-center">
-		<input name="qna_title" id="qna_title" type="text" class="form-control" size="20" value="${dto.qna_title}" required>
-		<input name="qna_content" id="qna_content" type="text" class="form-control" size="20" value="${dto.qna_content}" required>	
-		<input name="qna_pw" id="qna_pw" type="password" class="form-control" size="20" required>
+
+		<input name="qna_title" id="qna_title" type="text" class="form-control" size="20" placeholder="문의 제목을 적어주세요" value="${dto.qna_title}" required>
+		<textarea class="form-control" style="resize: none;" rows="5" name="qna_content" id="qna_content" placeholder="문의사항을 적어주세요"  required>${dto.qna_content}</textarea>
+		<input type="hidden" name="qna_pw" id="qna_pw" value="${mem_pw}">
 		<input type="hidden" id="qna_num" name="qna_num" value="${dto.qna_num}">
 		
-		<input type="submit" value="입력"  class="btn btn-success">
+		<input type="submit" value="수정"  class="btn btn-success">
 		<input type="reset"  value="취소"  class="btn btn-danger">
 		</div>
 	</form>

@@ -19,7 +19,7 @@ public class PartyWaitingDAO {
     }
     
     public int memberwait(PartyWaitingDTO dto) {
-    	int cnt = 0;
+    	int cnt1 = 0;
     	try {
             con = dbopen.getConnection();
             sql = new StringBuilder();
@@ -29,13 +29,13 @@ public class PartyWaitingDAO {
             pstmt = con.prepareStatement(sql.toString());
             pstmt.setString(1, dto.getMem_id()); 
             pstmt.setString(2, dto.getOtt_name()); 
-            cnt = pstmt.executeUpdate();
+            cnt1 = pstmt.executeUpdate();
         } catch (Exception e) {
             System.out.println("카드등록 실패 : " + e);
         } finally {
             DBclose.close(con, pstmt);
         }//end
-        return cnt;
+        return cnt1;
     }//end
     
     public PartyWaitingDTO read(String ott_name) {

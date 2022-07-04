@@ -25,7 +25,8 @@
     	<input type="radio" id="ott_name" name="ott_name" value="tving" checked="checked">티빙<br>
     	<input type="radio" id="ott_name" name="ott_name" value="watcha">왓챠<br>
     	<input type="radio" id="ott_name" name="ott_name" value="disney">디즈니<br>
-      </div>	
+      </div>
+      ${dto.mem_id }
       
       <hr>
       

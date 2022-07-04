@@ -5,7 +5,7 @@
   }
   
   .bg-1 { 
-    background-color: #ffffff; /* White */
+    background-color: #eeeeee; /* White */
     color: #303030;
   }
   .bg-2 { 
@@ -179,11 +179,87 @@
     -webkit-animation-duration: 1s;
     visibility: visible;
   }
-  
-  .table {
-  	width: 70%;
+  .pagetitle {
+  	font-size: xx-large;
+  	vertical-align: bottom;
+  	font-weight: 500;
   }
-  
+  .memTable  {
+    width: 60%;
+    margin: auto;
+    text-align: left;
+  }
+	
+	td {
+	text-align: left;
+	
+	}
+	
+	.ranklist{
+	 width: 800px;
+	 height: 100px;
+	 margin: auto;
+	 padding: 8px;
+	 text-align: left;
+	 background-color: #eeeeee;
+	 color: black; 
+	}
+	
+	.ranklist:hover{
+	 background-color: #404040;
+	 color: white;
+	 font-weight: bolder;
+	}
+	
+	.ranklist a{
+	 color: black;
+	}
+	
+	.ranklist:hover a{
+	 color: white;
+	}
+	
+	.cont-poster{
+	 width: 85px;
+	 height: 85px;
+	}
+	
+	.cont-rank{
+	 width: 40px;
+	 height: 85px;
+	 padding-left: 10px;
+	 text-align: right;
+	 font-size: 25px;
+	 font-weight: 800;
+	}
+	
+	.cont-title{
+	 width: 690px;
+	 height: 85px;
+	 font-size: 20px;
+	 font-weight: 500;
+	}
+	
+	.hide{
+	 visibility: hidden;
+	}
+	
+	.btnarea {
+		text-align: center;
+	}
+	
+	.backcolor{
+		 background-color: #eeeeee;
+	}
+	
+	#searchfield{
+	margin-top: 20px;
+	padding-top: 50px;
+	
+	}
+
+	
+
   @keyframes slide {
     0% {
       opacity: 0;

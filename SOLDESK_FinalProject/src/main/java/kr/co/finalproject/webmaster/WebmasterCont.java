@@ -95,7 +95,7 @@ public class WebmasterCont {
       int totalRecord=memberdao.count(col, word);
       
       mav.setViewName("webmaster/membermanage/memberlist");
-      String paging=new Paging().paging3(totalRecord, nowPage, recordPerPage, col, word,"memberlist.do");
+      String paging=new Paging().paging2(totalRecord, nowPage, recordPerPage, col, word,"memberlist.do");
       mav.addObject("dto", dto);
       mav.addObject("paging",paging);
       mav.addObject("list", memberdao.list2(col, word,nowPage, recordPerPage));
@@ -138,7 +138,7 @@ public class WebmasterCont {
       int totalRecord=10;
       
       contdao = new ContlistDAO();
-      String paging=new Paging().paging3(totalRecord, nowPage, recordPerPage, col, word,"contmanage.do");
+      String paging=new Paging().paging2(totalRecord, nowPage, recordPerPage, col, word,"contmanage.do");
       mav.addObject("dto", dto);
       mav.addObject("paging",paging);
       mav.addObject("list", contdao.contlistAll());

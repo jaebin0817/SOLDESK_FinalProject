@@ -43,7 +43,7 @@ public class NoticeCont {
 		
 		
 		mav.setViewName("notice/noticelist");
-		String paging=new Paging().paging3(totalRecord, nowPage, recordPerPage, col, word, "notice.do");
+		String paging=new Paging().paging1(totalRecord, nowPage, recordPerPage, col, word, "notice.do");
 		mav.addObject("paging",paging);
 		mav.addObject("list", dao.list3(col, word, nowPage, recordPerPage));
 		return mav;

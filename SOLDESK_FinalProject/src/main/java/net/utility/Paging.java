@@ -26,31 +26,34 @@ public class Paging {
     str.append("  #paging A:hover{text-decoration:underline; background-color: #ffffff; color:black; font-size: 1em;}");
     str.append("  #paging A:visited {text-decoration:none;color:black; font-size: 1em;}");
     str.append("</style>");
-    str.append("<DIV id='paging'>");
+    str.append("<ul class='pagination'>");
     //str.append("현재 페이지: " + nowPage + " / " + totalPage + "&nbsp;&nbsp;");
 
     int _nowPage = (nowGrp-1) * pagePerBlock; // 10개 이전 페이지로 이동
     if (nowGrp >= 2){
-      str.append("[<A href='./"+filenm+"?col="+col+"&word="+word+"&nowPage="+_nowPage+"'>이전</A>]");
+      str.append("<li>[<A href='./"+filenm+"?col="+col+"&word="+word+"&nowPage="+_nowPage+"'>이전</A>]</li>");
     }//if end
 
     for(int i=startPage; i<=endPage; i++){
       if (i > totalPage){
         break;
       }//if end
- 
+      
+      str.append("<li><A href='./"+filenm+"?col="+col+"&word="+word+"&nowPage="+i+"'>"+i+"</A></li>&nbsp;");
+      
+      /*
       if (nowPage == i){ // 현재 페이지이면 강조 효과
         str.append("<span style='font-size: 1.2em; font-weight: bold;'>"+i+"</span>&nbsp;");  
       }else{
-        str.append("<A href='./"+filenm+"?col="+col+"&word="+word+"&nowPage="+i+"'>"+i+"</A>&nbsp;");
-      }//if end      
+        
+      }//if end*/   
     }//for end
     
     _nowPage = (nowGrp * pagePerBlock)+1; // 10개 다음 페이지로 이동
     if (nowGrp < totalGrp){
-      str.append("[<A href='./"+filenm+"?col="+col+"&word="+word+"&nowPage="+_nowPage+"'>다음</A>]");
+      str.append("<li>[<A href='./"+filenm+"?col="+col+"&word="+word+"&nowPage="+_nowPage+"'>다음</A>]<li>");
     }//if end
-    str.append("</DIV>");
+    str.append("</ul>");
     
     return str.toString();
   }
