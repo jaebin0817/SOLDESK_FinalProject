@@ -25,7 +25,7 @@
 
 	<div id="recfrmarea">
 	
-		<form name="themefrm" id="themefrm" method="post" action="themeins.do" enctype="multipart/form-data" onsubmit="return"> <!-- myscript.js에 함수 작성함 -->
+		<form name="themefrm" id="themefrm" method="post" action="themeins.do" enctype="multipart/form-data">
 		<table class="table" style="margin:auto;">
 			<tr>
 			   <th>제목</th>

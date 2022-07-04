@@ -286,4 +286,67 @@ public class RecommendDAO {
 	}
 	
 	
+	public int readTnum(String t_title) {
+
+		int t_num=0;
+				
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" SELECT t_num ");
+			sql.append(" FROM themes ");
+			sql.append(" WHERE t_title=? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, t_title);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				t_num=rs.getInt("t_num");				
+			}//if end
+			
+		}catch (Exception e) {
+			System.out.println("테마 번호 불러오기 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);
+		}//try end
+		
+		return t_num;
+	}
+	
+	
+	
+	public int recUpdate(RecommendDTO dto) {
+		int cnt=0;
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" UPDATE rec_theme ");
+			sql.append(" SET r_title=?, r_photo=?, mcodes=?, r_content=?, t_num=? ");
+			sql.append(" WHERE r_num=?  ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, dto.getR_title());
+			pstmt.setString(2, dto.getR_photo());
+			pstmt.setString(3, dto.getMcodes());
+			pstmt.setString(4, dto.getR_content());
+			pstmt.setInt(5, dto.getT_num());
+			pstmt.setInt(6, dto.getR_num());
+			
+			cnt=pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("추천글 수정 실패: " + e);
+		} finally {
+			DBclose.close(con, pstmt);
+		}//try end
+		
+		
+		return cnt;
+		
+	}//update() end
+	
+	
+	
 }//class end

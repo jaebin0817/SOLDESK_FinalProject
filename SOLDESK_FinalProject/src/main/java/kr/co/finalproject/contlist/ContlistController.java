@@ -43,16 +43,22 @@ public class ContlistController {
 
    @RequestMapping("/contlist/contlist.do")
    public ModelAndView contlist() {
-      ModelAndView mav = new ModelAndView();
+	      ModelAndView mav = new ModelAndView();
 
-      ArrayList<ContlistDTO> list = null;
+	      ArrayList<ContlistDTO> list = null;
+	      
+	      int nowPage=1;
+	      int recordPerPage=8;
+	      String col ="";
+	      String word="";
+	      
+	      list = dao.list(col, word, nowPage, recordPerPage);
+	      
+	      mav.setViewName("contlist/contlistAjax");
+	      mav.addObject("list", list);
+	      mav.addObject("nowPage", nowPage);
 
-      list = dao.contlistAll();
-      
-      mav.setViewName("contlist/contlist");
-      mav.addObject("list", list);
-
-      return mav;
+	      return mav;
    }
    
    
@@ -152,7 +158,7 @@ public class ContlistController {
       StringTokenizer dirSt = new StringTokenizer(directors, ", ");
       while(dirSt.hasMoreTokens()) { //토큰할 문자가 있는지?
           
-    	  directorlist.add(pdao.readDirector(dirSt.nextToken()));
+    	  directorlist.add(pdao.readPeople(dirSt.nextToken()));
     	  
       }
       
@@ -162,7 +168,7 @@ public class ContlistController {
     	  String pno = actSt.nextToken();
     	  //System.out.println(pno);
 
-    	  actorlist.add(pdao.readActor(pno));
+    	  actorlist.add(pdao.readPeople(pno));
       }
       
       ArrayList<ReviewDTO> reviewlist = new ArrayList<ReviewDTO>();
@@ -577,7 +583,59 @@ public class ContlistController {
        return mav;
     
     }
+
     
+    
+    @RequestMapping("/contlist/reviewList.do")
+    public ModelAndView reviewListAjax(HttpServletRequest req) {
+       ModelAndView mav = new ModelAndView();
+       int mcode = Integer.parseInt(req.getParameter("mcode"));
+       ArrayList<ReviewDTO> list = null;
+       
+       int recordPerPage=3;
+       int nowPage=1;
+       if(req.getParameter("nowPage")!=null){
+          nowPage=Integer.parseInt(req.getParameter("nowPage"));
+       }//if end
+       
+       list = dao2.list(nowPage, recordPerPage, mcode);
+       System.out.println(list);
+       mav.setViewName("review/reviewListAjax");
+       mav.addObject("list", list);
+       mav.addObject("nowPage", nowPage);
+
+       return mav;
+    }
+    
+    
+    
+    @ResponseBody   
+    @RequestMapping("contlist/morereviews.do")
+    private ArrayList<ReviewDTO> morereviews(@RequestParam Map<String, Object> map) {
+       
+        ArrayList<ReviewDTO> list = null;
+       
+       try {
+          String strMcode= (String)map.get("mcode");
+          int mcode= Integer.parseInt(strMcode);
+          String strNowPage= (String)map.get("page");
+          int nowPage = Integer.parseInt(strNowPage);
+          
+          //System.out.println(nowPage);
+          
+             int recordPerPage=3;
+           list = dao2.list(nowPage, recordPerPage, mcode);
+           
+           //System.out.println(list);
+           
+       }catch (Exception e) {
+          System.out.println("응답실패: " + e);
+       }
+       
+       return list;
+       
+    }//morecontents() end
+
     
     
     

@@ -23,6 +23,7 @@ import kr.co.finalproject.member.MemberDTO;
 import kr.co.finalproject.party.PartyInfoDAO;
 import kr.co.finalproject.party.PartyInfoDTO;
 import kr.co.finalproject.party.PartyMemberDAO;
+import kr.co.finalproject.party.PartyWaitingDAO;
 import kr.co.finalproject.search.SearchKeyDAO;
 import kr.co.finalproject.search.SearchKeyDTO;
 import net.utility.Paging;
@@ -34,10 +35,11 @@ public class WebmasterCont {
 
    private PartyInfoDAO partydao = null;
    private PartyMemberDAO partymemdao = null;
+   private PartyWaitingDAO waitdao=null;
    private MemberDAO memberdao = null;
    private SearchKeyDAO skeydao = null;
    private ContlistDAO contdao = null;
-
+   private PeopleDAO pdao = null;
    
    public WebmasterCont() {
       partydao = new PartyInfoDAO();
@@ -52,6 +54,16 @@ public class WebmasterCont {
       return "webmaster/webmaster";
    }
    
+   @RequestMapping("/parties.do")
+   public ModelAndView partymanage(PartyInfoDTO partyDTO) {
+      ModelAndView mav=new ModelAndView();
+            
+      mav.setViewName("webmaster/partymanage/partymanage");
+      
+      return mav;
+   }
+   
+   
    
    @RequestMapping("/partylist.do")
    public ModelAndView partylist(PartyInfoDTO partyDTO) {
@@ -59,6 +71,18 @@ public class WebmasterCont {
             
       mav.setViewName("webmaster/partymanage/partylist");
       mav.addObject("list", partydao.partylist());
+      
+      return mav;
+   }
+   
+   
+   @RequestMapping("/waitinglist.do")
+   public ModelAndView waitinglist(PartyInfoDTO partyDTO) {
+      ModelAndView mav=new ModelAndView();
+      waitdao=new PartyWaitingDAO();
+      
+      mav.setViewName("webmaster/partymanage/waitinglist");
+      mav.addObject("list", waitdao.read());
       
       return mav;
    }
@@ -104,6 +128,53 @@ public class WebmasterCont {
       mav.addObject("list", memberdao.list(col, word,nowPage, recordPerPage));
       
       return mav;
+   }
+   
+   
+   @RequestMapping("/memread.do")
+   public ModelAndView memread(MemberDTO dto, HttpServletRequest req) {
+      ModelAndView mav=new ModelAndView();
+      
+      String mem_id=req.getParameter("mem_id");
+      
+      dto=memberdao.read(mem_id);
+      
+      mav.setViewName("webmaster/membermanage/memberRead");
+      mav.addObject("dto", dto);
+      
+      return mav;
+   }
+
+   
+   @RequestMapping("/memlvupdate.do")
+   public ModelAndView memlvupdate(MemberDTO dto, HttpServletRequest req) {
+      ModelAndView mav=new ModelAndView();
+            
+      String mem_id=req.getParameter("mem_id");      
+      
+      dto.setMem_id(mem_id);
+      
+      int cnt=memberdao.updateLv(dto);
+      
+		String msg="";
+	    
+        if(cnt==0){
+			msg+="<script>";
+			msg+="    alert('회원정보 수정 실패');";
+			msg+="    location.href='javascript:history.back();'";
+			msg+="</script>";	
+
+         }else {        	 			
+ 			msg+="<script>";
+ 			msg+="    alert('회원정보 수정 성공');";
+ 			msg+="    location.href='/memberlist.do'";
+ 			msg+="</script>";
+         }
+        
+        mav.addObject("msg", msg);
+	    mav.setViewName("webmaster/msgView");
+        return mav;
+      
    }
    
    
@@ -541,6 +612,130 @@ public class WebmasterCont {
 		
 		return key_codes;
 		
-	}//ottsearch() end
+	}//keycodes() end
+    
+    
+    
+    @RequestMapping("peoplemanage.do")
+    public String peoplemanage() {
+       return "webmaster/peoplemanage/peoplemanage";
+    }
+    
+    
+    @RequestMapping("/directors.do")
+    public ModelAndView directors(HttpServletRequest req) {
+       ModelAndView mav=new ModelAndView();
+       pdao= new PeopleDAO();
+       
+       int recordPerPage=10;
+       int nowPage=1;
+       if(req.getParameter("nowPage")!=null){
+     	  nowPage=Integer.parseInt(req.getParameter("nowPage"));
+       }//if end
+       
+       
+       String pcode="D";
+       
+       int totalRecord=pdao.count(pcode);
+       
+       String paging=new Paging().paging2(totalRecord, nowPage, recordPerPage, "directors.do");
+       
+       mav.addObject("list", pdao.list(pcode, nowPage, recordPerPage));
+       mav.addObject("paging", paging);
+       mav.setViewName("webmaster/peoplemanage/peopleList");
+       
+       return mav;
+    }
+    
+    
+    @RequestMapping("/actors.do")
+    public ModelAndView actors(HttpServletRequest req) {
+        ModelAndView mav=new ModelAndView();
+        pdao= new PeopleDAO();
+        
+        int recordPerPage=10;
+        int nowPage=1;
+        if(req.getParameter("nowPage")!=null){
+      	  nowPage=Integer.parseInt(req.getParameter("nowPage"));
+        }//if end
+       
+       String pcode="A";
+       
+       int totalRecord=pdao.count(pcode);
+       
+       String paging=new Paging().paging2(totalRecord, nowPage, recordPerPage, "actors.do");
+       
+       mav.addObject("list", pdao.list(pcode, nowPage, recordPerPage));
+       mav.addObject("paging", paging);
+       mav.setViewName("webmaster/peoplemanage/peopleList");
+       
+       return mav;
+    }
+    
+    
+    
+    @RequestMapping("/peopleupdate.do")
+    public ModelAndView peopleupdate(HttpServletRequest req, PeopleDTO dto) {
+       ModelAndView mav=new ModelAndView();
+       pdao= new PeopleDAO();
+        
+       String pno= req.getParameter("pno");
+       
+       dto=pdao.readPeople(pno);
+      
+       mav.addObject("dto", dto);
+       mav.setViewName("webmaster/peoplemanage/peopleUpdate");
+       
+       return mav;
+    }
+    
+    
+    
+	@RequestMapping("peopleupdateproc.do")
+	public ModelAndView peopleupdateproc(PeopleDTO dto, HttpServletRequest req) {
+	    ModelAndView mav = new ModelAndView();
+        pdao= new PeopleDAO();
+	    
+        String pno= req.getParameter("pno");		
+	    dto.setPno(pno);
+		
+	    PeopleDTO oldDTO=pdao.readPeople(pno);
+	    String oldPphoto=oldDTO.getPphoto();//기존 프로필사진명
+	    
+	    String basePath=req.getSession().getServletContext().getRealPath("/storage");
+	    MultipartFile pphotoMF=dto.getPphotoMF();
+
+	    
+	    String pphoto=UploadSaveManager.saveFileSpring30(pphotoMF, basePath);
+	    
+	      if(pphoto=="") {//새로운 파일 업로드 안했다면
+	    	  dto.setPphoto(oldPphoto);
+	      }else {
+	    	  dto.setPphoto(pphoto);
+	    	  UploadSaveManager.deleteFile(basePath, oldPphoto);
+	      }
+	      
+	    int cnt= pdao.update(dto);
+		String msg="";
+	    
+        if(cnt==0){
+			msg+="<script>";
+			msg+="    alert('배우/감독 수정 실패');";
+			msg+="    location.href='javascript:history.back();'";
+			msg+="</script>";	
+
+         }else {        	 			
+ 			msg+="<script>";
+ 			msg+="    alert('배우/감독 수정 성공');";
+ 			msg+="    location.href='javascript:history.go(-2);'";
+ 			msg+="</script>";
+         }
+        
+        mav.addObject("msg", msg);
+	    mav.setViewName("webmaster/msgView");
+        return mav;
+	}
+    
+    
    
 }//class end

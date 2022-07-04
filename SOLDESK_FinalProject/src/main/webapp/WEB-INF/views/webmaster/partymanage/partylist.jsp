@@ -11,7 +11,14 @@
 	
 	<!-- 관리자페이지 : 파티정보 읽어오기 -->
 	
-  <div class="container-fluid text-center">	
+  <div class="container text-center">	
+	
+	<div class="pagetitle">
+		<br>
+		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
+		<span><strong> 전체 파티 리스트 </strong></span>
+		<br><br>
+	</div>
 		
 	<table class="table table-hover">
 		<tr>
@@ -22,14 +29,14 @@
 			<th>매칭인원</th>
 		</tr>
 
-		<c:forEach var="dto" items="${list}"> 	
+		<c:forEach var="dto" items="${list}"> 
 			<tr>
 				<td>${dto.party_id }</td>
 				<td><a href="partyread.do?party_id=${dto.party_id }">${dto.mem_id }</a></td>				
 				<td>${dto.ott_name }</td>
 				<td>${dto.ott_cdate }</td>
 				<td>${dto.matching_no }</td>
-			</tr>	
+			</tr>
 		</c:forEach>
 		
 	</table>

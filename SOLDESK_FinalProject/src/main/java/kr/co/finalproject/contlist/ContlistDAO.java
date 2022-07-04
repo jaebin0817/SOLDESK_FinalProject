@@ -407,7 +407,7 @@ public class ContlistDAO {
 			
 			return cnt;
 			
-		}//insert() end
+		}//update() end
 		
 		
 		
@@ -674,7 +674,7 @@ public class ContlistDAO {
 			}
 	    	
 	    	return list;
-	    }//list3() end
+	    }//list() end
 		
 		public int count() {
 	    	int cnt=0;
@@ -724,15 +724,14 @@ public class ContlistDAO {
 	      }
 
 		
-		public ArrayList<ContlistDTO> contentSearch(String keyword) {
+		public ArrayList<String> contentSearch(String keyword) {
 			
-			ArrayList<ContlistDTO> list=null;
-			ContlistDTO dto=null;
+			ArrayList<String> list=null;
 			
 			try {
 				con=dbopen.getConnection();//DB연결
 				sql=new StringBuilder();
-				sql.append(" SELECT mtitle, mtitle_eng, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor ");
+				sql.append(" SELECT mtitle, mtitle_eng ");
 				sql.append(" FROM contlist ");
 				sql.append(" WHERE mtitle LIKE '%"+keyword+"%' ");
 				sql.append(" 	OR mtitle_eng LIKE '%"+keyword+"%' ");
@@ -742,24 +741,11 @@ public class ContlistDAO {
 
 				rs = pstmt.executeQuery();
 				if(rs.next()) {
-					list=new ArrayList<ContlistDTO>();				
+					list=new ArrayList<String>();				
 					do {
-						dto = new ContlistDTO();//커서가 가리키는 한 줄 저장
-						dto.setMtitle(rs.getString("mtitle"));
-						dto.setMthum(rs.getString("mthum"));
-						dto.setMrate(rs.getDouble("mrate"));
-						dto.setNetflix(rs.getString("netflix"));
-						dto.setWatcha(rs.getString("watcha"));
-						dto.setTving(rs.getString("tving"));
-						dto.setDisney(rs.getString("disney"));
-						dto.setMdate(rs.getString("mdate"));
-						dto.setCri_like(rs.getInt("cri_like"));
-						dto.setKey_code(rs.getString("key_code"));
-						dto.setMcode(rs.getInt("mcode"));
-						dto.setActor(rs.getString("actor"));
-						dto.setDirector(rs.getString("director"));
+						list.add(rs.getString("mtitle"));
+						list.add(rs.getString("mtitle_eng"));
 						
-						list.add(dto);
 					}while(rs.next());
 				}//if end
 				
@@ -773,7 +759,37 @@ public class ContlistDAO {
 			return list;
 			
 		}//mainsearch() end
+
 		
+		
+	    public int mcodeRead(String title) {
+	        int mcode=0;
+	        try {
+	            con=dbopen.getConnection();
+	            
+	            sql=new StringBuilder();
+	            sql.append(" SELECT mcode, mtitle, mtitle_eng ");
+	            sql.append(" FROM contlist ");
+	            sql.append(" WHERE mtitle=? OR mtitle_eng=? ");
+	            
+	            pstmt=con.prepareStatement(sql.toString());
+	            pstmt.setString(1, title);
+	            pstmt.setString(2, title);
+	            
+	            rs=pstmt.executeQuery();
+	            if(rs.next()) {
+	            	
+	            	mcode=rs.getInt("mcode");
+
+	            }//end
+	            
+	        }catch (Exception e) {
+	            System.out.println("영화코드 불러오기 실패:"+e);
+	        }finally {
+	            DBclose.close(con, pstmt, rs);
+	        }//end
+	        return mcode;
+	    }// mcodeRead() end
 	    
 
 }//class end

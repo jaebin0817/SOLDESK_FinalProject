@@ -7,17 +7,22 @@
 	
 	<!-- 관리자페이지 -->
 	
-  <div class="container-fluid text-center">	
-
+  <div class="container text-center">	
+	<div class="pagetitle">
+		<br>
+		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
+		<span><strong> 관리자페이지 </strong></span>
+		<br><br>
+	</div>
 	<form name="frm" method="post" action="<%=request.getContextPath()%>/logout.do">		
-		<input type="button" value="콘텐츠관리" onclick="location.href='/contmanage.do'">
-		<input type="button" value="추천글관리" onclick="location.href='/themelist.do'">
-		<input type="button" value="회원관리" onclick="location.href=location.href='/memberlist.do'">
-		<input type="button" value="파티목록관리" onclick="location.href='/partylist.do'">
-		<input type="button" value="파티매칭대기목록" onclick="">
-		<input type="button" value="공지사항관리" onclick="location.href='/notice/noticemaster.do'">
+		<input class="btn btn-default btn-lg btn-block" type="button" value="콘텐츠관리" onclick="location.href='/contmanage.do'">
+		<input class="btn btn-default btn-lg btn-block" type="button" value="배우/감독관리" onclick="location.href='/peoplemanage.do'">
+		<input class="btn btn-default btn-lg btn-block" type="button" value="추천글관리" onclick="location.href='/themelist.do'">
+		<input class="btn btn-default btn-lg btn-block" type="button" value="회원관리" onclick="location.href='/memberlist.do'">
+		<input class="btn btn-default btn-lg btn-block" type="button" value="파티관리" onclick="location.href='/parties.do'">
+		<input class="btn btn-default btn-lg btn-block" type="button" value="공지사항관리" onclick="location.href='/notice/noticemaster.do'">
 		<hr>
-		<input type="submit" value="로그아웃">
+		<input class="btn btn-default btn-lg" type="submit" value="로그아웃">
 	</form>
   
   </div>	

@@ -129,26 +129,41 @@
 			</c:otherwise>
 		</c:choose>
 
-		<!-- 리뷰 및 수정 삭제 버튼 -->
-	<hr>
-	<div class="mem_id">ID : ${dto2.mem_id}</div>
-	<div class="rev_title">후기 제목 : ${dto2.rev_title}</div>
-	<div class="rev_reg">등록 날짜 : ${dto2.rev_reg}</div>
-	<hr>
-	<div class="rev_cont">한줄평 : ${dto2.rev_cont}</div>
-	<div class="rev_rate">개인 평점 : ${dto2.rev_rate}</div>
-	<div class="rev_spo">스포 여부 : ${dto2.rev_spo }</div>
-   <form method="post" action="<%=request.getContextPath()%>/reviewupdate.do?mcode=${dto.mcode}&rev_code=${dto2.rev_code } " method="POST">
-       <input type="hidden" id="rev_code" name="rev_code" value="${rev_code}">
-       <input type="submit" value="update">
-   </form>
- 
-   <form method="post" action="reviewdelete.do?mcode=${dto.mcode}&rev_code=${dto2.rev_code } " method="POST">
-       <input type="hidden" id="rev_code" name="rev_code" value="${rev_code}">
-       <input type="submit" value="delete">
-   </form>
+   <c:set var="mcode" value="${ dto.mcode }"></c:set>
+   <!-- 리뷰 및 수정 삭제 버튼 -->
+   <c:forEach var="dto" items="${ reviewlist }">
+   
+      <hr>
+      <div class="mem_id">ID : ${dto.mem_id}</div>
+      <div class="rev_title">후기 제목 : ${dto.rev_title}</div>
+      <div class="rev_reg">등록 날짜 : ${dto.rev_reg}</div>
+      <hr>
+      <div class="rev_cont">한줄평 : ${dto.rev_cont}</div>
+      <div class="rev_rate">개인 평점 : ${dto.rev_rate}</div>
+      <div class="rev_spo">스포 여부 : ${dto.rev_spo }</div>
+      <form method="post"
+         action="<%=request.getContextPath()%>/reviewupdate.do?mcode=${ mcode }&rev_code=${dto.rev_code } "
+         method="POST">
+         <input type="hidden" id="rev_code" name="rev_code" value="${dto.rev_code}">
+         <input type="submit" value="update">
+      </form>
+   
+      <form method="post"
+         action="reviewdelete.do?mcode=${mcode}&rev_code=${dto.rev_code } "
+         method="POST">
+         <input type="hidden" id="rev_code" name="rev_code" value="${dto.rev_code}">
+         <input type="submit" value="delete">
+      </form>
+      
+   </c:forEach>
+   <!-- 리뷰 목록 끝 -->
+   
+   <!-- 리뷰 더보기 버튼 -->
+   <button class="btn btn-default btn-lg"
+            onclick="location.href='<%=request.getContextPath()%>/contlist/reviewList.do?mcode=${ dto.mcode }'">
+            리뷰 더 보기
+   </button>
 
-	<!-- 리뷰 관련 끝 -->
 
 
 </div>

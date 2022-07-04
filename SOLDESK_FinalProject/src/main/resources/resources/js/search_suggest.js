@@ -1,4 +1,3 @@
-var xhr;
 var checkFirst = loopSend = false;
 var lastKeyword = "";
 var keyword="";
@@ -58,3 +57,43 @@ function select(reData){
      $('#suggest').empty();
 }
 
+
+
+   $('#content').autocomplete({
+        source : function(request, response) {
+            $.ajax({
+                  url : "moviesuggest.do"
+                , type : "POST"
+                , data : { keyword : $('#content').val() } // 검색 키워드
+                , dataType : "JSON"
+                , success : function(data){ // 성공
+                    response(
+						
+                        $.map(data, function(item) {
+                            return {
+                                  label : item    //목록에 표시되는 값
+                                , value : item    //선택 시 input창에 표시되는 값
+                            };
+                        })
+                    );//response
+                }
+                ,
+                error : function(){ //실패	
+                    alert("통신 실패");
+                }
+            });
+        }
+        , minLength : 1    
+        , autoFocus : false    
+        , select : function(event, ui) {
+            console.log(ui);//사용자가 오토컴플릿이 만들어준 목록에서 선택을 하면 반환되는 객체
+            console.log(ui.item.label);
+            console.log(ui.item.value);
+        }
+        , focus : function(event, ui) {
+            return false;
+        }
+        , close : function(event) {
+            console.log(event);
+        }
+    });

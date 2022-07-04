@@ -15,6 +15,9 @@
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
 </head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
 
@@ -30,7 +33,6 @@
     </div>
     <div>
       <ul class="nav navbar-nav navbar-right">
-	      	<li><a href="contlist/contlistajax.do">컨텐츠AJAX</a></li>
 	      	<li><a href="contlist/contlist.do">컨텐츠</a></li>
 	      	<li><a href="themelist.do">추천작</a></li>
 	        <li><a href="party/partyadd.do">파티매칭</a></li>
@@ -178,6 +180,48 @@
 
 	</footer>
 
+<script>
+	$('#searchkey').autocomplete({
+	    source : function(request, response) {
+	        $.ajax({
+	              url : "searchsuggest.do"
+	            , type : "POST"
+	            , data : { keyword : $('#searchkey').val() } // 검색 키워드
+	            , dataType : "JSON"
+	            , success : function(data){ // 성공
+	                response(
+						
+	                    $.map(data, function(item) {
+	                        return {
+	                              label : item    //목록에 표시되는 값
+	                            , value : item    //선택 시 input창에 표시되는 값
+	                        };
+	                    })
+	                );//response
+	            }
+	            ,
+	            error : function(){ //실패	
+	                alert("통신 실패");
+	            }
+	        });
+	    }
+	    , minLength : 1    
+	    , autoFocus : false    
+	    , select : function(event, ui) {
+	        console.log(ui);//사용자가 오토컴플릿이 만들어준 목록에서 선택을 하면 반환되는 객체
+	        console.log(ui.item.label);
+	        console.log(ui.item.value);
+	    }
+	    , focus : function(event, ui) {
+	        return false;
+	    }
+	    , close : function(event) {
+	        console.log(event);
+	    }
+	});
+
+
+</script>
 
 </body>
 </html>

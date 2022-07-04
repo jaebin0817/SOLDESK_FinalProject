@@ -6,9 +6,9 @@
 
 <%@ include file="../../header.jsp"%>
 
-<script type="text/javascript" src="../../js/search_suggest.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
-
 <!-- 본문시작 recForm.jsp -->
 	
 	
@@ -37,16 +37,19 @@
 			<tr>
 			   <th rowspan="2">추천콘텐츠</th>
 			   <td id="recContents">
-			     <input type="text" name="content1" id="content1" class="form-control" maxlength="30" placeholder="추천컨텐츠1: 콘텐츠제목을 입력해주세요" onkeydown="search(this.value)" required>
+			     <input name="content" id="content" class="form-control" maxlength="30" placeholder="추천컨텐츠 검색: 콘텐츠제목을 입력해주세요">
 			   </td>
 			   <td>
-			    	<img src="../../images/plus_icon.png" id="content_plus" name="director_plus" width="20px">	      	    
-			    	<img src="../../images/minus_icon.png" id="content_minus" name="director_minus" width="20px">	      	    
+					<input type="button" id="addcontent" class="btn btn-default" value="추가">   	    
 			   </td>
 			</tr>
 			<tr>
-			   <td colspan="2" id="suggest">
-
+			   <td id="suggest">
+				  <input type="text" name="content1" id="content1" class="form-control" maxlength="30" placeholder="추천컨텐츠1" readonly required>				 
+			   </td>
+			   <td>
+			    	<img src="../../images/plus_icon.png" id="content_plus" name="content_plus" width="20px">	      	    
+			    	<img src="../../images/minus_icon.png" id="content_minus" name="content_minus" width="20px">	      	    
 			   </td>
 			</tr>
 			<tr>
@@ -88,10 +91,21 @@
 	
     var m=1;
     
+    
+    $("#addcontent").click(function(){
+		
+		var cont = $('#content').val();
+		//alert(cont);
+        $("#content"+m).attr('value', cont);
+        $('#content').val('');
+		
+    });  
+    
+    
     $("#content_plus").click(function(){
 		
     	m++;        	
-    	$("#recContents").append("<input type='text' name='content"+m+"' id='content"+m+"' class='form-control' onkeydown='search(this.value)' placeholder='추천컨텐츠"+m+": 콘텐츠제목을 입력해주세요'>");
+    	$("#suggest").append("<input type='text' name='content"+m+"' id='content"+m+"' class='form-control' readonly placeholder='추천컨텐츠"+m+"'>");
     	$("#m").attr('value', m);
        
     });      
@@ -109,6 +123,46 @@
     	}
     });   
 
+    
+    
+    $('#content').autocomplete({
+        source : function(request, response) {
+            $.ajax({
+                  url : "moviesuggest.do"
+                , type : "POST"
+                , data : { keyword : $('#content').val() } // 검색 키워드
+                , dataType : "JSON"
+                , success : function(data){ // 성공
+                    response(
+						
+                        $.map(data, function(item) {
+                            return {
+                                  label : item    //목록에 표시되는 값
+                                , value : item    //선택 시 input창에 표시되는 값
+                            };
+                        })
+                    );//response
+                }
+                ,
+                error : function(){ //실패	
+                    alert("통신 실패");
+                }
+            });
+        }
+        , minLength : 1    
+        , autoFocus : false    
+        , select : function(event, ui) {
+            console.log(ui);//사용자가 오토컴플릿이 만들어준 목록에서 선택을 하면 반환되는 객체
+            console.log(ui.item.label);
+            console.log(ui.item.value);
+        }
+        , focus : function(event, ui) {
+            return false;
+        }
+        , close : function(event) {
+            console.log(event);
+        }
+    });
 
 
 </script>

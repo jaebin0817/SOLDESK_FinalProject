@@ -21,7 +21,7 @@
 	<input type="hidden" id="nowPage" value="1">
 			
 		<div class="ott_search">
-			
+			<button class="ott_search_btn" id="all_btn" name="all_btn" value="all"><img src="../../images/icon_all_search.png"></button>						
 			<button class="ott_search_btn" id="netflix_btn" name="netflix_btn" value="netflix"><img src="../../images/icon_netflix_search.png"></button>
 			<button class="ott_search_btn" id="tving_btn" name="tving_btn" value="tving"><img src="../../images/icon_tving_search.png"></button>
 			<button class="ott_search_btn" id="watcha_btn" name="watcha_btn" value="watcha"><img src="../../images/icon_watcha_search.png"></button>

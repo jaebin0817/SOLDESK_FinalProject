@@ -87,17 +87,21 @@ public class MemberCont {
 	public ModelAndView login(HttpServletRequest req, HttpServletResponse resp) {
 		ModelAndView mav =new ModelAndView();
 		HttpSession session = req.getSession();
-		
+				
 		String mem_id=req.getParameter("id").trim();
 		String mem_pw=req.getParameter("passwd").trim();
 		
 		String mem_lv=null;
 		mem_lv=dao.loginRead(mem_id, mem_pw);
 		
+		String msg="";
+		
 		if(mem_lv==null) {
 			
-			String msg="<h2>로그인 결과</h2><p>로그인 실패<br>아이디와 비밀번호를 확인해주세요</p>";
-			mav.addObject("msg", msg);
+			msg+="<script>";
+			msg+="    alert('로그인 실패\\n아이디와 비밀번호를 확인해주세요');";
+			msg+="    location.href='javascript:history.back();'";
+			msg+="</script>";			
 			
 		}else {
 			
@@ -120,14 +124,15 @@ public class MemberCont {
 				cookie.setMaxAge(0);
 			}//if end
 			
-			resp.addCookie(cookie);	//요청한 사용자 PC에 쿠키값을 저장
+			resp.addCookie(cookie);	//요청한 사용자 PC에 쿠키값을 저장				
 			
-			
-			String msg="<h2>로그인 결과</h2><p>로그인 성공</p>";
-			mav.addObject("msg", msg);
+			msg+="<script>";
+			msg+="    alert('로그인 되었습니다');";
+			msg+="    location.href='javascript:history.go(-2);'";
+			msg+="</script>";
 			
 		}
-		
+		mav.addObject("msg", msg);
 		mav.setViewName("m_manage/msgView");
 		
 		return mav;
