@@ -166,10 +166,11 @@
 		//alert($('#nowPage').val());
 		var num=parseInt($("#no").val());
 		//alert(num);
+		/*
 		for(i=num; i<=num+8; i++){
 			$(".contents").append("<div class='col-lg-3 col-md-4 col-sm-6'><div class='thumb' id='content"+i+"'>")
 		}
-		
+		*/
 		
 		$.ajax({
 			url: "morecontents.do",     
@@ -181,6 +182,8 @@
 				
 				$.each(data,function(index, value) {
 	      			
+					$(".contents").append("<div class='col-lg-3 col-md-4 col-sm-6'><div class='thumb' id='content"+num+"'>")
+					
 					var stars="";
 	                for(i=1; i<=value.mrate; i++){ stars+="★"; }
 	                for(i=value.mrate+1; i<=5; i++){ stars+="☆"; }
