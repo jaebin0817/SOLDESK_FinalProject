@@ -27,6 +27,8 @@
 			<th>구독종료일</th>
 			<th>OTT계정ID</th>
 			<th>OTT계정PW</th>
+			<th>파티탈퇴하기</th>
+			
 		</tr>
 		
 		<c:set var="savedFee" value="${ 0 }"></c:set>
@@ -50,6 +52,27 @@
 				<td>${ dto.subscribe_end }</td>
 				<td>${ dto.ott_id }</td>
 				<td>${ dto.ott_pw }</td>
+				<c:choose>
+				<c:when test="${dto.party_role eq '파티장' }">
+					<td>
+					<form name="frm" id="frm" action="partyexit.do" method="post" onsubmit="return IDlog()">
+		            	<input type="submit" value="파티장 탈퇴"  class="btn btn-danger">
+		            	<input type="hidden" id="party_id" name="party_id" value="${ dto.party_id }">
+		            	<input type="hidden" id="mem_id" name="mem_id" value="${ s_mem_id }">
+		            	<input type="hidden" id="ott_name" name="ott_name" value="${ dto.ott_name }">
+					</form>	
+					</td>
+				</c:when>
+				<c:when test="${dto.party_role eq '파티원' }">
+					<td>
+					<form name="frm" id="frm" action="partymemexit.do" method="post" onsubmit="return IDlog()">
+		            	<input type="submit" value="파티원 탈퇴"  class="btn btn-warning">
+		            	<input type="hidden" id="party_id" name="party_id" value="${ dto.party_id }">
+		            	<input type="hidden" id="mem_id" name="mem_id" value="${ s_mem_id }">
+		            </form>	
+					</td>
+				</c:when>
+				</c:choose>
 			</tr>	
 			
 			<tr style="display: none;">

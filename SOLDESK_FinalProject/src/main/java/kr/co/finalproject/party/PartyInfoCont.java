@@ -23,9 +23,12 @@ public class PartyInfoCont {
 	
 	PartyInfoDAO dao=null;
 	SubscribeInfoDAO subdao=null;
+	PaymentCardDAO carddao=null;
+
 	
 	public PartyInfoCont() {
 		dao=new PartyInfoDAO(); 
+		carddao = new PaymentCardDAO();
 		System.out.println("-----PartyInfoCont() 객체 생성");
 	}//constructor end
 	
@@ -37,7 +40,7 @@ public class PartyInfoCont {
 	
 
 	@RequestMapping(value = "party/partyadd.do",  method = RequestMethod.POST)
-	public ModelAndView partyadd(HttpServletRequest req) {
+	public ModelAndView partyadd(HttpServletRequest req, PaymentCardDTO dto) {
 		ModelAndView mav=new ModelAndView();
 		
 		String ott_name=req.getParameter("ott_name");
@@ -68,7 +71,23 @@ public class PartyInfoCont {
 			if(party_role.equals("party_host")) {
 				mav.setViewName("party/host/intro");
 			}else if(party_role.equals("party_member")) {
-				mav.setViewName("party/member/memberIns");
+				String mem_id=session.getAttribute("s_mem_id").toString();
+				dto=carddao.cardRead(mem_id);
+				if(dto==null) {
+					mav.setViewName("party/member/cardIns");
+				}else {
+					mav.addObject("dto", dto);
+					mav.setViewName("party/member/cardread");
+					int service_fee=500; //파티원 수수료
+					
+					int payback_amount=0;
+					int party_pcost=0;		
+					payback_amount=(ott_price/4)*3;
+					party_pcost=(ott_price/4)*1+service_fee;
+					mav.addObject("mem_id",mem_id);
+					mav.addObject("party_pcost", party_pcost);
+					mav.addObject("payback_amount", payback_amount);
+				}
 			}
 		}
 			
