@@ -294,7 +294,36 @@ public class SubscribeInfoDAO {
 		return subscribe_no;
 	}//subnoCreate() end
 
-	
+	public ArrayList<SubscribeInfoDTO> subtermread(String mem_id) {
+		ArrayList<SubscribeInfoDTO> sublist=null;
+		SubscribeInfoDTO dto=null;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT subscribe_start, subscribe_end ");
+			sql.append(" FROM subscribe_info ");
+			sql.append(" WHERE mem_id=? ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, mem_id);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				sublist = new ArrayList<>();
+				do {
+					dto = new SubscribeInfoDTO();
+					dto.setSubscribe_start(rs.getString("subscribe_start"));
+					dto.setSubscribe_end(rs.getString("subscribe_end"));
+					sublist.add(dto);
+				}while(rs.next());
+			}
+		}catch(Exception e) {
+			System.out.println("구독 기간 조회 실패: " + e);
+		}finally {
+			DBclose.close(con, pstmt, rs);
+		}
+		return sublist;
+	}
 	
 	
 	

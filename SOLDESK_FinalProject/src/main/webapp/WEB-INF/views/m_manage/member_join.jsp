@@ -47,7 +47,7 @@
 		<tr>
 		    <th>생년월일*</th>
 		    <td>
-		      <input type="text" class="form-control" name="mem_birth" id="mem_birth" size="8" placeholder="예) 800101-1" onmousedown="">
+		      <input type="text" class="form-control" name="mem_birth" id="mem_birth" size="8" placeholder="예) 800101-1" onfocusout="birthCheck()">
 		   
 		    </td>
 		    <td>  
@@ -86,8 +86,8 @@
 	
 		</table>
 				
-		<input type="submit" value="가입"  id="memBtn" class="btn"/>
-        <input type="reset"  value="취소"  id="memBtn" class="btn"/>
+		<input type="submit" value="가입"  id="memBtn" class="btn" onclick="loginauth()"/>
+        <input type="reset"  value="취소"  id="cancle" class="btn"/>
 		<br><br><br>
 		
 	</form>

@@ -1,4 +1,4 @@
-
+var count;
 var isRun = false;
 
 function idCheck(){
@@ -27,14 +27,18 @@ function idCheck(){
 			datatype : "JSON",
 			success : function(result){
 				isRun = false;
-				alert("성공하였습니다." + result);
+				//alert("성공하였습니다." + result);
 				
 				if(result == 0){
 					$("#checkId").html("사용 가능한 아이디가 아닙니다.");
 					$("#checkId").attr('color', 'red');
+					count = 0;
+					return false;
 				} else {
 					$("#checkId").html("사용 가능한 아이디 입니다.");
 					$("#checkId").attr('color', 'blue');
+					count = 1;
+					return true;
 				}
 			}, 
 			error : function(){
@@ -76,8 +80,12 @@ function emailCheck() {
 				isRun = false;
 				if(result == 1){
 					alert("사용 가능한 이메일 입니다.");
+					count = 1;
+					return true;
 				} else {
 					alert("중복된 이메일 입니다.");
+					count = 0;
+					return false;
 				}
 				
 			}, 
@@ -115,9 +123,11 @@ function birthCheck(){
 		if(exp == "" || exp.test(mem_birth) == false){
 			alert("생년웡일 형식이 잘못되었습니다.");
 			document.getElementById("mem_birth").focus();
+			count = 0;
 			return false;
 		}else {
 			alert("해당 유형이 맞습니다. ");
+			count = 1;
 			return true;
 		}
 		
@@ -137,12 +147,21 @@ function pwCheck(){
 	
 	if(re_pw != mem_pw){
 		alert("비밀번호가 다릅니다");
+		count = 0;
 		return false;
 	}else {
 		alert("비밀번호가 같습니다");
+		count = 1;
 		return true;
 	}
-	
+}
+
+function loginauth(){
+	if(count == 0){
+		$(document).off('click', '#memBtn', function(){
+			alert("형식이 맞지 않습니다.");
+		});
+	}
 }
 
 function findId(){

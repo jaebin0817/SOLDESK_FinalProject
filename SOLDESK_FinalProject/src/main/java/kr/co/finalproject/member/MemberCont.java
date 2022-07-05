@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.finalproject.contentcri.ContentcriDAO;
+import kr.co.finalproject.contentcri.ContentcriDTO;
+import kr.co.finalproject.contlist.ContlistDTO;
 import kr.co.finalproject.contlist.WatchListDAO;
 import kr.co.finalproject.contlist.WatchListDTO;
 import kr.co.finalproject.search.SearchKeyDAO;
@@ -35,13 +38,14 @@ public class MemberCont {
 	private SubscribeInfoDAO subdao =null;
 	private WatchListDAO watchdao=null;
 	private SearchKeyDAO skdao =null;
-	
+	private ContentcriDAO cridao = null;
 
 	public MemberCont() {
 		dao = new MemberDAO();
 		subdao = new SubscribeInfoDAO();
 		watchdao = new WatchListDAO();
 		skdao = new SearchKeyDAO();
+		cridao = new ContentcriDAO();
 		System.out.println("-----MemberCont() 객체 생성");
 	}
 
@@ -315,7 +319,38 @@ public class MemberCont {
 
 		return mav;
 	}
-
+	
+	@RequestMapping(value = "/likecontent.do", method = RequestMethod.GET)
+	public ModelAndView likecontent(HttpServletRequest req, ContentcriDTO dto) {
+		
+		ModelAndView mav = new ModelAndView();
+		HttpSession session = req.getSession();
+		String mem_id=session.getAttribute("s_mem_id").toString();
+		
+		List<ContlistDTO> likelist = new ArrayList<>();
+		likelist = cridao.likecontent(mem_id);
+		
+		mav.setViewName("m_manage/content/likecontent");
+		mav.addObject("like_list", likelist);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/pointcontent.do", method = RequestMethod.GET)
+	public ModelAndView pointcontent(HttpServletRequest req, ContentcriDTO dto) {
+		
+		ModelAndView mav = new ModelAndView();
+		HttpSession session = req.getSession();
+		String mem_id=session.getAttribute("s_mem_id").toString();
+		
+		List<ContlistDTO> pointlist = new ArrayList<>();
+		pointlist = cridao.pointcontent(mem_id);
+		
+		mav.setViewName("m_manage/content/pointcontent");
+		mav.addObject("point_list", pointlist);
+		
+		return mav;
+	}
 	
 	@RequestMapping(value = "/watchlist.do", method = RequestMethod.GET)
 	public ModelAndView watchlist(HttpServletRequest req, WatchListDTO dto) {
