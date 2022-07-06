@@ -27,17 +27,17 @@ import net.utility.Utility;
 public class ContlistController {
 
    ContlistDAO dao = null;
-   ReviewDAO dao2 = null;
-   SearchKeyDAO dao3 = null;
-   WatchListDAO dao4 = null;
+   ReviewDAO revdao = null;
+   SearchKeyDAO skdao = null;
+   WatchListDAO watchdao = null;
    PeopleDAO pdao=null;
 
    
    public ContlistController() {
       dao = new ContlistDAO();
-      dao2 = new ReviewDAO();
-      dao3 = new SearchKeyDAO();
-      dao4 = new WatchListDAO();
+      revdao = new ReviewDAO();
+      skdao = new SearchKeyDAO();
+      watchdao = new WatchListDAO();
       System.out.println("-----ContlistCont() 객체 생성");
    }// constructor end
 
@@ -54,7 +54,7 @@ public class ContlistController {
 	      
 	      list = dao.list(col, word, nowPage, recordPerPage);
 	      
-	      mav.setViewName("contlist/contlistAjax");
+	      mav.setViewName("contlist/contlist");
 	      mav.addObject("list", list);
 	      mav.addObject("nowPage", nowPage);
 
@@ -62,30 +62,8 @@ public class ContlistController {
    }
    
    
-   @RequestMapping("/contlist/contlistajax.do")
-   public ModelAndView contlistAjax() {
-      ModelAndView mav = new ModelAndView();
-
-      ArrayList<ContlistDTO> list = null;
-      
-      int nowPage=1;
-      int recordPerPage=8;
-      String col ="";
-      String word="";
-      
-      list = dao.list(col, word, nowPage, recordPerPage);
-      
-      mav.setViewName("contlist/contlistAjax");
-      mav.addObject("list", list);
-      mav.addObject("nowPage", nowPage);
-
-      return mav;
-   }
-   
-   
-   
     @ResponseBody	
-	@RequestMapping("contlist/morecontents.do")
+	@RequestMapping({"contlist/morecontents.do", "morecontents.do"})
 	private ArrayList<ContlistDTO> morecontents(@RequestParam Map<String, Object> map) {
 		
        ArrayList<ContlistDTO> list = null;
@@ -93,17 +71,30 @@ public class ContlistController {
 		try {
 			
 			String strNowPage= (String)map.get("nowPage");
+			String searchkey= (String)map.get("searchkey"); //홈 화면에서 입력된 검색어
+			String key_code= (String)map.get("key_code");   //키워드 검색
+			String pno= (String)map.get("pno");				//인물 검색
+			
 			int nowPage = Integer.parseInt(strNowPage);
+		    int recordPerPage=8;
 			
-			//System.out.println(nowPage);
-			
-		      int recordPerPage=8;
-		      String col ="";
-		      String word="";
-			
-		    list = dao.list(col, word, nowPage, recordPerPage);
+	        String col ="";
+	        String word="";
 		    
-		    //System.out.println(list);
+			if(!(searchkey.equals(""))) {		        
+				pno=dao.readPno(searchkey);				
+			    list=dao.mainsearch(searchkey, pno, nowPage, recordPerPage);				
+			}else if(!(key_code.equals(""))) {				
+				col="key_code";
+				word=key_code;
+			    list=dao.list(col, word, nowPage, recordPerPage);				
+			}else if(!(pno.equals(""))) {				
+				col="pno";
+				word=pno;
+			    list=dao.list(col, word, nowPage, recordPerPage);				
+			}else {
+			    list=dao.list(col, word, nowPage, recordPerPage);
+			}
 		    
 		}catch (Exception e) {
 			System.out.println("응답실패: " + e);
@@ -123,23 +114,14 @@ public class ContlistController {
       
       dto=dao.contlistread(mcode);
       String key_code = dto.getKey_code();
-      ArrayList<String> keycodelist=new ArrayList<String>() ;
-      StringTokenizer kc = new StringTokenizer(key_code, " || ");
       HttpSession session = req.getSession();
+      
+      ArrayList<SearchKeyDTO> keylist=new ArrayList<>() ;
 
-      
-      while(kc.hasMoreTokens()) { //토큰할 문자가 있는지?
-          
-    	  keycodelist.add(kc.nextToken());
-    	  
+      StringTokenizer kc = new StringTokenizer(key_code, " || ");      
+      while(kc.hasMoreTokens()) { //토큰할 문자가 있는지?          
+    	  keylist.add(skdao.SearchKey(kc.nextToken()));    	  
       }
-      
-      ArrayList<String> keylist=new ArrayList<String>() ;
-      for(int i=0; i<keycodelist.size(); i++) {
-    	  keylist.add(dao3.SearchKeyAll(keycodelist.get(i)));
-
-      }
-      
       
       if(session.getAttribute("s_mem_id")!=null && session.getAttribute("s_mem_lv")!=null && session.getAttribute("s_mem_pw")!=null) {
 
@@ -173,11 +155,10 @@ public class ContlistController {
       
       ArrayList<ReviewDTO> reviewlist = new ArrayList<ReviewDTO>();
       
-      reviewlist = dao2.reviewRead(mcode);
+      reviewlist = revdao.reviewRead(mcode);
       mav.setViewName("contlist/contlistread");
       mav.addObject("dto", dto);
       mav.addObject("keylist",keylist);
-      mav.addObject("keycodelist",keycodelist);
       mav.addObject("directorlist",directorlist);
       mav.addObject("actorlist",actorlist);
       mav.addObject("reviewlist",reviewlist);
@@ -186,27 +167,6 @@ public class ContlistController {
       return mav;
    }
 
-   
-   
-   
-   @RequestMapping("contlist/search.do")
-   public ModelAndView search(String key_name) {
-      ModelAndView mav = new ModelAndView();
-
-      ArrayList<ContlistDTO> list = null;
-      
-      String key_code=dao3.SearchKeyCode(key_name);
-      String msg=key_name+" : 검색 결과";
-      
-      list = dao.searchPart(key_code);
-
-      mav.setViewName("contlist/contlist");
-      mav.addObject("list", list);
-      mav.addObject("msg", msg);
-
-      return mav;
-   }
-   
    
    @RequestMapping(value = "contlist/contlistwatch.do", method = RequestMethod.POST)
    public ModelAndView create(ContlistDTO contdto, WatchListDTO dto, HttpServletRequest req) {
@@ -228,12 +188,12 @@ public class ContlistController {
 
 	   String dateToStr = dateFrm.format(now);	   
 	      
-	   String watch_reg= dao4.watchregCreate(dateToStr);
+	   String watch_reg= watchdao.watchregCreate(dateToStr);
 	   
 	   dto.setWatch_reg(watch_reg);
 	   dto.setMem_id(mem_id);
 	   
-	   int cnt=dao4.create(dto);
+	   int cnt=watchdao.create(dto);
 		if(cnt==0) {
 			System.out.println("시청 목록 등록 실패");
 		}else {
@@ -250,8 +210,8 @@ public class ContlistController {
       
       String searchkey=req.getParameter("searchkey").trim();
       String searchname=req.getParameter("searchkey").trim();
-      searchname=searchname.replace(" ", "");
-      searchkey=searchkey.replace(" ", "");
+      //searchname=searchname.replace(" ", "");
+      //searchkey=searchkey.replace(" ", "");
      
       String pno=dao.readPno(searchname);
       
@@ -259,7 +219,10 @@ public class ContlistController {
       
       String msg=searchkey+" : 검색 결과";
       
-      list = dao.mainsearch(searchkey, pno);
+      int nowPage=1;
+      int recordPerPage=8;
+      
+      list = dao.mainsearch(searchkey, pno, nowPage, recordPerPage);
 
       mav.setViewName("contlist/contlist");
       mav.addObject("list", list);
@@ -269,20 +232,23 @@ public class ContlistController {
    }
    
    
-   @RequestMapping("keysearch.do")
+   @RequestMapping({"keysearch.do", "contlist/keysearch.do"})
    public ModelAndView keysearch(HttpServletRequest req) {
       ModelAndView mav = new ModelAndView();
       
-      String key_code=req.getParameter("key_code");
+      String word=req.getParameter("key_code");
       String key_name=req.getParameter("key_name");
-
       
       ArrayList<ContlistDTO> list = null;
       
       String msg="#"+key_name+" : 검색 결과";
       
-      list = dao.searchPart(key_code);
-
+      int nowPage=1;
+      int recordPerPage=8;
+      String col ="key_code";
+      
+      list = dao.list(col, word, nowPage, recordPerPage);
+      
       mav.setViewName("contlist/contlist");
       mav.addObject("list", list);
       mav.addObject("msg", msg);
@@ -291,31 +257,16 @@ public class ContlistController {
    }
 
 	
-	
-   @RequestMapping("/contlist/contlistAjax.do")
-   public ModelAndView contlistAjax(ContlistDTO dto) {
-      ModelAndView mav = new ModelAndView();
-
-      ArrayList<ContlistDTO> list = null;
-
-      list = dao.contlistAll();
-     
-      
-      mav.setViewName("contlist/contlistAjax");
-      mav.addObject("list", list);
-
-      return mav;
-   }
-	
     @ResponseBody	
-	@RequestMapping("contlist/ottsearch.do")
+	@RequestMapping({"contlist/ottsearch.do", "ottsearch.do"})
 	private ArrayList<ContlistDTO> ottsearch(@RequestParam Map<String, Object> map) {
 		
         ArrayList<ContlistDTO> list = null;
     	
 		try {
 			
-			System.out.println("검색키워드: "+(String)map.get("key_name")); 
+			String strNowPage= (String)map.get("nowPage");
+			int nowPage = Integer.parseInt(strNowPage);
 			
 			String ott= (String)map.get("ott");
 			
@@ -325,15 +276,23 @@ public class ContlistController {
 			String disney="X";
 			
 			String searchkey=(String)map.get("searchkey");
-			String key_name=(String)map.get("key_name"); 
-			//System.out.println(searchkey.equals("")); 
-			//System.out.println(key_name.equals("")); 
-			String key_code=""; 
-			String pno="";
+			String key_code=(String)map.get("key_code"); 
+			String pno=(String)map.get("pno");
+			
+			//System.out.println(searchkey);
+			//System.out.println(pno);
+			
+			/*
+			if(!(key_name.equals(""))) {//key_name이 검색된 상태라면				
+				key_code=skdao.SearchKeyCode(key_name);				
+			}			
+			*/
 
 			
-			if(!(key_name.equals(""))) {//key_name이 검색된 상태라면				
-				key_code=dao3.SearchKeyCode(key_name);				
+			if(!(searchkey.equals(""))) {
+			      pno=dao.readPno(searchkey);
+  				  //System.out.println(pno);
+			      if(pno==null) { pno=""; }
 			}
 			
 			
@@ -345,10 +304,11 @@ public class ContlistController {
 				tving="O"; 
 			}else if(ott.equals("disney")) {
 				disney="O"; 
-			}
+			}			
 			
+		      int recordPerPage=8;		      
 			
-		    list = dao.ottRead(netflix, watcha, tving, disney, searchkey, key_code, pno);
+		    list = dao.ottRead(netflix, watcha, tving, disney, searchkey, key_code, pno, nowPage, recordPerPage);
 			
 		}catch (Exception e) {
 			System.out.println("응답실패: " + e);
@@ -360,76 +320,25 @@ public class ContlistController {
 	
    
     
-    @ResponseBody	
-	@RequestMapping("ottsearch.do")
-	private ArrayList<ContlistDTO> ottsearchkey(@RequestParam Map<String, Object> map) {
-		
-        ArrayList<ContlistDTO> list = null;
-    	
-		try {
-			//메인 페이지에서 검색된 상태일 때
-			
-			System.out.println("검색어: "+(String)map.get("searchkey")); 
-			System.out.println("검색키워드: "+(String)map.get("key_name")); 
-			System.out.println("검색키코드: "+(String)map.get("key_code")); 
 
-			
-			String ott= (String)map.get("ott");
-			
-			String netflix="X";
-			String watcha="X"; 
-			String tving="X"; 
-			String disney="X";
-			
-			String searchkey=(String)map.get("searchkey");
-			String searchname=(String)map.get("searchkey");
-			String key_code=(String)map.get("key_code"); 
-			String pno="";
-			if(!(searchkey.equals(""))) {
-				  searchkey=searchkey.replace(" ", "");			      
-			      searchname=searchname.replace(" ", "");			      
-			      pno=dao.readPno(searchname);
-				
-			}
-			System.out.println(searchkey);
-			System.out.println(searchname);
-			System.out.println(pno);
-			
-			if(ott.equals("netflix")) {
-				netflix="O";
-			}else if(ott.equals("watcha")) {
-				watcha="O"; 
-			}else if(ott.equals("tving")) {
-				tving="O"; 
-			}else if(ott.equals("disney")) {
-				disney="O"; 
-			}
-			
-			
-		    list = dao.ottRead(netflix, watcha, tving, disney, searchkey, key_code, pno);
-			
-		}catch (Exception e) {
-			System.out.println("응답실패: " + e);
-		}
-		
-		return list;
-		
-	}//ottsearch() end
     
 	
     @RequestMapping("peoplesearch.do")
     public ModelAndView peoplesearch(HttpServletRequest req) {
        ModelAndView mav = new ModelAndView();
        
-       String pno=req.getParameter("pno");
+       String word=req.getParameter("pno");
        String pname=req.getParameter("pname");
-
-       
+      
        ArrayList<ContlistDTO> list = null;
        
        String msg=pname+" : 검색 결과";
        
-       list = dao.searchPeople(pno);
+       int nowPage=1;
+       int recordPerPage=8;
+       String col ="pno";
+       
+       list = dao.list(col, word, nowPage, recordPerPage);
 
        mav.setViewName("contlist/contlist");
        mav.addObject("list", list);
@@ -445,7 +354,7 @@ public class ContlistController {
        
        
        int mcode = dto.getMcode();
-       dto2 = dao2.reviewAll(mcode);
+       dto2 = revdao.reviewAll(mcode);
     
           mav.setViewName("review/reviewForm");
           mav.addObject("dto", dto);
@@ -455,6 +364,7 @@ public class ContlistController {
        return mav;
 
     }
+    
     
     
     @RequestMapping(value = "contlist/contlistins.do", method = RequestMethod.POST)
@@ -477,13 +387,13 @@ public class ContlistController {
              dto2.setRev_spo("X");
           }
           
-       int cnt = dao2.rev_ins(dto2);
+       int cnt = revdao.rev_ins(dto2);
        
        
        if(cnt==1) {//리뷰 입력 성공, 컨텐츠 리스트의 별점을 수정
           
           //1) 새로 넣은 리뷰의 별점+기존에 있던 별점을 평균내서 가져오기 DAO select 
-          double mrate = (int)dao2.rev_rateHap(mcode);
+          double mrate = (int)revdao.rev_rateHap(mcode);
           //2) 1)1에서 불러온 값을 매개변수로 넘겨서 CONTLIST를 update 해준다
           dao.mrateUpdate(mrate, mcode);
           
@@ -510,7 +420,7 @@ public class ContlistController {
        mav.setViewName("review/msgView");//어디로 보낼지 바꾸기
        int rev_code=Integer.parseInt(req.getParameter("rev_code"));
        
-       int cnt=dao2.delete(rev_code, dto2.getMcode());
+       int cnt=revdao.delete(rev_code, dto2.getMcode());
        if(cnt==0) {   
           String msg="<p>해당 글 삭제 실패</p>";
             mav.addObject("msg", msg);
@@ -527,7 +437,7 @@ public class ContlistController {
     public ModelAndView update(@ModelAttribute ReviewDTO dto2, HttpServletRequest req) {
        ModelAndView mav=new ModelAndView();
        int rev_code=Integer.parseInt(req.getParameter("rev_code"));
-       dto2= dao2.readReviewOne(rev_code);
+       dto2= revdao.readReviewOne(rev_code);
        
        HttpSession session = req.getSession();      
        String s_mem_id=session.getAttribute("s_mem_id").toString();
@@ -541,7 +451,7 @@ public class ContlistController {
 
        }else {
           mav.addObject("dto2", dto2);
-           mav.setViewName("review/reviewUpdate");         
+           mav.setViewName("review/reviewUpdate");
        }
        
        return mav;
@@ -570,7 +480,7 @@ public class ContlistController {
        String s_mem_id=session.getAttribute("s_mem_id").toString();
        int rev_code = Integer.parseInt(req.getParameter("rev_code"));
           
-          int cnt = dao2.updateproc(dto2, rev_code, s_mem_id);
+          int cnt = revdao.updateproc(dto2, rev_code, s_mem_id);
           
           if(cnt==0) {
              String msg="<p> 글 수정 실패</p>";
@@ -598,7 +508,7 @@ public class ContlistController {
           nowPage=Integer.parseInt(req.getParameter("nowPage"));
        }//if end
        
-       list = dao2.list(nowPage, recordPerPage, mcode);
+       list = revdao.list(nowPage, recordPerPage, mcode);
        System.out.println(list);
        mav.setViewName("review/reviewListAjax");
        mav.addObject("list", list);
@@ -624,7 +534,7 @@ public class ContlistController {
           //System.out.println(nowPage);
           
              int recordPerPage=3;
-           list = dao2.list(nowPage, recordPerPage, mcode);
+           list = revdao.list(nowPage, recordPerPage, mcode);
            
            //System.out.println(list);
            
@@ -634,10 +544,34 @@ public class ContlistController {
        
        return list;
        
-    }//morecontents() end
+    }//morerivews() end
 
     
-    
+    @ResponseBody   
+    @RequestMapping({"contlist/mdateSearches.do", "mdateSearches.do"})
+    private ArrayList<ContlistDTO> mdateSearch(@RequestParam Map<String, Object> map) {
+       
+        ArrayList<ContlistDTO> list = null;
+       
+       try {
+          String strMdate= (String)map.get("mdate");
+          String strNowPage= (String)map.get("nowPage");
+          int nowPage = Integer.parseInt(strNowPage);
+          
+          //System.out.println(nowPage);
+          
+           int recordPerPage=8;
+           list = dao.list("mdate", strMdate, nowPage, recordPerPage);
+           
+           //System.out.println(list);
+           
+       }catch (Exception e) {
+          System.out.println("ajax 응답 실패: " + e);
+       }
+       
+       return list;
+       
+    }
     
     
    

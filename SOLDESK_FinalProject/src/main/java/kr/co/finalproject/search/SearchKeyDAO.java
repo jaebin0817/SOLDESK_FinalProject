@@ -86,10 +86,7 @@ public class SearchKeyDAO {
 		return list;
 	}
 
-	
-	
-	
-	
+
 	public String SearchKeyAll(String key_code) {
 		String key_name = null;
 		try {
@@ -113,6 +110,35 @@ public class SearchKeyDAO {
 			DBclose.close(con, pstmt, rs);
 		} // end
 		return key_name;
+	} // SearchKeyAll() 끝
+	
+	
+	
+	public SearchKeyDTO SearchKey(String key_code) {
+		SearchKeyDTO dto = null;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT key_name, key_code ");
+			sql.append(" FROM search_key ");
+			sql.append(" WHERE key_code=? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, key_code);
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				dto=new SearchKeyDTO();
+				dto.setKey_name(rs.getString("key_name"));
+				dto.setKey_code(rs.getString("key_code"));
+			}
+
+		} catch (Exception e) {
+			System.out.println("키워드 불러오기 실패 : " + e);
+		} finally {
+			DBclose.close(con, pstmt, rs);
+		} // end
+		return dto;
 	} // SearchKeyAll() 끝
 
 	

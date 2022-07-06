@@ -38,18 +38,16 @@
 
 	<div class="key_code">
 		장르 :
-			<c:forEach items="${keylist}" var="list">
-				<a href="search.do?key_name=${list}"> 
-			<c:forEach items="${list}" var="map">
-	   			${map}
-	   		</c:forEach>
+			<c:forEach var="dto" items="${ keylist }">
+				<a href="keysearch.do?key_name=${ dto.key_name }&key_code=${ dto.key_code }"> 
+					&#35; ${ dto.key_name }
 				</a>
 			</c:forEach>
 	</div>
 
 	<div class="mrate">컨텐츠 평점 : ${dto.mrate}</div>
 	<div class="like">좋아요 수 : ${dto.cri_like}</div>
-	<hr>
+	<hr> 
 	<!-- 사용자 컨텐츠 평가 -->
 	<div class="container" align="center" id="cri_panel">
 	   		

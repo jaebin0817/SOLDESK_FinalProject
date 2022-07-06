@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.utility.DBclose;
 import net.utility.DBopen;
@@ -295,6 +297,41 @@ public class SubscribeInfoDAO {
 	}//subnoCreate() end
 
 	
+	public Map<String, String> subDateread(String mem_id) {
+		
+		Map<String, String> submap=null;
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" SELECT subscribe_no, A.mem_id, A.party_id, party_role, subscribe_start, subscribe_end, ott_name, ott_id, ott_pw, ott_price ");
+			sql.append(" FROM subscribe_info A JOIN party_info B ");
+			sql.append(" ON A.party_id=B.party_id ");
+			sql.append(" WHERE A.mem_id=? ");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, mem_id);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				submap= new HashMap<>();
+				do {
+					
+		        	submap.put("title", rs.getString("ott_name"));
+		        	submap.put("start", rs.getString("subscribe_start"));
+		        	submap.put("end", rs.getString("subscribe_end"));
+
+				}while(rs.next());
+			}//if end
+			
+		}catch (Exception e) {
+			System.out.println("구독날짜 읽기 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);
+		}//try end
+		
+		return submap;
+		
+	}
 	
 	
 	

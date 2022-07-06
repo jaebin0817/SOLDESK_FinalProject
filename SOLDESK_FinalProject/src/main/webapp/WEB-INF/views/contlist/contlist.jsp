@@ -29,6 +29,21 @@
 			<p id="panel"></p>
 		</div>
 		
+		<table class="table">
+            <tr>         
+               <th>연도별</th>
+               <td>
+                 <select class="form-control" id="mdate" name="mdate">
+                         <option value="1980" id="mdate80">1980</option>
+                         <option value="1990" id="mdate90">1990</option>
+                         <option value="2000" id="mdate00">2000</option>
+                         <option value="2010" id="mdate10">2010</option>
+                         <option value="2020" id="mdate20">2020</option>
+                  </select>
+               </td>            
+            </tr>
+         </table>		
+		
 		<div class="contents">
 			<c:set var="no" value="1"></c:set>
 			<c:forEach var="dto" items="${list}">
@@ -76,7 +91,8 @@
 	};
 	
 	$(".ott_search_btn").click(function(){
-			
+		
+		$('#nowPage').attr('value', 1);
 		//alert($(this).val());
 		var msg = $(this).val();
 		
@@ -84,10 +100,11 @@
             url:"ottsearch.do",  //요청명령어 
             type:"get",        //get방식
         	data : {
+        		nowPage : $('#nowPage').val(),
 				ott : $(this).val(),
 				searchkey : searchParam('searchkey'),
 				key_code : searchParam('key_code'),
-				key_name : searchParam('key_name'),				
+				pno : searchParam('pno'),				
         	},		
             success:function(data){//success callback함수
                 
@@ -177,6 +194,9 @@
 			type:"get",   
 			data: {
 				nowPage : $('#nowPage').val(),
+				searchkey : searchParam('searchkey'),
+				key_code : searchParam('key_code'),
+				pno : searchParam('pno'),
         	},   
 			success: function(data){
 				
@@ -236,8 +256,84 @@
 		
 	}
 
-	
-	
+
+    $("select[name=mdate]").change(function(){
+        
+        // alert( $(this).val());
+         
+          $('#nowPage').attr('value', 1);
+           //alert($(this).val());
+           var msg = $(this).val();
+           
+            $.ajax({
+                 url:"mdateSearches.do",  //요청명령어 
+                 type:"get",        //get방식
+                data : {
+                   mdate : $(this).val(),
+                   nowPage : $('#nowPage').val(),
+                   ott : $(this).val(),
+                   searchkey : searchParam('searchkey'),
+                   key_code : searchParam('key_code'),
+                   pno : searchParam('pno'),            
+                },      
+                 success:function(data){//success callback함수
+                     
+                     $(".thumb").empty();
+                     $(".searchedott").empty();
+                     $(".searchedott").append(msg+"년대 : 검색결과");
+
+                     var no=0;
+                    $.each(data,function(index, value) { // 값이 여러개 일 때는 반복문 사용
+                       
+                       var stars="";
+                        for(i=1; i<=value.mrate; i++){ stars+="★"; }
+                        for(i=value.mrate+1; i<=5; i++){ stars+="☆"; }
+                    
+                    
+                       netfliximg=$('<img>', {
+                          'src' : '../../images/icon_netflix.png',
+                          'width' : '50px',
+                       });
+                       
+                       tvingimg=$('<img>', {
+                          'src' : '../../images/icon_tving.png',
+                          'width' : '50px',
+                       });
+                       
+                       watchaimg=$('<img>', {
+                          'src' : '../../images/icon_watcha.png',
+                          'width' : '50px',
+                       });
+                       
+                       disneyimg=$('<img>', {
+                          'src' : '../../images/icon_disney.png',
+                          'width' : '50px',
+                       });
+
+                          var identifier = ".thumb";
+                       
+                        $(identifier).eq(no).append("<input type='image' id='"+value.mcode+"' name='"+value.mcode+"' src='../../storage/"+value.mthum+"' alt='movie' width='300px' onclick=''>");
+
+                       $(identifier).eq(no).append("<div class='mtitle'><strong>"+value.mtitle+"</strong></div>");
+                       $(identifier).eq(no).append("<div class='stars'>"+stars+value.mrate+"</div>");
+                       if(value.netflix=="O"){$(identifier).eq(no).append(netfliximg);}
+                       if(value.tving=="O"){$(identifier).eq(no).append(tvingimg);}
+                       if(value.watcha=="O"){$(identifier).eq(no).append(watchaimg);}
+                       if(value.disney=="O"){$(identifier).eq(no).append(disneyimg);}
+                    
+                       $("input[name="+value.mcode+"]").attr('onclick', 'location.href="<%=request.getContextPath()%>/contlist/contlistread.do?mcode='+value.mcode+'"');
+                       
+                    no++;
+                    //alert(no);
+                    
+              
+                      })
+                 },
+                 error:function(error){
+                 alert("에러: " + error);
+              }
+              });//ajax() end
+    	})
 	
 		
 	</script>

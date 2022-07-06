@@ -20,7 +20,7 @@
 		<br><br>
 	</div>
 		
-	<table class="table table-hover">
+	<table class="table">
 		<tr>
 			<th>파티아이디</th>
 			<th>파티장</th>
@@ -39,10 +39,92 @@
 			</tr>
 		</c:forEach>
 		
+		<tr>
+			<td colspan='5' style='text-align:center; height: 50px'>
+				<form action="partylist.do">
+					<select name="col">
+						<option value="ott_name" id="ott_name" name="ott_name">구독OTT
+						<option value="matching_no" name="matching_no" id="matching_no">매칭인원
+					</select>
+					<select id="word" name="word">
+
+					</select>
+					<input type="submit" value="검색" class="btn btn-danger">
+				</form>
+			</td>
+		</tr>
+		<tr>
+			<td colspan='5' style='text-align:center; height: 50px;' >
+			${paging}
+
+			</td>
+		</tr>	
+		
 	</table>
 
   </div>	
+
+	<script>
 	
+	function searchParam(key) {
+		  return new URLSearchParams(location.search).get(key);
+	};
+	
+	var col=searchParam('col');
+	var word=searchParam('word');
+
+    function makeOptions(col){    	  
+  	  if(col=="ott_name" || col==null){    		  
+  		  $("#word").append("<option id='netflix' name='netflix' value='netflix'>netflix</option>");
+  		  $("#word").append("<option id='tving' name='tving' value='tving'>tving</option>");
+  		  $("#word").append("<option id='watcha' name='watcha' value='watcha'>watcha</option>");
+  		  $("#word").append("<option id='disney' name='disney' value='disney'>disney</option>");
+  		  
+		  if(word=="netflix"){
+			  $("#netflix").attr("selected", "selected");
+		  }else if(word=="tving"){
+			  $("#tving").attr("selected", "selected");
+		  }else if(word=="watcha"){
+			  $("#watcha").attr("selected", "selected");
+		  }else if(word=="disney"){
+			  $("#disney").attr("selected", "selected");
+		  }			  
+  		  
+  	  }else if(col=="matching_no"){
+  		  $("#word").append("<option id='m1' name='m1' value='1'>1명</option>");
+  		  $("#word").append("<option id='m2' name='m2' value='2'>2명</option>");
+  		  $("#word").append("<option id='m3' name='m3' value='3'>3명</option>");
+  		  $("#word").append("<option id='m4' name='m4' value='4'>4명(매칭완료)</option>");
+  		  		  
+		  if(word=="1"){
+			  $("#m1").attr("selected", "selected");
+		  }else if(word=="2"){
+			  $("#m2").attr("selected", "selected");
+		  }else if(word=="3"){
+			  $("#m3").attr("selected", "selected");
+		  }else if(word=="4"){
+			  $("#m4").attr("selected", "selected");
+		  }
+  	  }    	  
+    }
+	  
+	  $(document).ready(function(){		  
+		  if(col=="ott_name" || col==null){
+			  $("#ott_name").attr("selected", "selected");			  
+		  }else if(col=="matching_no"){
+			  $("#matching_no").attr("selected", "selected");
+		  }
+		  makeOptions(col);		  
+	  });
+	
+	  
+      $("select[name=col]").change(function(){			
+    	  $("#word").empty();
+    	  col=$(this).val();
+    	  makeOptions(col);
+	  });
+	
+	</script>	
 
 
 

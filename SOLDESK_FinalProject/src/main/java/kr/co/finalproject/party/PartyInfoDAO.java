@@ -347,10 +347,89 @@ public class PartyInfoDAO {
 	}
 
 
-
+	public int count(String col, String word) {
+    	int totalRecord=0;
+    	try {
+			con=dbopen.getConnection();
+			
+			sql=new StringBuilder();
+			sql.append(" SELECT COUNT(*) as cnt ");
+			sql.append(" FROM party_info ");
+			
+			if(word.length()>=1) {
+				String search="";
+				if(col.equals("ott_name")) {
+					search+= " WHERE ott_name='" + word +"' ";
+				}else if(col.equals("matching_no")) {
+					search+= " WHERE matching_no=" + word;
+				}//if end
+				sql.append(search);
+			}//if end
+			
+			pstmt=con.prepareStatement(sql.toString());
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				totalRecord=rs.getInt("cnt");
+			}//if end
+			
+		} catch (Exception e) {
+			System.out.println("카운팅 실패 : " + e );
+		}finally {
+			DBclose.close(con,pstmt,rs);
+		}//end
+    	return totalRecord;
+    }//end
 	
 	
+	
+	public ArrayList<PartyInfoDTO> partylist(String col, String word, int nowPage, int recordPerPage){
+    	ArrayList<PartyInfoDTO> list=null;
+    	
+    	int startRow = ((nowPage-1) * recordPerPage) ;
+    	try {
+    		con=dbopen.getConnection(); 
+			sql=new StringBuilder();
 
+			sql.append(" SELECT party_id, mem_id, ott_name, ott_cdate, matching_no ");
+            sql.append(" FROM party_info ");
+				            
+            if(word.length()!=0) { 
+		        String search="";
+				if(col.equals("ott_name")) {
+					search+= " WHERE ott_name='" + word +"' ";
+				}else if(col.equals("matching_no")) {
+					search+= " WHERE matching_no=" + word;
+				}//if end
+				sql.append(search);	            
+            }	
+
+            sql.append(" ORDER BY party_id ");
+            sql.append(" LIMIT " + startRow + ", " + recordPerPage);
+			
+		pstmt=con.prepareStatement(sql.toString());
+	    rs=pstmt.executeQuery();
+	    if(rs.next()) {
+	    	list=new ArrayList<>();
+	    	do {
+	    		PartyInfoDTO dto = new PartyInfoDTO();//커서가 가리키는 한 줄 저장
+				dto.setParty_id(rs.getString("party_id"));
+				dto.setMem_id(rs.getString("mem_id"));
+				dto.setOtt_name(rs.getString("ott_name"));
+				dto.setOtt_cdate(rs.getString("ott_cdate"));
+				dto.setMatching_no(rs.getInt("matching_no"));
+				
+				list.add(dto);
+	    	}while(rs.next());
+	    }
+    		
+    	}catch (Exception e) {
+			System.out.println("목록 불러오기 실패 : " + e);
+		}finally {
+			DBclose.close(con,pstmt,rs);
+		}
+    	
+    	return list;
+    }//list() end
 	
 	
 	
