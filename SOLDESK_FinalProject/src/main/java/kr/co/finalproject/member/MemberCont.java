@@ -98,6 +98,9 @@ public class MemberCont {
 				
 		String mem_id=req.getParameter("id").trim();
 		String mem_pw=req.getParameter("passwd").trim();
+		String referrer=req.getParameter("referrer");
+		
+		//System.out.println(referrer);
 		
 		String mem_lv=null;
 		mem_lv=dao.loginRead(mem_id, mem_pw);
@@ -116,6 +119,8 @@ public class MemberCont {
 			session.setAttribute("s_mem_id", mem_id);
 			session.setAttribute("s_mem_pw", mem_pw);
 			session.setAttribute("s_mem_lv", mem_lv);
+			
+			
 			
 			String c_id=Utility.checkNull(req.getParameter("c_id"));	
 			Cookie cookie=null;
@@ -136,7 +141,8 @@ public class MemberCont {
 			
 			msg+="<script>";
 			msg+="    alert('로그인 되었습니다');";
-			msg+="    location.href='javascript:history.go(-2);'";
+			//msg+="    location.href='javascript:history.go(-2);'";
+			msg+="    location.href='"+referrer+"';";
 			msg+="</script>";
 			
 		}

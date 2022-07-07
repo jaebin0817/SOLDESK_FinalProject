@@ -57,6 +57,7 @@ public class ContlistController {
 	      mav.setViewName("contlist/contlist");
 	      mav.addObject("list", list);
 	      mav.addObject("nowPage", nowPage);
+	      mav.addObject("gernes", skdao.readGene());
 
 	      return mav;
    }
@@ -74,6 +75,10 @@ public class ContlistController {
 			String searchkey= (String)map.get("searchkey"); //홈 화면에서 입력된 검색어
 			String key_code= (String)map.get("key_code");   //키워드 검색
 			String pno= (String)map.get("pno");				//인물 검색
+			String ott= (String)map.get("ott");				//ott 검색
+			String mdate= (String)map.get("mdate");			//개봉일 검색
+			String gerne= (String)map.get("gerne");			//장르 검색
+			String mrate= (String)map.get("mrate"); 		//별점검색
 			
 			int nowPage = Integer.parseInt(strNowPage);
 		    int recordPerPage=8;
@@ -83,18 +88,35 @@ public class ContlistController {
 		    
 			if(!(searchkey.equals(""))) {		        
 				pno=dao.readPno(searchkey);				
-			    list=dao.mainsearch(searchkey, pno, nowPage, recordPerPage);				
 			}else if(!(key_code.equals(""))) {				
 				col="key_code";
 				word=key_code;
-			    list=dao.list(col, word, nowPage, recordPerPage);				
 			}else if(!(pno.equals(""))) {				
 				col="pno";
 				word=pno;
-			    list=dao.list(col, word, nowPage, recordPerPage);				
-			}else {
-			    list=dao.list(col, word, nowPage, recordPerPage);
+			}else if(!(mdate.equals(""))) {				
+				col="mdate";
+				word=mdate;
+			}else if(!(gerne.equals(""))) {				
+				col="key_code";
+				word=gerne;
+			}else if(!(mrate.equals(""))) {				
+				col="mrate";
+				word=mrate;
 			}
+			
+			list=dao.list(col, word, nowPage, recordPerPage);
+			
+			if(ott!="N") {//ott버튼을 누른 상태일 때
+									
+				if(!(searchkey.equals(""))) {
+				      pno=dao.readPno(searchkey);
+				      if(pno==null) { pno=""; }
+				}				
+								
+				  list = dao.ottRead(ott, col, word, nowPage, recordPerPage);
+			}
+			
 		    
 		}catch (Exception e) {
 			System.out.println("응답실패: " + e);
@@ -155,13 +177,16 @@ public class ContlistController {
       
       ArrayList<ReviewDTO> reviewlist = new ArrayList<ReviewDTO>();
       
-      reviewlist = revdao.reviewRead(mcode);
+      int nowPage=1;
+      int recordPerPage=3;
+      
+      reviewlist = revdao.list(nowPage, recordPerPage, mcode);
       mav.setViewName("contlist/contlistread");
       mav.addObject("dto", dto);
-      mav.addObject("keylist",keylist);
-      mav.addObject("directorlist",directorlist);
-      mav.addObject("actorlist",actorlist);
-      mav.addObject("reviewlist",reviewlist);
+      mav.addObject("keylist", keylist);
+      mav.addObject("directorlist", directorlist);
+      mav.addObject("actorlist", actorlist);
+      mav.addObject("reviewlist", reviewlist);
 
       
       return mav;
@@ -266,27 +291,19 @@ public class ContlistController {
 		try {
 			
 			String strNowPage= (String)map.get("nowPage");
+			String searchkey= (String)map.get("searchkey"); //홈 화면에서 입력된 검색어
+			String key_code= (String)map.get("key_code");   //키워드 검색
+			String pno= (String)map.get("pno");				//인물 검색
+			String ott= (String)map.get("ott");				//ott 검색
+			String mdate= (String)map.get("mdate");			//개봉일 검색
+			String gerne= (String)map.get("gerne");			//장르 검색
+			String mrate= (String)map.get("mrate"); 		//별점검색
+			
 			int nowPage = Integer.parseInt(strNowPage);
+		    int recordPerPage=8;
 			
-			String ott= (String)map.get("ott");
-			
-			String netflix="X";
-			String watcha="X"; 
-			String tving="X"; 
-			String disney="X";
-			
-			String searchkey=(String)map.get("searchkey");
-			String key_code=(String)map.get("key_code"); 
-			String pno=(String)map.get("pno");
-			
-			//System.out.println(searchkey);
-			//System.out.println(pno);
-			
-			/*
-			if(!(key_name.equals(""))) {//key_name이 검색된 상태라면				
-				key_code=skdao.SearchKeyCode(key_name);				
-			}			
-			*/
+	        String col ="";
+	        String word="";
 
 			
 			if(!(searchkey.equals(""))) {
@@ -294,21 +311,27 @@ public class ContlistController {
   				  //System.out.println(pno);
 			      if(pno==null) { pno=""; }
 			}
+
+			if(!(searchkey.equals(""))) {		        
+				pno=dao.readPno(searchkey);				
+			}else if(!(key_code.equals(""))) {				
+				col="key_code";
+				word=key_code;
+			}else if(!(pno.equals(""))) {				
+				col="pno";
+				word=pno;
+			}else if(!(mdate.equals(""))) {				
+				col="mdate";
+				word=mdate;
+			}else if(!(gerne.equals(""))) {				
+				col="key_code";
+				word=gerne;
+			}else if(!(mrate.equals(""))) {				
+				col="mrate";
+				word=mrate;
+			}	      
 			
-			
-			if(ott.equals("netflix")) {
-				netflix="O";
-			}else if(ott.equals("watcha")) {
-				watcha="O"; 
-			}else if(ott.equals("tving")) {
-				tving="O"; 
-			}else if(ott.equals("disney")) {
-				disney="O"; 
-			}			
-			
-		      int recordPerPage=8;		      
-			
-		    list = dao.ottRead(netflix, watcha, tving, disney, searchkey, key_code, pno, nowPage, recordPerPage);
+			  list = dao.ottRead(ott, col, word, nowPage, recordPerPage);
 			
 		}catch (Exception e) {
 			System.out.println("응답실패: " + e);
@@ -548,20 +571,20 @@ public class ContlistController {
 
     
     @ResponseBody   
-    @RequestMapping({"contlist/mdateSearches.do", "mdateSearches.do"})
-    private ArrayList<ContlistDTO> mdateSearch(@RequestParam Map<String, Object> map) {
+    @RequestMapping({"contlist/searchfield.do", "searchfield.do"})
+    private ArrayList<ContlistDTO> gerneSearches(@RequestParam Map<String, Object> map) {
        
         ArrayList<ContlistDTO> list = null;
        
        try {
-          String strMdate= (String)map.get("mdate");
+          String col= (String)map.get("col");
+          String word= (String)map.get("word");
           String strNowPage= (String)map.get("nowPage");
           int nowPage = Integer.parseInt(strNowPage);
-          
-          //System.out.println(nowPage);
-          
+             
+           //System.out.println(searchfield);
            int recordPerPage=8;
-           list = dao.list("mdate", strMdate, nowPage, recordPerPage);
+           list = dao.list(col, word, nowPage, recordPerPage);
            
            //System.out.println(list);
            
@@ -572,7 +595,6 @@ public class ContlistController {
        return list;
        
     }
-    
     
    
 }// class end

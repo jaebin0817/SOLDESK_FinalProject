@@ -170,7 +170,37 @@ public class SearchKeyDAO {
 	
 	
 	
-	
+	public ArrayList<SearchKeyDTO> readGene() {
+		
+		SearchKeyDTO dto=null;
+		ArrayList<SearchKeyDTO> list=null;
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" SELECT key_name, key_code ");
+			sql.append(" FROM search_key ");
+			sql.append(" WHERE key_code LIKE 'G%' ");
+			pstmt = con.prepareStatement(sql.toString());
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				list = new ArrayList<SearchKeyDTO>();
+				do {
+					dto = new SearchKeyDTO();//커서가 가리키는 한 줄 저장
+					dto.setKey_code(rs.getString("key_code"));
+					dto.setKey_name(rs.getString("key_name"));
+					list.add(dto);
+				}while(rs.next());
+			}//if end
+		}catch (Exception e) {
+			System.out.println("장르 불러오기 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);
+		}//try end
+		
+		return list;
+	}	
 	
 	
 	

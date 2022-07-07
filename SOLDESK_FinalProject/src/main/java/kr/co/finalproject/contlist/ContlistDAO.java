@@ -424,7 +424,7 @@ public class ContlistDAO {
 		
 		
 		
-		public ArrayList<ContlistDTO> ottRead(String netflix, String watcha, String tving, String disney, String searchkey, String key_code, String pno,  int nowPage, int recordPerPage) {
+		public ArrayList<ContlistDTO> ottRead(String ott, String col, String word,  int nowPage, int recordPerPage) {
 			ContlistDTO dto=null;			
 			ArrayList<ContlistDTO> list=null;
 	        int startRow = ((nowPage-1) * recordPerPage);			
@@ -435,38 +435,32 @@ public class ContlistDAO {
 				sql.append(" FROM contlist ");
 				
 				String search="";
-				if(netflix.equals("O")) {
+				if(ott.equals("netflix")) {
 					search+=" WHERE netflix='O' ";
-				}else if(watcha.equals("O")) {
+				}else if(ott.equals("watcha")) {
 					search+=" WHERE watcha='O' ";
-				}else if(tving.equals("O")) {
+				}else if(ott.equals("tving")) {
 					search+=" WHERE tving='O' ";
-				}else if(disney.equals("O")) {
+				}else if(ott.equals("disney")) {
 					search+=" WHERE disney='O' ";
 				}else {
 					search+=" WHERE (netflix='O' OR watcha='O' OR disney='O' OR tving='O') ";
 				}
 				
-				if(!(key_code.equals(""))) {//키워드가 검색된 상태라면
-					search+=" AND key_code LIKE '%"+key_code+"%' ";
-				}
-				
-				if(!(searchkey.equals(""))) {//검색어가 검색된 상태라면
-					
-					search+=" AND (mtitle LIKE '%"+searchkey+"%' ";
-					search+=" OR mtitle_eng LIKE '%"+searchkey+"%' ";
-					
-					if(!(pno.equals(""))) {
-						search+=" OR director LIKE '%"+pno+"%' ";
-						search+=" OR actor  LIKE '%"+pno+"%') ";
-					}else {
-						search+=" ) ";
-					}
-				}
-				
-				if(!(pno.equals(""))) {//인물이 검색된 상태라면
-					search+=" AND (actor LIKE '%" + pno + "%' OR director LIKE '%" + pno + "%') ";
-				}
+	            if(word.length()!=0) { 
+					if(col.equals("key_code")) {
+						search+= " AND key_code LIKE '%"+word+"%' ";						
+					}else if(col.equals("pno")) {						
+						search+= " AND (actor LIKE '%" + word + "%' ";
+						search+= " OR director LIKE '%" + word + "%') ";
+					}else if(col.equals("mdate")) {						
+                        int mdate= Integer.parseInt(word);
+						search+= " AND (mdate>=" + mdate + " AND mdate<="+ ( mdate+10 )+") ";
+					}else if(col.equals("mrate")) {						
+                        int mrate= Integer.parseInt(word);
+						search+= " AND (mrate>" + (mrate-1) + " AND mrate<="+ mrate+") ";
+					}					
+	            }	
 					
 				sql.append(search);
 				sql.append(" ORDER BY mcode DESC ");
@@ -540,7 +534,7 @@ public class ContlistDAO {
 		
 		
 		
-		public ArrayList<ContlistDTO> list(String col,String word, int nowPage, int recordPerPage){
+		public ArrayList<ContlistDTO> list(String col, String word, int nowPage, int recordPerPage){
 	    	ArrayList<ContlistDTO> list=null;
 	    	
 	    	int startRow = ((nowPage-1) * recordPerPage) ;
@@ -561,6 +555,9 @@ public class ContlistDAO {
 					}else if(col.equals("mdate")) {						
                         int mdate= Integer.parseInt(word);
 						search+= " WHERE mdate>=" + mdate + " AND mdate<="+ ( mdate+10 );
+					}else if(col.equals("mrate")) {						
+                        int mrate= Integer.parseInt(word);
+						search+= " WHERE mrate>" + (mrate-1) + " AND mrate<="+ mrate;
 					}
 					
 					sql.append(search);	            
@@ -802,6 +799,8 @@ public class ContlistDAO {
 	        }//end
 	        return mcode;
 	    }// mcodeRead() end
-	    
+
+
+
 
 }//class end
