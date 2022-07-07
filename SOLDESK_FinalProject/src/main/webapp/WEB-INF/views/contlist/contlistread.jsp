@@ -12,13 +12,26 @@
 
 <!-- 본문 시작 -->
 <div id="cont_list" class="container-fluid text-center">
-	<h3>영화 상세정보와 리뷰</h3>
-	<br> 
-	<img src="../../storage/${dto.mthum}" alt="movie" width="300px"><br>
-
+	<div class="pagetitle">
+		<br>
+		<span><strong> 🎥 컨텐츠 상세정보 </strong></span>
+		<h5>포스터나 OTT아이콘을 누르면 영상보기로 이동합니다</h5>
+		<br>
+	</div>
+	
+	<div class="mtitle"><h1><strong>${dto.mtitle}</strong></h1></div>
+	<div class="key_code">
+		
+			<c:forEach var="dto" items="${ keylist }">
+				<a href="keysearch.do?key_name=${ dto.key_name }&key_code=${ dto.key_code }"> 
+					&#35; ${ dto.key_name }
+				</a>
+			</c:forEach>
+	</div><br>
 
 	<form name="frm" id="frm" method="post" 
-	action="<%=request.getContextPath()%>/contlist/contlistwatch.do?mcode=${ dto.mcode }" onsubmit="return IDlog(${mem_lv})">
+		action="<%=request.getContextPath()%>/contlist/contlistwatch.do?mcode=${ dto.mcode }" onsubmit="return IDlog(${mem_lv})">
+		<input type="image" src="../../storage/${dto.mthum}" alt="movie" width="300px"><br>
 		<c:if test="${dto.netflix eq 'O' }">
 			<input type="image" src="../../images/icon_netflix.png" width="50px">	
 		</c:if>
@@ -34,22 +47,12 @@
 	</form>
 
 
-	<div class="mtitle">${dto.mtitle}</div>
 
-	<div class="key_code">
-		장르 :
-			<c:forEach items="${keylist}" var="list">
-				<a href="search.do?key_name=${list}"> 
-			<c:forEach items="${list}" var="map">
-	   			${map}
-	   		</c:forEach>
-				</a>
-			</c:forEach>
-	</div>
+
 
 	<div class="mrate">컨텐츠 평점 : ${dto.mrate}</div>
 	<div class="like">좋아요 수 : ${dto.cri_like}</div>
-	<hr>
+	<hr> 
 	<!-- 사용자 컨텐츠 평가 -->
 	<div class="container" align="center" id="cri_panel">
 	   		
@@ -129,41 +132,38 @@
 			</c:otherwise>
 		</c:choose>
 
-   <c:set var="mcode" value="${ dto.mcode }"></c:set>
-   <!-- 리뷰 및 수정 삭제 버튼 -->
-   <c:forEach var="dto" items="${ reviewlist }">
+	<div id="reviews">		
+	   <table id="reviews_tb" class="table" style="width:500px; margin:auto;">
+	   <c:forEach var="dto" items="${ reviewlist }">
+	   		<tr class="info-wrap" id="info-wrap${ no }">
+	   			<td>작성자 : ${ dto.mem_id }</td>
+	   			<td style="text-align:right;">${ dto.rev_reg }</td>
+	   		</tr>
+	   		<tr class="title-wrap" id="title-wrap${ no }">
+	   			<th>${ dto.rev_title }</th>
+	   			<td style="text-align:right;">⭐${ dto.rev_rate }</td>
+	   		</tr>
+			<tr class="review-content" id="review-content${ no }">
+				<td colspan="2">${ dto.rev_cont }</td>
+			</tr>
+			<tr class="review-btns" id="review-btns${ no }">
+				<td colspan="2" style="text-align:right;" id="review-btn${ no }">
+					<button class="btn btn-default btn-sm" onclick="href='reviewupdate.do?mcode=${ dto.mcode }&rev_code=${ dto.rev_code }'">수정</button>
+					<button class="btn btn-default btn-sm" onclick="href='reviewdelete.do?mcode=${ dto.mcode }&rev_code=${ dto.rev_code }'">삭제</button>
+		   		</td>
+	   		</tr>
+	   		<tr><td colspan="2"></td></tr>
+	   </c:forEach>
+	   </table>
+	</div>
    
-      <hr>
-      <div class="mem_id">ID : ${dto.mem_id}</div>
-      <div class="rev_title">후기 제목 : ${dto.rev_title}</div>
-      <div class="rev_reg">등록 날짜 : ${dto.rev_reg}</div>
-      <hr>
-      <div class="rev_cont">한줄평 : ${dto.rev_cont}</div>
-      <div class="rev_rate">개인 평점 : ${dto.rev_rate}</div>
-      <div class="rev_spo">스포 여부 : ${dto.rev_spo }</div>
-      <form method="post"
-         action="<%=request.getContextPath()%>/reviewupdate.do?mcode=${ mcode }&rev_code=${dto.rev_code } "
-         method="POST">
-         <input type="hidden" id="rev_code" name="rev_code" value="${dto.rev_code}">
-         <input type="submit" value="update">
-      </form>
-   
-      <form method="post"
-         action="reviewdelete.do?mcode=${mcode}&rev_code=${dto.rev_code } "
-         method="POST">
-         <input type="hidden" id="rev_code" name="rev_code" value="${dto.rev_code}">
-         <input type="submit" value="delete">
-      </form>
-      
-   </c:forEach>
-   <!-- 리뷰 목록 끝 -->
-   
+   <br>
    <!-- 리뷰 더보기 버튼 -->
-   <button class="btn btn-default btn-lg"
-            onclick="location.href='<%=request.getContextPath()%>/contlist/reviewList.do?mcode=${ dto.mcode }'">
+   <c:if test="${ fn:length(reviewlist)!=0 }">
+       <button class="btn btn-default btn-lg" onclick="location.href='<%=request.getContextPath()%>/contlist/reviewList.do?mcode=${ dto.mcode }'">
             리뷰 더 보기
-   </button>
-
+       </button>
+    </c:if>
 
 
 </div>

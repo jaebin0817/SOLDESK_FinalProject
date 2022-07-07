@@ -7,7 +7,7 @@
 
 <!-- 메인카테고리 끝 -->
 
-
+<div class="container">
 	<div class="pagetitle">
 		<br>
 		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
@@ -15,33 +15,36 @@
 		<br><br>
 	</div>
 
-<div id="reviews">
-<c:set var="mcode" value="${ dto.mcode }"></c:set>
-   <!-- 리뷰 및 수정 삭제 버튼 -->
-   <c:forEach var="dto" items="${ list }">
-      <p>ID : ${dto.mem_id}</p>
-      <p>후기 제목 : ${dto.rev_title}</p>
-      <p>등록 날짜 : ${dto.rev_reg}</p>
-      <hr>
-      <p>한줄평 : ${dto.rev_cont}</p>
-      <p>개인 평점 : ${dto.rev_rate}</p>
-      <p>스포 여부 : ${dto.rev_spo }</p>
-         <form method="post"
-         action="<%=request.getContextPath()%>/reviewupdate.do?mcode=${ mcode }&rev_code=${dto.rev_code } "
-         method="POST">
-         <input type="hidden" id="rev_code" name="rev_code" value="${dto.rev_code}">
-         <input type="submit" value="update">
-         </form>
-   
-         <form method="post"
-         action="reviewdelete.do?mcode=${mcode}&rev_code=${dto.rev_code } "
-         method="POST">
-         <input type="hidden" id="rev_code" name="rev_code" value="${dto.rev_code}">
-         <input type="submit" value="delete">
-         </form>
-   </c:forEach>
+	<div id="reviews">
+	   <c:set var="no" value="1"></c:set>
+		
+	   <table id="reviews_tb" class="table" style="width:500px; margin:auto;">
+	   <c:forEach var="dto" items="${ list }">
+	   		<tr class="info-wrap" id="info-wrap${ no }">
+	   			<td>작성자 : ${ dto.mem_id }</td>
+	   			<td style="text-align:right;">${ dto.rev_reg }</td>
+	   		</tr>
+	   		<tr class="title-wrap" id="title-wrap${ no }">
+	   			<th>${ dto.rev_title }</th>
+	   			<td style="text-align:right;">⭐${dto.rev_rate}</td>
+	   		</tr>
+			<tr class="review-content" id="review-content${ no }">
+				<td colspan="2">${ dto.rev_cont }</td>
+			</tr>
+			<tr class="review-btns" id="review-btns${ no }">
+				<td colspan="2" style="text-align:right;" id="review-btn${ no }">
+					<button class="btn btn-default btn-sm" onclick="href='reviewupdate.do?mcode=${ dto.mcode }&rev_code=${ dto.rev_code }'">수정</button>
+					<button class="btn btn-default btn-sm" onclick="href='reviewdelete.do?mcode=${ dto.mcode }&rev_code=${ dto.rev_code }'">삭제</button>
+		   		</td>
+	   		</tr>
+	   		<tr><td colspan="2"></td></tr>
+	   		<span class="hide">${ no=no+1 }</span>	   			
+	   </c:forEach>
+	   </table>
+	</div>
+	<input type="hidden" id="no" value="4">
+	
 </div>
-
 
 <script>
 
@@ -58,8 +61,9 @@ $(window).scroll(function(){ 
 
 
 /*nextpageload function*/
-function loadNext()
-{
+function loadNext(){
+	var num=parseInt($("#no").val());		
+
         $.ajax({
                 type:"post",
                 url:"morereviews.do",
@@ -70,16 +74,28 @@ function loadNext()
                 success: function(data){
                     
                    $.each(data,function(index, value) {
-                        $('#reviews').append("<p>ID : "+value.mem_id+"</p>");
-                        $('#reviews').append("<p>후기 제목 : "+value.rev_title+"</p>");
-                        $('#reviews').append("<p>등록 날짜 : "+value.rev_reg+"</p>");
-                        $('#reviews').append("<hr>");
-                        $('#reviews').append("<p>한줄평 : "+value.rev_cont+"</p>");
-                        $('#reviews').append("<p>개인 평점 : "+value.rev_rate+"</p>");
-                        $('#reviews').append("<p>스포 여부 : : "+value.rev_spo+"</p>");
+                        $('#reviews_tb').append('<tr class="info-wrap" id="info-wrap'+num+'">');
+                        $('#reviews_tb').append('<tr class="title-wrap" id="title-wrap'+num+'">');
+                        $('#reviews_tb').append('<tr class="review-content" id="review-content'+num+'">');
+                        $('#reviews_tb').append('<tr class="review-btns" id="review-btns'+num+'">');
+                        $('#reviews_tb').append('<tr><td colspan="2"></td></tr>');
+
+                	   
+                        $('#info-wrap'+num).append("<tr><td>작성자 : "+value.mem_id+"</td>");
+                        $('#info-wrap'+num).append("<td style='text-align:right;'>"+value.rev_reg+"</td>");
                         
+                        $('#title-wrap'+num).append("<th>"+value.rev_title+"</th>");
+                        $('#title-wrap'+num).append("<td style='text-align:right;'>⭐"+value.rev_rate+"</td>");
+
+                        $('#review-content'+num).append("<td colspan='2'>"+value.rev_cont+"</td>");
+
+                        $('#review-btns'+num).append("<td colspan='2' style='text-align:right;' id='review-btn"+num+"'>");                        
+                        $('#review-btn'+num).append("<button class='btn btn-default btn-sm' onclick='href=\"reviewupdate.do?mcode="+value.mcode+"&rev_code="+value.rev_code+"\"'>수정</button>");                        
+                        $('#review-btn'+num).append("<button class='btn btn-default btn-sm' onclick='href=\"reviewdelete.do?mcode="+value.mcode+"&rev_code="+value.rev_code+"\"'>삭제</button>");                        
+						
+                        num++;
                    })
-                   
+                   $('#no').attr('value', num);	
                 }
                 ,error: function(error) 
                 {

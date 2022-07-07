@@ -66,12 +66,30 @@ public class WebmasterCont {
    
    
    @RequestMapping("/partylist.do")
-   public ModelAndView partylist(PartyInfoDTO partyDTO) {
+   public ModelAndView partylist(PartyInfoDTO partyDTO, HttpServletRequest req) {
       ModelAndView mav=new ModelAndView();
-            
-      mav.setViewName("webmaster/partymanage/partylist");
-      mav.addObject("list", partydao.partylist());
       
+      String word=req.getParameter("word");
+      String col=req.getParameter("col");
+      word=Utility.checkNull(word);
+      col=Utility.checkNull(col);
+      
+      int recordPerPage=15;
+      int totalRecord=partydao.count(col, word);
+      
+      int nowPage=1;
+      if(req.getParameter("nowPage")!=null){
+    	  nowPage=Integer.parseInt(req.getParameter("nowPage"));
+      }//if end
+      
+      String paging=new Paging().paging2(totalRecord, nowPage, recordPerPage, col, word, "partylist.do");
+      
+      mav.setViewName("webmaster/partymanage/partylist");
+      mav.addObject("paging", paging);
+      mav.addObject("list", partydao.partylist(col, word, nowPage, recordPerPage));
+      mav.addObject("word", word);
+      mav.addObject("col", col);
+
       return mav;
    }
    
@@ -278,7 +296,7 @@ public class WebmasterCont {
       for(int i=1; i<=directorsNo; i++) {
     	  
     	  director=req.getParameter("director"+i);
-          director.replace(" ", "");
+          //director.replace(" ", "");
     	  String searchedDir=contdao.readDirector(director);
     	  
     	  if(searchedDir==null){
@@ -315,7 +333,7 @@ public class WebmasterCont {
       for(int i=1; i<=actorsNo; i++) {
     	  
     	  actor=req.getParameter("actor"+i);
-    	  actor.replace(" ", "");
+    	  //actor.replace(" ", "");
     	  String searchedAct=contdao.readActor(actor);
     	  
     	  if(searchedAct==null){

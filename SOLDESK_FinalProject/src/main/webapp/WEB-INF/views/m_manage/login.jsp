@@ -28,6 +28,9 @@
 				
 		<!-- 게스트일 때, 로그인 폼 출력 -->
 		<form name="loginfrm" id="loginfrm" method="post" action="<%=request.getContextPath()%>/login.do" onsubmit="return">
+		    
+		    <input type="hidden" name="referrer" id="referrer">
+
 			<table class="table table-bordered" id="login_table">
 			<tr>
 			    <td>
@@ -83,7 +86,13 @@
 	
   </c:choose>
 
-	
+	<script>
+		var referrer= document.referrer;
+		$('#referrer').attr('value', referrer);
+		
+	</script>	
+
+
 </div>
 <!-- 본문끝 -->
 <%@ include file="../footer.jsp"%>

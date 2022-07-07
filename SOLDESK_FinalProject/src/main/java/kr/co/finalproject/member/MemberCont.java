@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,10 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.finalproject.contlist.WatchListDAO;
@@ -93,6 +98,9 @@ public class MemberCont {
 				
 		String mem_id=req.getParameter("id").trim();
 		String mem_pw=req.getParameter("passwd").trim();
+		String referrer=req.getParameter("referrer");
+		
+		//System.out.println(referrer);
 		
 		String mem_lv=null;
 		mem_lv=dao.loginRead(mem_id, mem_pw);
@@ -111,6 +119,8 @@ public class MemberCont {
 			session.setAttribute("s_mem_id", mem_id);
 			session.setAttribute("s_mem_pw", mem_pw);
 			session.setAttribute("s_mem_lv", mem_lv);
+			
+			
 			
 			String c_id=Utility.checkNull(req.getParameter("c_id"));	
 			Cookie cookie=null;
@@ -131,7 +141,8 @@ public class MemberCont {
 			
 			msg+="<script>";
 			msg+="    alert('로그인 되었습니다');";
-			msg+="    location.href='javascript:history.go(-2);'";
+			//msg+="    location.href='javascript:history.go(-2);'";
+			msg+="    location.href='"+referrer+"';";
 			msg+="</script>";
 			
 		}
@@ -218,7 +229,7 @@ public class MemberCont {
 	
 	
 	@RequestMapping("/m_manage/mysubscribe.do")
-	public ModelAndView mysubscribe(HttpServletRequest req, HttpServletResponse resp) {
+	public ModelAndView mysubscribe(HttpServletRequest req, HttpServletResponse resp, SubscribeInfoDTO dto) {
 		ModelAndView mav = new ModelAndView();
 		
 		HttpSession session = req.getSession();
@@ -227,10 +238,38 @@ public class MemberCont {
 		
 		mav.addObject("totalOttFee", subdao.totalPay(mem_id));
 		mav.addObject("list", subdao.mySubread(mem_id));
+		mav.addObject("dto", dto);
 		mav.setViewName("m_manage/mysubscribe");
 		return mav;
 	}
 	
+	
+    @RequestMapping(value = "m_manage/subscriberead.do", produces="text/plain;charset=UTF-8")
+    @ResponseBody
+    public JSONObject subscribeRead(@RequestParam Map<String, Object> map, Locale locale, Model model) {
+       
+        Map<String, String> submap = new HashMap<>();
+        JSONObject json = null;
+        
+      try {
+            
+          String mem_id = (String)map.get("mem_id");
+          submap=subdao.subDateread(mem_id);
+          
+          System.out.println(submap);
+          
+          json =  new JSONObject(submap);
+
+          
+      }catch (Exception e) {
+         System.out.println("응답실패: " + e);
+      }
+      
+      return json;
+      
+    }
+	
+    
 	
 	@RequestMapping("/agreement.do")
 	public String agreement() {

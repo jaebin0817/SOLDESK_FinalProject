@@ -178,50 +178,6 @@ public class ContlistDAO {
 	        }//end
 	        return dto;
 	    }// read() end
-		
-	    
-	    public ArrayList<ContlistDTO> searchPart(String key_code) {
-			ContlistDTO dto=null;
-			ArrayList<ContlistDTO> list=null;
-			
-			try {
-				con=dbopen.getConnection();//DB연결
-				sql=new StringBuilder();
-				sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, cri_like, key_code, mcode ");
-				sql.append(" FROM contlist ");
-				sql.append(" WHERE key_code LIKE '%"+key_code+"%' ");
-				sql.append(" ORDER BY mcode DESC ");
-				pstmt = con.prepareStatement(sql.toString());
-				
-				rs = pstmt.executeQuery();
-				if(rs.next()) {
-					list=new ArrayList<ContlistDTO>();				
-					do {
-						dto = new ContlistDTO();//커서가 가리키는 한 줄 저장
-						dto.setMtitle(rs.getString("mtitle"));
-						dto.setMthum(rs.getString("mthum"));
-						dto.setMrate(rs.getDouble("mrate"));
-						dto.setNetflix(rs.getString("netflix"));
-						dto.setWatcha(rs.getString("watcha"));
-						dto.setTving(rs.getString("tving"));
-						dto.setDisney(rs.getString("disney"));
-						dto.setMdate(rs.getString("mdate"));
-						dto.setCri_like(rs.getInt("cri_like"));
-						dto.setKey_code(rs.getString("key_code"));
-						dto.setMcode(rs.getInt("mcode"));
-						list.add(dto);
-					}while(rs.next());
-				}//if end
-				
-			}catch (Exception e) {
-				System.out.println("컨텐츠리스트 불러오기 실패: " + e);
-			}finally{
-				DBclose.close(con, pstmt, rs);
-			}//try end
-			
-			return list;
-			
-		}
 	   
 	   
 	   
@@ -411,11 +367,12 @@ public class ContlistDAO {
 		
 		
 		
-		public ArrayList<ContlistDTO> mainsearch(String searchkey, String pno) {
+		public ArrayList<ContlistDTO> mainsearch(String searchkey, String pno, int nowPage, int recordPerPage) {
 			
 			ArrayList<ContlistDTO> list=null;
 			ContlistDTO dto=null;
-			
+	        int startRow = ((nowPage-1) * recordPerPage);
+	        
 			try {
 				con=dbopen.getConnection();//DB연결
 				sql=new StringBuilder();
@@ -426,6 +383,7 @@ public class ContlistDAO {
 				sql.append(" 	OR director LIKE '%"+pno+"%' ");
 				sql.append(" 	OR actor LIKE '%"+pno+"%' ");
 				sql.append(" ORDER BY mcode DESC ");
+                sql.append(" LIMIT " + startRow + ", " + recordPerPage);
 				
 				pstmt = con.prepareStatement(sql.toString());
 
@@ -466,11 +424,10 @@ public class ContlistDAO {
 		
 		
 		
-		public ArrayList<ContlistDTO> ottRead(String netflix, String watcha, String tving, String disney, String searchkey, String key_code, String pno) {
-			ContlistDTO dto=null;
-			
+		public ArrayList<ContlistDTO> ottRead(String ott, String col, String word,  int nowPage, int recordPerPage) {
+			ContlistDTO dto=null;			
 			ArrayList<ContlistDTO> list=null;
-			
+	        int startRow = ((nowPage-1) * recordPerPage);			
 			try {
 				con=dbopen.getConnection();//DB연결
 				sql=new StringBuilder();
@@ -478,29 +435,36 @@ public class ContlistDAO {
 				sql.append(" FROM contlist ");
 				
 				String search="";
-				if(netflix.equals("O")) {
+				if(ott.equals("netflix")) {
 					search+=" WHERE netflix='O' ";
-				}else if(watcha.equals("O")) {
+				}else if(ott.equals("watcha")) {
 					search+=" WHERE watcha='O' ";
-				}else if(tving.equals("O")) {
+				}else if(ott.equals("tving")) {
 					search+=" WHERE tving='O' ";
-				}else if(disney.equals("O")) {
+				}else if(ott.equals("disney")) {
 					search+=" WHERE disney='O' ";
+				}else {
+					search+=" WHERE (netflix='O' OR watcha='O' OR disney='O' OR tving='O') ";
 				}
 				
-				if(!(key_code.equals(""))) {//key_name이 검색된 상태라면
-					search+=" AND key_code LIKE '%"+key_code+"%' ";
-				}
-				
-				if(!(searchkey.equals(""))) {//key_name이 검색된 상태라면
-					search+=" AND (mtitle LIKE '%"+searchkey+"%' ";
-					search+=" OR mtitle_eng LIKE '%"+searchkey+"%' ";
-					search+=" OR director LIKE '%"+pno+"%' ";
-					search+=" OR actor  LIKE '%"+pno+"%') ";
-				}
+	            if(word.length()!=0) { 
+					if(col.equals("key_code")) {
+						search+= " AND key_code LIKE '%"+word+"%' ";						
+					}else if(col.equals("pno")) {						
+						search+= " AND (actor LIKE '%" + word + "%' ";
+						search+= " OR director LIKE '%" + word + "%') ";
+					}else if(col.equals("mdate")) {						
+                        int mdate= Integer.parseInt(word);
+						search+= " AND (mdate>=" + mdate + " AND mdate<="+ ( mdate+10 )+") ";
+					}else if(col.equals("mrate")) {						
+                        int mrate= Integer.parseInt(word);
+						search+= " AND (mrate>" + (mrate-1) + " AND mrate<="+ mrate+") ";
+					}					
+	            }	
 					
 				sql.append(search);
 				sql.append(" ORDER BY mcode DESC ");
+                sql.append(" LIMIT " + startRow + ", " + recordPerPage);
 				
 				pstmt = con.prepareStatement(sql.toString());
 				
@@ -533,57 +497,8 @@ public class ContlistDAO {
 			return list;
 			
 		}
-		
-		
-		
-	    public ArrayList<ContlistDTO> searchPeople(String pno) {
-			ContlistDTO dto=null;
-			ArrayList<ContlistDTO> list=null;
-			
-			try {
-				con=dbopen.getConnection();//DB연결
-				sql=new StringBuilder();
-				sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, cri_like, key_code, mcode, actor, director ");
-				sql.append(" FROM contlist ");
-				sql.append(" WHERE actor LIKE '%"+pno+"%' ");
-				sql.append("    OR director LIKE '%"+pno+"%' ");
-				sql.append(" ORDER BY mcode DESC ");
-				pstmt = con.prepareStatement(sql.toString());
-				
-				rs = pstmt.executeQuery();
-				if(rs.next()) {
-					list=new ArrayList<ContlistDTO>();				
-					do {
-						dto = new ContlistDTO();//커서가 가리키는 한 줄 저장
-						dto.setMtitle(rs.getString("mtitle"));
-						dto.setMthum(rs.getString("mthum"));
-						dto.setMrate(rs.getDouble("mrate"));
-						dto.setNetflix(rs.getString("netflix"));
-						dto.setWatcha(rs.getString("watcha"));
-						dto.setTving(rs.getString("tving"));
-						dto.setDisney(rs.getString("disney"));
-						dto.setMdate(rs.getString("mdate"));
-						dto.setCri_like(rs.getInt("cri_like"));
-						dto.setKey_code(rs.getString("key_code"));
-						dto.setMcode(rs.getInt("mcode"));
-						dto.setActor(rs.getString("actor"));
-						dto.setDirector(rs.getString("director"));
 
-						list.add(dto);
-					}while(rs.next());
-				}//if end
-				
-			}catch (Exception e) {
-				System.out.println("감독/출연 검색 실패: " + e);
-			}finally{
-				DBclose.close(con, pstmt, rs);
-			}//try end
-			
-			return list;
-			
-		}
-
-	    
+		
 		public int count(String col, String word) {
 	    	int cnt=0;
 	    	try {
@@ -619,7 +534,7 @@ public class ContlistDAO {
 		
 		
 		
-		public ArrayList<ContlistDTO> list(String col,String word, int nowPage, int recordPerPage){
+		public ArrayList<ContlistDTO> list(String col, String word, int nowPage, int recordPerPage){
 	    	ArrayList<ContlistDTO> list=null;
 	    	
 	    	int startRow = ((nowPage-1) * recordPerPage) ;
@@ -632,11 +547,19 @@ public class ContlistDAO {
 					            
 	            if(word.length()!=0) { 
 			        String search="";
-					if(col.equals("mcode")) {
-						search+= " WHERE mcode=" + word ;
-					}else if(col.equals("mtitle")) {
-						search+= " WHERE mtitle LIKE '%" + word + "%' ";
+					if(col.equals("key_code")) {
+						search+= " WHERE key_code LIKE '%"+word+"%' ";						
+					}else if(col.equals("pno")) {						
+						search+= " WHERE actor LIKE '%" + word + "%' ";
+						search+= " OR director LIKE '%" + word + "%' ";
+					}else if(col.equals("mdate")) {						
+                        int mdate= Integer.parseInt(word);
+						search+= " WHERE mdate>=" + mdate + " AND mdate<="+ ( mdate+10 );
+					}else if(col.equals("mrate")) {						
+                        int mrate= Integer.parseInt(word);
+						search+= " WHERE mrate>" + (mrate-1) + " AND mrate<="+ mrate;
 					}
+					
 					sql.append(search);	            
 	            }	
 
@@ -726,28 +649,40 @@ public class ContlistDAO {
 		
 		public ArrayList<String> contentSearch(String keyword) {
 			
-			ArrayList<String> list=null;
+			ArrayList<String> list=new ArrayList<String>();
 			
 			try {
 				con=dbopen.getConnection();//DB연결
 				sql=new StringBuilder();
-				sql.append(" SELECT mtitle, mtitle_eng ");
+				sql.append(" SELECT mtitle ");
 				sql.append(" FROM contlist ");
 				sql.append(" WHERE mtitle LIKE '%"+keyword+"%' ");
-				sql.append(" 	OR mtitle_eng LIKE '%"+keyword+"%' ");
 				sql.append(" ORDER BY mcode DESC ");
 				
 				pstmt = con.prepareStatement(sql.toString());
 
 				rs = pstmt.executeQuery();
 				if(rs.next()) {
-					list=new ArrayList<String>();				
 					do {
 						list.add(rs.getString("mtitle"));
-						list.add(rs.getString("mtitle_eng"));
-						
+					}while(rs.next());
+				}//if end				
+			
+				sql=new StringBuilder();
+				sql.append(" SELECT mtitle_eng ");
+				sql.append(" FROM contlist ");
+				sql.append(" WHERE mtitle_eng LIKE '%"+keyword+"%' ");
+				sql.append(" ORDER BY mcode DESC ");
+				
+				pstmt = con.prepareStatement(sql.toString());
+
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					do {
+						list.add(rs.getString("mtitle_eng"));						
 					}while(rs.next());
 				}//if end
+				
 				
 			} catch (Exception e) {
 				System.out.println("영화 검색 추천 목록 실패: " + e);
@@ -758,8 +693,82 @@ public class ContlistDAO {
 			
 			return list;
 			
-		}//mainsearch() end
+		}//contentSearch() end
 
+		
+		
+		public ArrayList<String> mainSuggest(String keyword) {
+			
+			ArrayList<String> list=new ArrayList<String>();
+			
+			try {
+				con=dbopen.getConnection();//DB연결
+				sql=new StringBuilder();
+				sql.append(" SELECT mtitle ");
+				sql.append(" FROM contlist ");
+				sql.append(" WHERE mtitle LIKE '%"+keyword+"%' ");
+				sql.append(" ORDER BY mcode DESC ");
+				pstmt = con.prepareStatement(sql.toString());
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					do {
+						list.add(rs.getString("mtitle"));
+					}while(rs.next());
+				}//if end				
+			
+				sql=new StringBuilder();
+				sql.append(" SELECT mtitle_eng ");
+				sql.append(" FROM contlist ");
+				sql.append(" WHERE mtitle_eng LIKE '%"+keyword+"%' ");
+				sql.append(" ORDER BY mcode DESC ");				
+				pstmt = con.prepareStatement(sql.toString());
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					do {
+						list.add(rs.getString("mtitle_eng"));						
+					}while(rs.next());
+				}//if end
+				
+				
+				sql=new StringBuilder();
+				sql.append(" SELECT pname ");
+				sql.append(" FROM people ");
+				sql.append(" WHERE pname LIKE '%"+keyword+"%' ");
+				sql.append(" ORDER BY pname ");				
+				pstmt = con.prepareStatement(sql.toString());
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					do {
+						list.add(rs.getString("pname"));						
+					}while(rs.next());
+				}//if end
+				
+				
+				sql=new StringBuilder();
+				sql.append(" SELECT pname_eng ");
+				sql.append(" FROM people ");
+				sql.append(" WHERE pname_eng LIKE '%"+keyword+"%' ");
+				sql.append(" ORDER BY pname_eng ");				
+				pstmt = con.prepareStatement(sql.toString());
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					do {
+						list.add(rs.getString("pname_eng"));						
+					}while(rs.next());
+				}//if end				
+				
+				
+			} catch (Exception e) {
+				System.out.println("메인페이지 검색 추천 목록 실패: " + e);
+			} finally {
+				DBclose.close(con, pstmt);
+			}//try end
+			
+			
+			return list;
+			
+		}//contentSearch() end
+		
 		
 		
 	    public int mcodeRead(String title) {
@@ -790,6 +799,8 @@ public class ContlistDAO {
 	        }//end
 	        return mcode;
 	    }// mcodeRead() end
-	    
+
+
+
 
 }//class end

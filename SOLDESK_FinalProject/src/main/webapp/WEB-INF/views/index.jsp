@@ -64,7 +64,7 @@
 	<div id="searchfield" class="container">   
 	  <form action="mainsearch.do">
 	    <div class="input-group">
-	      <input type="search" id="searchkey" name="searchkey" class="form-control" size="50" placeholder="작품명, 감독, 배우를 검색해보세요" required>
+	      <input id="searchkey" name="searchkey" class="form-control" size="50" placeholder="작품명, 감독, 배우를 검색해보세요" required>
 	      <div class="input-group-btn">
 	        <input type="submit" class="btn btn-danger" value="검색">
 	      </div>
