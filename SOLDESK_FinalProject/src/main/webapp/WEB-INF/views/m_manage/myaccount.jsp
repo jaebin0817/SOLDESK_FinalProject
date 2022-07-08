@@ -5,20 +5,25 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>    
     
 <%@ include file="../header.jsp"%>
-<!-- 본문시작 member_bank.jsp -->
+<!-- 본문시작 myaccount.jsp -->
 	
 	
-	<!-- 계좌등록/변경 시작 -->
+	<!-- 등록된 카드/계좌 정보 확인 -->
 	<div class="container" align="center">
 		<div class="pagetitle">
 			<br>
 			<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
-			<span><strong> 계좌 등록 </strong></span>
-			<h5>★★★기존에 등록되어 있는 계좌가 있다면 노출시키고 수정 버튼 노출</h5>
-			<h5>★★★기존에 등록되어 있는 계좌가 없다면 등록 버튼 노출</h5>
+			<span><strong> 결제카드/정산계좌 정보 </strong></span>
 		</div>
-		<form name="bankfrm">
-			<table class="table table-bordered" id="login_table" style="width:500px; margin:auto;">
+		
+		<div id="card-wrap">
+		</div>
+		
+		<br>
+		<input class="btn btn-default" type="submit" value="등록">
+		<input class="btn btn-default" type="reset" value="취소">
+		
+		<table class="table table-bordered" id="bank_table" style="width:500px; margin:auto;">
 		  	  <tr>
 		  	    <th>은행</th>
 				<td>

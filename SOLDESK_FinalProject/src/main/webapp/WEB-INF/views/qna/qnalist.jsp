@@ -27,10 +27,17 @@
 		</tr>
 		<c:forEach var="dto" items="${list}">
 			<tr>
-				<td><a href="../qna/qnaread.do?qna_num=${dto.qna_num}">${dto.qna_title}</a></td>
+				<td>
+					<c:forEach begin="1" end="${ dto.qna_indent }">
+						<c:set var="i" value="1"></c:set>
+						<c:if test="${ i==dto.qna_indent }"><img src='../../images/reply.gif'></c:if>
+						<span class="hide">${ i=i+1 }</span>						
+					</c:forEach>
+					<a href="../qna/qnaread.do?qna_num=${dto.qna_num}">${dto.qna_title}</a>
+				</td>
 				<td>${dto.mem_id}</td>
 				<td>${dto.qna_readcnt}</td>
-					<td>${dto.qna_date}</td>
+				<td>${dto.qna_date}</td>
 			</tr>
 		</c:forEach>
 			<tr>

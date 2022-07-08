@@ -28,8 +28,8 @@ public class QnaDAO {
 		try {
 			con=dbopen.getConnection();//DB연결
 			sql=new StringBuilder();
-			sql.append(" select qna_num, qna_title, qna_date, qna_content, mem_id, qna_pw, qna_readcnt, qna_grpno, qna_indent, qna_ansnum, ip ");
-			sql.append(" from tb_qna ");
+			sql.append(" SELECT qna_num, qna_title, qna_date, qna_content, mem_id, qna_pw, qna_readcnt, qna_grpno, qna_indent, qna_ansnum, ip ");
+			sql.append(" FROM tb_qna ");
 			sql.append(" WHERE qna_num=? ");
 			
 			pstmt = con.prepareStatement(sql.toString());
@@ -110,29 +110,7 @@ public class QnaDAO {
 		return cnt;
 	}//create end
 	
-	public int delete(int qna_num, String qna_pw){
-		int cnt=0; //성공 또는 실패 여부 반환
-		try {
-			con=dbopen.getConnection();
-			
-			sql=new StringBuilder();
-			sql.append(" DELETE FROM tb_qna ");
-			sql.append(" WHERE qna_num=? && qna_pw=? ");
-			
-			pstmt=con.prepareStatement(sql.toString());
-			pstmt.setInt(1, qna_num);
-			pstmt.setString(2, qna_pw);
-			cnt=pstmt.executeUpdate();
-			
-		} catch (Exception e) {
-			System.out.println("행삭제 실패 : " + e);
-		}finally {
-			DBclose.close(con,pstmt);
-		}//end
-		return cnt;
-	}//delete end
-	
-	public int deletemaster(int qna_num){
+	public int delete(int qna_num){
 		int cnt=0; //성공 또는 실패 여부 반환
 		try {
 			con=dbopen.getConnection();
@@ -153,33 +131,8 @@ public class QnaDAO {
 		return cnt;
 	}//delete end
 	
-	public int updateproc(QnaDTO dto,String qna_pw) {
-		int cnt=0; //성공 또는 실패 여부 반환
-		try {
-
-			con=dbopen.getConnection();
-			sql=new StringBuilder();
-			sql.append(" UPDATE tb_qna ");
-			sql.append(" SET qna_title=?, qna_content=? ");
-			sql.append(" WHERE qna_num=? && qna_pw=? ");
-			
-			pstmt=con.prepareStatement(sql.toString());
-			pstmt.setString(1, dto.getQna_title());
-			pstmt.setString(2, dto.getQna_content());
-			pstmt.setInt(3, dto.getQna_num());
-			pstmt.setString(4, qna_pw);
-		
-			cnt=pstmt.executeUpdate(); 
-			
-		} catch (Exception e) {
-			System.out.println("행수정 실패 : " + e);
-		}finally {
-			DBclose.close(con,pstmt);
-		}//end
-		return cnt;
-	}//updateproc() end
 	
-	public int updatemasterproc(QnaDTO dto) {
+	public int updateproc(QnaDTO dto) {
 		int cnt=0; //성공 또는 실패 여부 반환
 		try {
 
@@ -203,6 +156,7 @@ public class QnaDAO {
 		}//end
 		return cnt;
 	}//updateproc() end
+	
 	
 	public ArrayList<QnaDTO> list(){
 		ArrayList<QnaDTO> list=null;
@@ -210,7 +164,7 @@ public class QnaDAO {
 			con=dbopen.getConnection();
 			
 			sql=new StringBuilder();
-			sql.append(" select qna_num, qna_title, qna_date, qna_content, mem_id, qna_readcnt ");
+			sql.append(" select qna_num, qna_title, qna_date, qna_content, mem_id, qna_readcnt, qna_indent  ");
 			sql.append(" from tb_qna ");
 			sql.append(" order by qna_num asc ");
 			
@@ -248,7 +202,7 @@ public class QnaDAO {
 			con=dbopen.getConnection();
 			
 			sql=new StringBuilder();
-			sql.append(" select qna_num, qna_title, qna_date, qna_content, mem_id, qna_readcnt ");
+			sql.append(" select qna_num, qna_title, qna_date, qna_content, mem_id, qna_readcnt, qna_indent ");
 			sql.append(" from tb_qna ");
 			
 			
@@ -270,7 +224,7 @@ public class QnaDAO {
 			}//if end
 			
 			
-			sql.append(" order by qna_num asc ");
+			sql.append(" order by qna_grpno asc ");
 			
 			pstmt=con.prepareStatement(sql.toString());
 			rs=pstmt.executeQuery();
@@ -307,7 +261,7 @@ public class QnaDAO {
 			con=dbopen.getConnection(); 
 			sql=new StringBuilder();
 			
-            sql.append(" SELECT qna_num, qna_title, qna_date, qna_content, mem_id, qna_readcnt ");
+            sql.append(" SELECT qna_num, qna_title, qna_date, qna_content, mem_id, qna_readcnt, qna_indent");
 			sql.append(" FROM tb_qna ");
 
 			
@@ -342,6 +296,7 @@ public class QnaDAO {
 				dto.setQna_content(rs.getString("qna_content"));
 				dto.setMem_id(rs.getString("mem_id"));
 				dto.setQna_readcnt(rs.getInt("qna_readcnt"));
+				dto.setQna_indent(rs.getInt("qna_indent"));
 				list.add(dto); //list에 모으기
             }while(rs.next());
           }//if end
@@ -395,6 +350,105 @@ public class QnaDAO {
 		}//end
 		return cnt;
 	}//count2 end
+
+	
+	
+	public QnaDTO pwcheck(int qna_num, String qna_pw) {
+		
+		QnaDTO dto=null;
+		
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" SELECT qna_num, qna_title, qna_date, qna_content, mem_id, qna_pw, qna_readcnt, qna_grpno, qna_indent, qna_ansnum, ip ");
+			sql.append(" FROM tb_qna ");
+			sql.append(" WHERE qna_num=? AND qna_pw=? ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, qna_num);
+			pstmt.setString(2, qna_pw);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				dto=new QnaDTO();//한줄담기
+				dto.setQna_num(rs.getInt("qna_num"));
+				dto.setQna_title(rs.getString("qna_title"));
+				dto.setQna_date(rs.getString("qna_date"));
+				dto.setQna_content(rs.getString("qna_content"));
+				dto.setMem_id(rs.getString("mem_id"));
+				dto.setQna_pw(rs.getString("qna_pw"));
+				dto.setQna_readcnt(rs.getInt("qna_readcnt"));
+				dto.setQna_grpno(rs.getInt("qna_grpno"));
+				dto.setQna_indent(rs.getInt("qna_indent"));
+				dto.setQna_ansnum(rs.getInt("qna_ansnum"));
+				dto.setIp(rs.getString("ip"));
+				
+			}//if end
+		}catch (Exception e) {
+			System.out.println("Q&A 불러오기 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);
+		}//try end
+		
+		return dto;
+	}//end
+
+	
+	public int replycreate(QnaDTO dto) {
+		int cnt=0;
+		try {
+			con=dbopen.getConnection();
+			
+			sql=new StringBuilder();
+			sql.append(" INSERT INTO tb_qna(qna_date, qna_title, qna_content, qna_pw, qna_grpno, qna_indent, qna_ansnum, mem_id, ip) ");
+			sql.append(" values(now(), ?, ?, ?, ?, ?, ?, ?, ?) ");
+
+			
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setString(1, dto.getQna_title());	
+			pstmt.setString(2, dto.getQna_content());	
+			pstmt.setString(3, dto.getQna_pw());
+			pstmt.setInt(4, dto.getQna_grpno());
+			pstmt.setInt(5, dto.getQna_indent());
+			pstmt.setInt(6, dto.getQna_ansnum());			
+			pstmt.setString(7, dto.getMem_id());
+			pstmt.setString(8, dto.getIp());			
+			
+			cnt=pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("답변 등록 실패 : " + e);
+		}finally {
+			DBclose.close(con, pstmt);
+		}//end
+		return cnt;
+	}//create end
+	
+	
+	public int ansnum(int qna_grpno) {
+		int qna_ansnum=0;
+		try {
+			con=dbopen.getConnection();//DB연결
+			sql=new StringBuilder();
+			sql.append(" SELECT MAX(qna_ansnum) ");
+			sql.append(" FROM tb_qna ");
+			sql.append(" WHERE qna_grpno=? ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, qna_grpno);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {				
+				qna_ansnum=rs.getInt("MAX(qna_ansnum)");				
+			}//if end
+			
+		}catch (Exception e) {
+			System.out.println("ansnum 불러오기 실패: " + e);
+		}finally{
+			DBclose.close(con, pstmt, rs);
+		}//try end
+		return qna_ansnum;
+	}//create end
 	
 	
 	

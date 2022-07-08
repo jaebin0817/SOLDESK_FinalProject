@@ -88,7 +88,7 @@
 		</table> 
 		
 		<textarea name="r_content" id="r_content">${ dto.r_content }</textarea>
-		<input type="hidden" name="m" id="m" value="1">
+		<input type="hidden" name="m" id="m" value="${ fn:length(list) }">
 		<input type="hidden" name="t_num" id="t_num" value="${ t_num }">
 		
 		<br>
@@ -115,7 +115,8 @@
 	); 
 	
 	
-   var m=1;
+   //var m=1;
+   var m=$('#m').val();
     
    $("#addcontent").click(function(){
 		
@@ -129,7 +130,7 @@
     $("#content_plus").click(function(){
 		
     	m++;        	
-    	$("#recContents").append("<input type='text' name='content"+m+"' id='content"+m+"' class='form-control' onkeydown='search(this.value)' placeholder='추천컨텐츠"+m+": 콘텐츠제목을 입력해주세요'>");
+    	$("#suggest").append("<input type='text' name='content"+m+"' id='content"+m+"' class='form-control' readonly placeholder='추천컨텐츠"+m+"'>");
     	$("#m").attr('value', m);
        
     });      

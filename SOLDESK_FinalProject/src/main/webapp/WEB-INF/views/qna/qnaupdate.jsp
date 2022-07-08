@@ -18,16 +18,11 @@
 
 	<form name="frm" id="frm" method="post" action="qnaupdateProc.do">
 		<input type="hidden" id="qna_num" name="qna_num" value="${dto.qna_num}">		
-		<input name="qna_pw" id="qna_pw" type="hidden" value=${ s_mem_pw }>
 		<table class="table" style="margin:auto;">
 			<tr>
 			   <th>제목</th>
 			   <td colspan="2"><input type="text" name="qna_title" id="qna_title" class="form-control" size="20" value="${dto.qna_title}" placeholder="문의 제목을 적어주세요" required></td>
-			</tr>	
-			<tr>
-			   <th>비밀번호</th>
-			   <td colspan="2"><input type="password" name="qna_pw" id="qna_pw" class="form-control" size="20" placeholder="글 작성시 입력한 비밀번호를 적어주세요" required></td>
-			</tr>	
+			</tr>		
 			<tr>
 			   <th colspan="3"></th>
 			</tr>
