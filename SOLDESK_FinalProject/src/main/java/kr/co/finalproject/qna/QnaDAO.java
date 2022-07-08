@@ -299,38 +299,20 @@ public class QnaDAO {
 		return list;
 	}//end
 	
-	public ArrayList<QnaDTO> list3(String col,String word, int nowPage, int recordPerPage){
+	public ArrayList<QnaDTO> list(String col,String word, int nowPage, int recordPerPage){
         ArrayList<QnaDTO> list=null; 
         
-        // 페이지당 출력할 레코드 갯수 (10개를 기준)
-        // 1 page : WHERE r>=1 AND r<=10
-        // 2 page : WHERE r>=11 AND r<=20
-        // 3 page : WHERE r>=21 AND r<=30
-        int startRow = ((nowPage-1) * recordPerPage) + 1 ;
-        int endRow   = nowPage * recordPerPage;
+        int startRow = ((nowPage-1) * recordPerPage);
         try {
 			con=dbopen.getConnection(); 
 			sql=new StringBuilder();
 			
-			//word = word.trim();
+            sql.append(" SELECT qna_num, qna_title, qna_date, qna_content, mem_id, qna_readcnt ");
+			sql.append(" FROM tb_qna ");
+
 			
-			if(word.length()==0) {//검색을 하지 않는 경우
-	            sql.append(" SELECT qna_num, qna_title, qna_date, qna_content, mem_id, qna_readcnt ");
-	            sql.append(" FROM( SELECT qna_num, qna_title, qna_date, qna_content, mem_id, qna_readcnt, @RNO := @RNO + 1 AS r ");
-	            sql.append("       FROM ( ");
-	            sql.append("              SELECT qna_num, qna_title, qna_date, qna_content, mem_id, qna_readcnt ");
-	            sql.append("              FROM tb_qna ORDER BY qna_grpno DESC, qna_ansnum ASC)A, (SELECT @RNO := 0) B");
-	            sql.append("           )C");
-	            sql.append(" WHERE r>=" + startRow + " AND r<=" + endRow) ;
-			}else {
-				
-				
-				sql.append(" SELECT qna_num, qna_title, qna_date, qna_content, mem_id, qna_readcnt ");
-	            sql.append(" FROM( SELECT qna_num, qna_title, qna_date, qna_content, mem_id, qna_readcnt, @RNO := @RNO + 1 AS r ");
-	            sql.append("       FROM ( ");
-	            sql.append("              SELECT qna_num, qna_title, qna_date, qna_content, mem_id, qna_readcnt ");
-	            sql.append("              FROM tb_qna ");
-	            
+			if(word.length()!=0) {
+
 	            String search="";
 				if(col.equals("qna_title_qna_content")) {
 					search+= " WHERE qna_title LIKE '%"+ word + "%' ";
@@ -343,10 +325,10 @@ public class QnaDAO {
 					search+= " WHERE mem_id LIKE '%"+ word + "%' ";
 				}//if end
 				sql.append(search);
-	            sql.append("              			  ORDER BY qna_grpno DESC, qna_ansnum ASC)A, (SELECT @RNO := 0) B");
-	            sql.append("           )C");
-	            sql.append(" WHERE r>=" + startRow + " AND r<=" + endRow) ;
-			}
+			}			
+			
+            sql.append(" ORDER BY qna_grpno DESC, qna_ansnum ASC ");
+            sql.append(" LIMIT " + startRow + ", " + recordPerPage);		
 	      
           pstmt=con.prepareStatement(sql.toString());
           rs=pstmt.executeQuery();

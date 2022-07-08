@@ -79,7 +79,12 @@ public class ContlistController {
 			String mdate= (String)map.get("mdate");			//개봉일 검색
 			String gerne= (String)map.get("gerne");			//장르 검색
 			String mrate= (String)map.get("mrate"); 		//별점검색
-			
+            String sort= (String)map.get("sort");
+          
+            if(sort==null) {
+        	  sort="";
+            }
+	          
 			int nowPage = Integer.parseInt(strNowPage);
 		    int recordPerPage=8;
 			
@@ -105,7 +110,7 @@ public class ContlistController {
 				word=mrate;
 			}
 			
-			list=dao.list(col, word, nowPage, recordPerPage);
+			list=dao.list(col, word, sort, nowPage, recordPerPage);
 			
 			if(ott!="N") {//ott버튼을 누른 상태일 때
 									
@@ -114,7 +119,7 @@ public class ContlistController {
 				      if(pno==null) { pno=""; }
 				}				
 								
-				  list = dao.ottRead(ott, col, word, nowPage, recordPerPage);
+				  list = dao.ottRead(ott, col, word, sort, nowPage, recordPerPage);
 			}
 			
 		    
@@ -193,7 +198,7 @@ public class ContlistController {
    }
 
    
-   @RequestMapping(value = "contlist/contlistwatch.do", method = RequestMethod.POST)
+   @RequestMapping("contlist/contlistwatch.do")
    public ModelAndView create(ContlistDTO contdto, WatchListDTO dto, HttpServletRequest req) {
 	   ModelAndView mav = new ModelAndView();
 	   
@@ -298,7 +303,12 @@ public class ContlistController {
 			String mdate= (String)map.get("mdate");			//개봉일 검색
 			String gerne= (String)map.get("gerne");			//장르 검색
 			String mrate= (String)map.get("mrate"); 		//별점검색
-			
+            String sort= (String)map.get("sort");
+          
+            if(sort==null) {
+        	  sort="";
+            }
+	          
 			int nowPage = Integer.parseInt(strNowPage);
 		    int recordPerPage=8;
 			
@@ -331,7 +341,7 @@ public class ContlistController {
 				word=mrate;
 			}	      
 			
-			  list = dao.ottRead(ott, col, word, nowPage, recordPerPage);
+			  list = dao.ottRead(ott, col, word, sort, nowPage, recordPerPage);
 			
 		}catch (Exception e) {
 			System.out.println("응답실패: " + e);
@@ -426,9 +436,14 @@ public class ContlistController {
        
           ArrayList<ContlistDTO> list = null;
 
-          list = dao.contlistAll();
+	      int nowPage=1;
+	      int recordPerPage=8;
+	      String col ="";
+	      String word="";
+	      
+	      list = dao.list(col, word, nowPage, recordPerPage);
        
-           mav.setViewName("contlist/contlist");
+          mav.setViewName("contlist/contlist");
           mav.addObject("list", list);
           mav.addObject("mcode", mcode);
 
@@ -581,10 +596,15 @@ public class ContlistController {
           String word= (String)map.get("word");
           String strNowPage= (String)map.get("nowPage");
           int nowPage = Integer.parseInt(strNowPage);
-             
+          String sort= (String)map.get("sort");
+          
+          if(sort==null) {
+        	  sort="";
+          }
+          
            //System.out.println(searchfield);
            int recordPerPage=8;
-           list = dao.list(col, word, nowPage, recordPerPage);
+           list = dao.list(col, word, sort, nowPage, recordPerPage);
            
            //System.out.println(list);
            
@@ -595,6 +615,72 @@ public class ContlistController {
        return list;
        
     }
+    
+    
+    @ResponseBody   
+    @RequestMapping({"contlist/sorting.do", "sorting.do"})
+    private ArrayList<ContlistDTO> sorting(@RequestParam Map<String, Object> map) {
+       
+        ArrayList<ContlistDTO> list = null;
+        
+       try {
+          String sort= (String)map.get("sort");
+          String strNowPage= (String)map.get("nowPage");
+          String searchkey= (String)map.get("searchkey"); //홈 화면에서 입력된 검색어
+          String key_code= (String)map.get("key_code");   //키워드 검색
+          String pno= (String)map.get("pno");            //인물 검색
+          String ott= (String)map.get("ott");            //ott 검색
+          String mdate= (String)map.get("mdate");         //개봉일 검색
+          String gerne= (String)map.get("gerne");         //장르 검색
+          String mrate= (String)map.get("mrate");       //별점검색
+          
+          int nowPage = Integer.parseInt(strNowPage);
+           int recordPerPage=8;
+          
+            String col ="";
+            String word="";
+           
+          if(!(searchkey.equals(""))) {              
+             pno=dao.readPno(searchkey);            
+          }else if(!(key_code.equals(""))) {            
+             col="key_code";
+             word=key_code;
+          }else if(!(pno.equals(""))) {            
+             col="pno";
+             word=pno;
+          }else if(!(mdate.equals(""))) {            
+             col="mdate";
+             word=mdate;
+          }else if(!(gerne.equals(""))) {            
+             col="key_code";
+             word=gerne;
+          }else if(!(mrate.equals(""))) {            
+             col="mrate";
+             word=mrate;
+          }
+          
+          list=dao.list(col, word, sort, nowPage, recordPerPage);
+          
+          //System.out.println(list);
+          
+          if(ott!="N") {//ott버튼을 누른 상태일 때
+                            
+             if(!(searchkey.equals(""))) {
+                   pno=dao.readPno(searchkey);
+                   if(pno==null) { pno=""; }
+             }            
+                         
+               list = dao.ottRead(ott, col, word, sort, nowPage, recordPerPage);
+          }
+          
+          
+       }catch (Exception e) {
+          System.out.println("응답실패: " + e);
+       }
+       
+       return list;
+       
+    }//sorting() end
     
    
 }// class end

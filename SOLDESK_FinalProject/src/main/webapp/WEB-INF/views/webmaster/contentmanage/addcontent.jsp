@@ -12,18 +12,18 @@
 	<div class="pagetitle">
 		<br>
 		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
-		<span><strong> 콘텐츠 추가페이지 </strong></span>
+		<span><strong> 컨텐츠 추가페이지 </strong></span>
 		<br><br>
 	</div>
 
 <form name="contfrm" id="contfrm" method="post" action="contins.do" enctype="multipart/form-data" onsubmit="">
 	<table class="table">
 	<tr>
-	    <th>콘텐츠제목</th>
+	    <th>컨텐츠제목</th>
 	    <td colspan="4"><input type="text" name="mtitle" id="mtitle" class="form-control" size="50" maxlength="50" required autofocus></td>
 	</tr>
 	<tr>
-	    <th>영문콘텐츠제목</th>
+	    <th>영문컨텐츠제목</th>
 	    <td colspan="4"><input type="text" name="mtitle_eng" id="mtitle_eng" class="form-control" size="50" maxlength="50" autofocus></td>
 	</tr>
 	<tr>

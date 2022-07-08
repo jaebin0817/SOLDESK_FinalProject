@@ -18,7 +18,7 @@
 		<br><br>
 	</div>
 	
-	<form name="mem_info" id="mem_info" method="post">
+	<form name="mem_info" id="mem_info" method="post" action="member_info.do" >
 	
 		<table class="table memTable" id="memTable">
 			
@@ -26,9 +26,6 @@
 		    <th>아이디</th>
 		    <td>
 		      <input type="text" class="form-control" name="mem_id" id="mem_id" value="${ dto.mem_id }" size="10" readonly>
-		    </td>
-		    <td>  
-		      <input type="button" class="btn" value="ID 중복확인" onclick="">
 		    </td>
 		</tr>
 		<tr>
@@ -55,9 +52,9 @@
 		    <td></td>
 		</tr>
 		<tr>
-		    <th>신규비밀번호확인</th>
+		    <th>비밀번호 확인</th>
 		    <td>
-		      <input type="password" class="form-control" name="re_pw" id="re_pw" size="20">
+		      <input type="password" class="form-control" name="new_pw" id="new_pw" size="20">
 		    </td>
 		    <td></td>
 		</tr>
@@ -71,10 +68,7 @@
 		<tr>
 		    <th>이메일*</th>
 		    <td>
-      		  <input type="text" class="form-control" name="mem_phone" id="mem_phone"  value="${ dto.mem_email }" required>
-		    </td>
-		    <td>
-		      <input type="button" class="btn" value="Email 중복확인" onclick="">
+      		  <input type="text" class="form-control" name="mem_email" id="mem_email"  value="${ dto.mem_email }" required>
 		    </td>
 		</tr>
 		
@@ -92,8 +86,8 @@
 	
 		</table>
 				
-		<input type="submit" value="수정"  id="memBtn" class="btn"/>
-        <input type="reset"  value="취소"  id="memBtn" class="btn"/>
+		<input type="submit" value="수정"  id="memBtn" class="btn btn-danger">
+        <input type="reset"  value="취소"  id="cancle" class="btn btn-danger">
 		<br><br><br>
 		
 	</form>

@@ -36,7 +36,7 @@ public class QnaCont {
 		word=Utility.checkNull(word); //문자열값이 null이면 빈문자열로 치환
 		col =Utility.checkNull(col);
 		
-		int recordPerPage=5;
+		int recordPerPage=10;
 		
 		int nowPage=1;
 		if(req.getParameter("nowPage")!=null){
@@ -53,7 +53,7 @@ public class QnaCont {
 		mav.setViewName("qna/qnalist");
 		String paging=new Paging().paging2(totalRecord, nowPage, recordPerPage, col, word, "qna.do");
 		mav.addObject("paging",paging);
-		mav.addObject("list", dao.list3(col, word, nowPage, recordPerPage));
+		mav.addObject("list", dao.list(col, word, nowPage, recordPerPage));
 
 		
 		return mav;

@@ -245,27 +245,18 @@ public class NoticeDAO {
     public ArrayList<NoticeDTO> list(String col,String word, int nowPage, int recordPerPage){
     	ArrayList<NoticeDTO> list=null;
     	
-    	int startRow = ((nowPage-1) * recordPerPage) + 1 ;
-        int endRow   = nowPage * recordPerPage;
+        int startRow = ((nowPage-1) * recordPerPage);			
     	try {
     		con=dbopen.getConnection(); 
 			sql=new StringBuilder();
 			
-			if(word.length()==0) { 
-				sql.append(" SELECT n_num, n_title, n_date, n_content, n_readcnt ");
-	            sql.append(" FROM( SELECT n_num, n_title, n_date, n_content, n_readcnt, @RNO := @RNO + 1 AS r ");
-	            sql.append("       FROM ( ");
-	            sql.append("              SELECT n_num, n_title, n_date, n_content, n_readcnt ");
-	            sql.append("              FROM notice ORDER BY n_date DESC)A, (SELECT @RNO := 0) B ");
-	            sql.append("           )C");
-	            sql.append(" WHERE r>=" + startRow + " AND r<=" + endRow) ;
-			}else {
-				sql.append(" SELECT n_num, n_title, n_date, n_content, n_readcnt ");
-	            sql.append(" FROM( SELECT n_num, n_title, n_date, n_content, n_readcnt, @RNO := @RNO + 1 AS r ");
-	            sql.append("       FROM ( ");
-	            sql.append("              SELECT n_num, n_title, n_date, n_content, n_readcnt ");
-	            sql.append("              FROM notice ");
-	            String search="";
+			sql.append(" SELECT n_num, n_title, n_date, n_content, n_readcnt ");
+			sql.append(" FROM notice ");
+
+			
+			if(word.length()!=0) { 
+				
+				String search="";
 				if(col.equals("n_title_n_content")) {
 					search+= " WHERE n_title LIKE '%" + word + "%' ";
 					search+= " OR n_content LIKE '%" + word + "%' ";
@@ -275,11 +266,12 @@ public class NoticeDAO {
 					search+= " WHERE n_content LIKE '%" + word + "%' ";
 				}//if end
 				sql.append(search);
-	            sql.append("              				ORDER BY n_date DESC)A, (SELECT @RNO := 0) B ");
-	            sql.append("           )C");
-	            sql.append(" WHERE r>=" + startRow + " AND r<=" + endRow) ;
+			
 			}
-		pstmt=con.prepareStatement(sql.toString());
+        sql.append(" ORDER BY n_date DESC ");
+        sql.append(" LIMIT " + startRow + ", " + recordPerPage);
+		
+        pstmt=con.prepareStatement(sql.toString());
 	    rs=pstmt.executeQuery();
 	    if(rs.next()) {
 	    	list=new ArrayList<>();

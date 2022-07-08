@@ -111,7 +111,7 @@ public class RecommendDAO {
 			sql=new StringBuilder();
 			sql.append(" SELECT t_num, r_num, r_title, r_date, r_content, r_photo, mcodes ");
 			sql.append(" FROM rec_theme ");
-			sql.append(" ORDER BY r_date DESC ");			
+			sql.append(" ORDER BY RAND() ");			
 			sql.append(" LIMIT 3 ");			
 			pstmt = con.prepareStatement(sql.toString());
 			
