@@ -136,90 +136,226 @@ public class QnaCont {
 		return mav;
 	}//create end
 	
-	@RequestMapping(value = "qna/qnadelete.do", method = RequestMethod.POST)
+	
+	@RequestMapping(value = "qna/qnadelete.do", method = RequestMethod.GET)
 	public ModelAndView delete(@ModelAttribute QnaDTO dto, HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
-		mav.setViewName("qna/msgView");
-		
 		HttpSession session = req.getSession();
+		
+		int qna_num=Integer.parseInt(req.getParameter("qna_num"));
+		
+		if(session.getAttribute("s_mem_lv").toString().equals("A")) {
+			String msg="";
+			String link1="";
+			String link2="";
+
+			int cnt=dao.delete(qna_num);
+			if(cnt==0) {
+				
+				msg+="<script>";
+				msg+="    alert('삭제 실패');";
+				msg+="    location.href='javascript:history.back();'";
+				msg+="</script>";	
+
+			}else {
+				
+				msg+="<p>삭제 성공</p>";
+				//link1+="<a href=\"<%=request.getContextPath()%>/home.do\">홈으로</a>";
+				//link2+="<a href=\"<%=request.getContextPath()%>/qna/qna.do\">문의사항목록</a>";
+				
+				mav.addObject("link1", link1);	
+				mav.addObject("link2", link2);	
+				
+			}//if end
+			
+			mav.addObject("msg", msg);	
+			mav.setViewName("qna/msgView");
+			
+		}else {
+	        mav.addObject("msg", "답글 삭제를");
+	        mav.addObject("qna_num", qna_num);
+			mav.setViewName("qna/qnaPwCheck");
+		}		
+
+		return mav;
+	}//delete end
+	
+	
+	@RequestMapping(value = "qna/qnadelete.do", method = RequestMethod.POST)
+	public ModelAndView deletecheck(@ModelAttribute QnaDTO dto, HttpServletRequest req) {
+		ModelAndView mav=new ModelAndView();
 		
 		int qna_num=Integer.parseInt(req.getParameter("qna_num"));
 		String qna_pw=req.getParameter("qna_pw");
 		
-		if(session.getAttribute("s_mem_id").toString().equals("webmaster")) {
-			int cnt=dao.deletemaster(qna_num);
-			if(cnt==0) {
-				String msg="<p>웹마스터 글삭제실패</p>";
-	            mav.addObject("msg", msg);
-			}else {
-				String msg="<p>웹마스터 글 삭제가 완료 되었습니다</p>";
-	            mav.addObject("msg", msg);
-			}//if end
+		dto=dao.pwcheck(qna_num, qna_pw);
+		String msg="";
+		String link1="";
+		String link2="";
+		
+		if(dto==null) {
+			msg+="<script>";
+			msg+="    alert('비밀번호가 일치하지 않습니다');";
+			msg+="    location.href='javascript:history.back();'";
+			msg+="</script>";
 		}else {
-			int cnt2=dao.delete(qna_num, qna_pw);
-			if(cnt2==0) {
-				String msg="<p>비밀번호가 일치하지 않습니다</p>";
-	            mav.addObject("msg", msg);
-			}else{
-				String msg="<p>글 삭제가 완료 되었습니다</p>";
-	            mav.addObject("msg", msg);
-			}//if end
-		}//if end
+			int cnt=dao.delete(qna_num);
+			if(cnt==0) {
+				msg+="<script>";
+				msg+="    alert('삭제 실패');";
+				msg+="    location.href='javascript:history.back();'";
+				msg+="</script>";
+			}else {
+				msg+="<p>삭제 성공</p>";
+				//link1+="<a href=\"<%=request.getContextPath()%>/home.do\">홈으로</a>";
+				//link2+="<a href=\"<%=request.getContextPath()%>/qna/qna.do\">문의사항목록</a>";
+				
+				mav.addObject("link1", link1);	
+				mav.addObject("link2", link2);	
+
+			}	
+		}
+		mav.addObject("msg", msg);	
+		mav.setViewName("qna/msgView");
 		return mav;
-	}//delete end
+	}//delete end	
+	
+	
+	
+	@RequestMapping(value = "qna/qnaupdate.do", method = RequestMethod.GET)
+	public ModelAndView update(@ModelAttribute QnaDTO dto, HttpServletRequest req) {
+		ModelAndView mav=new ModelAndView();
+		HttpSession session = req.getSession();
+		
+		int qna_num=Integer.parseInt(req.getParameter("qna_num"));
+		
+		if(session.getAttribute("s_mem_lv").toString().equals("A")) {
+
+			dto=dao.read(qna_num);
+
+			mav.addObject("dto", dto);
+			mav.setViewName("qna/qnaupdate");
+			
+		}else {
+	        mav.addObject("msg", "답글 수정을");
+	        mav.addObject("qna_num", qna_num);
+			mav.setViewName("qna/qnaPwCheck");
+		}		
+
+		return mav;
+	}//update end	
+
 	
 	@RequestMapping(value = "qna/qnaupdate.do", method = RequestMethod.POST)
-	public ModelAndView update(@ModelAttribute QnaDTO dto,HttpServletRequest req) {
+	public ModelAndView updatecheck(@ModelAttribute QnaDTO dto, HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
-		mav.setViewName("qna/qnaupdate");
+		
 		int qna_num=Integer.parseInt(req.getParameter("qna_num"));
-		mav.addObject("qna_num", qna_num);
-		dto=dao.read(qna_num);
-		mav.addObject("dto", dto);
+		String qna_pw=req.getParameter("qna_pw");
+		
+		dto=dao.pwcheck(qna_num, qna_pw);
+		String msg="";
+
+		
+		if(dto==null) {
+			msg+="<script>";
+			msg+="    alert('비밀번호가 일치하지 않습니다');";
+			msg+="    location.href='javascript:history.back();'";
+			msg+="</script>";
+			mav.addObject("msg", msg);	
+			mav.setViewName("qna/msgView");
+		}else {
+	
+			dto=dao.read(qna_num);
+			mav.addObject("dto", dto);	
+			mav.setViewName("qna/qnaupdate");		
+		}
+
 		return mav;
-	}//write() end
+	}//updatecheck end	
+	
 	
 	@RequestMapping(value = "qna/qnaupdateProc.do", method = RequestMethod.POST)
 	public ModelAndView updateProc(@ModelAttribute QnaDTO dto, HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
+		
+		int cnt=dao.updateproc(dto);
+		String msg="";
+		
+		if(cnt==0) {
+			msg+="<script>";
+			msg+="    alert('수정이 실패했습니다');";
+			msg+="    location.href='javascript:history.back();'";
+			msg+="</script>";
+		}else{
+			msg="<p>글 수정이 완료 되었습니다</p>";
+		}//if end
+		
+        mav.addObject("msg", msg);
 		mav.setViewName("qna/msgView");
+			
+		return mav;
+	}//updateproc end
+	
+	
+	@RequestMapping(value = "qna/qnareply.do", method = RequestMethod.GET)
+	public ModelAndView qnareply(HttpServletRequest req, QnaDTO dto) {
+		ModelAndView mav=new ModelAndView();
+		
+		int qna_num=Integer.parseInt(req.getParameter("qna_num"));
+		int qna_grpno=Integer.parseInt(req.getParameter("qna_grpno"));
+		int qna_indent=Integer.parseInt(req.getParameter("qna_indent"));
+		int qna_ansnum=Integer.parseInt(req.getParameter("qna_ansnum"));
+		
+		dto=dao.read(qna_num);
+
+        mav.addObject("dto", dto);
+        mav.addObject("qna_num", qna_num);
+        mav.addObject("qna_grpno", qna_grpno);
+        mav.addObject("qna_indent", qna_indent);		
+        mav.addObject("qna_ansnum", qna_ansnum);
+		mav.setViewName("qna/qnaReply");
+			
+		return mav;
+	}//qnareply end
+
+	
+	@RequestMapping(value = "qna/replyProc.do", method = RequestMethod.POST)
+	public ModelAndView replyProc(HttpServletRequest req, QnaDTO dto) {
+		ModelAndView mav=new ModelAndView();
 		
 		HttpSession session = req.getSession();
 		
-		String qna_pw=req.getParameter("qna_pw");
+		String mem_id=session.getAttribute("s_mem_id").toString();
 		
+		int qna_grpno=Integer.parseInt(req.getParameter("qna_grpno"));
+		int qna_indent=Integer.parseInt(req.getParameter("qna_indent"));
+		int qna_ansnum=dao.ansnum(qna_grpno);
 		
-		if(session.getAttribute("s_mem_id").toString().equals("webmaster")) {
-			int cnt=dao.updatemasterproc(dto);
-			if(cnt==0) {
-				String msg="<p>웹마스터 글 수정 실패</p>";
-	            mav.addObject("msg", msg);
-			}else {
-				String msg="<p>웹마스터 글 수정이 완료 되었습니다</p>";
-	            mav.addObject("msg", msg);
-			}//if end
-		}else {
-			int cnt=dao.updateproc(dto, qna_pw);
-			if(cnt==0) {
-				String msg="<p>비밀번호가 일치하지 않습니다</p>";
-	            mav.addObject("msg", msg);
-			}else{
-				String msg="<p>글 수정이 완료 되었습니다</p>";
-	            mav.addObject("msg", msg);
-			}//if end
+		String ip = req.getRemoteAddr();
+		dto.setIp(ip);
+		dto.setQna_grpno(qna_grpno);
+		dto.setQna_indent(qna_indent+1);
+		dto.setQna_ansnum(qna_ansnum+1);
+		dto.setMem_id(mem_id);
+		
+		int cnt=dao.replycreate(dto);
+		String msg="";
+		
+		if(cnt==0) {
+			msg+="<script>";
+			msg+="    alert('답글 등록이 실패했습니다');";
+			msg+="    location.href='javascript:history.back();'";
+			msg+="</script>";
+		}else{
+			msg="<p>답글 등록이 완료 되었습니다</p>";
 		}//if end
+		
+        mav.addObject("msg", msg);
+		mav.setViewName("qna/msgView");
+			
 		return mav;
-	}//delete end
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}//qnareply end
 	
 	
 	

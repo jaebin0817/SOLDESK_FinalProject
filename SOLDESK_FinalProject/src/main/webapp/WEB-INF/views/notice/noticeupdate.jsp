@@ -16,12 +16,12 @@
 		<br><br>
 	</div>
 
-	<form name="frm" id="frm" method="post" action="noticeupdate.do">
+	<form name="frm" id="frm" method="post" action="noticeupdateproc.do?n_num=${n_num}">
 		<input type="hidden" id="n_num" name="n_num" value="${n_num}">
 		<table class="table" style="margin:auto;">
 			<tr>
 			   <th>제목</th>
-			   <td colspan="2"><input type="text" name="n_title" id="n_title" class="form-control" size="20" value=${ dto.n_title } placeholder="공지제목" required></td>
+			   <td colspan="2"><input type="text" name="n_title" id="n_title" class="form-control" value="${ dto.n_title }" required></td>
 			</tr>	
 			<tr>
 			   <th colspan="3"></th>

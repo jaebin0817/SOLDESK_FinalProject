@@ -30,78 +30,61 @@
 		</div>
 
        <c:choose>
-	          <c:when test="${ s_mem_lv=='A' }">
-	            <form name="frm" id="frm" action="qnadelete.do" method="post" onsubmit="return IDlog()">
-		            <input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
-		            <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
-		            <input type="hidden" id="qna_num" name="qna_num" value="${dto.qna_num}">
-		            <input type="submit" value="웹마스터문의사항삭제"  class="btn btn-danger">
-		        </form>	
-	            <form name="frm" id="frm" action="qnaupdate.do?qna_num=${dto.qna_num}" method="post" onsubmit="return IDlog2()">
-		        	<input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
-		            <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
-		        	<input type="submit" value="웹마스터문의사항수정"  class="btn btn-danger">
-		        </form>       
-	          </c:when>
-	          <c:otherwise>
-	          	<form name="frm" id="frm" action="qnadelete.do" method="post" onsubmit="return IDlog()">
-		            <input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
-		            <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
-		            <input type="hidden" id="qna_num" name="qna_num" value="${dto.qna_num}">
-		            <input type="hidden" name="qna_pw" id="qna_pw" value="${mem_pw}">
-		            <input type="submit" value="문의사항삭제"  class="btn btn-default">
-		        </form>	
-	            <form name="frm" id="frm" action="qnaupdate.do?qna_num=${dto.qna_num}" method="post" onsubmit="return IDlog2()">
-		        	<input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
-		            <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
-		        	<input type="submit" value="문의사항수정"  class="btn btn-default">
-		        </form>
-	          </c:otherwise>
-	        </c:choose>
-        
+	       <c:when test="${ s_mem_lv=='A' || s_mem_id==dto.mem_id }">
+	           <input type="button" value="삭제"  class="btn btn-danger" onclick="deleteLog()">
+	           <input type="button" value="수정"  class="btn btn-danger" onclick="updateLog()">
+	           <input type="button" value="답글"  class="btn btn-danger" onclick="replyLog()">
+	       </c:when>    
+	   </c:choose>
 
 	</div>
 		
 	<script>
-	function IDlog() {
-		var mem_id=document.getElementById("mem_id").value;
-		var d_mem_id=document.getElementById("d_mem_id").value;
-		mem_id=mem_id.trim();
-		d_mem_id=d_mem_id.trim();
-		var message="진행된 내용은 복구되지 않습니다\n계속 진행할까요?";
-	    
+	function deleteLog() {
+
+		var message="해당 글을 삭제합니다.\n삭제된 내용은 복구되지 않습니다.\n계속 진행할까요?";	    		
 		
-		if(mem_id=="webmaster"){
-			if(confirm(message)){//확인true, 취소false
-		        return true; //서버로 전송       
-		    }else{
-		        return false; //서버로 전송 안됨
-		    }//if end
-		}else if(mem_id!=d_mem_id){
-			alert("본인만 삭제 가능합니다")
-			return false;
+		if("${ s_mem_lv }"=='A' || "${ s_mem_id }"=="${ dto.mem_id }"){
+			if(confirm(message)){				
+				location.href="qnadelete.do?qna_num=${dto.qna_num}";				
+		    }
+		}else{
+			alert("작성자만 삭제 가능합니다");
 		}
-		if(confirm(message)){//확인true, 취소false
-	        return true; //서버로 전송
-	    }else{
-	        return false; //서버로 전송 안됨
-	    }//if end
-	}//IDlog() end
+		
+	}//deleteLog() end
 	
-	function IDlog2() {
-		var mem_id=document.getElementById("mem_id").value;
-		var d_mem_id=document.getElementById("d_mem_id").value;
-		mem_id=mem_id.trim();
-		d_mem_id=d_mem_id.trim();
-		if(mem_id=="webmaster"){
-			return true;
-		}else if(mem_id!=d_mem_id){
-			alert("본인만 수정 가능합니다")
-			return false;
-		}
-		return true;
+	
+	function updateLog() {
+
+		var message="해당 글을 수정합니다.\n계속 진행할까요?";	    		
 		
-	}//IDlog2() end
+		if("${ s_mem_lv }"=='A' || "${ s_mem_id }"=="${ dto.mem_id }"){
+			if(confirm(message)){				
+				location.href="qnaupdate.do?qna_num=${dto.qna_num}";				
+		    }
+		}else{
+			alert("작성자만 수정 가능합니다");
+		}
+		
+	}//updateLog() end
+
+	
+	
+	function replyLog() {
+
+		var message="답글을 작성합니다.\n계속 진행할까요?";	    		
+		
+		if("${ s_mem_lv }"=='A' || "${ s_mem_id }"=="${ dto.mem_id }"){
+			if(confirm(message)){				
+				location.href="qnareply.do?qna_num=${dto.qna_num}&qna_grpno=${dto.qna_grpno}&qna_indent=${dto.qna_indent}&qna_ansnum=${dto.qna_ansnum}";				
+		    }
+		}else{
+			alert("작성자와 관리자만 답글 작성이 가능합니다");
+		}
+		
+	}//replyLog() end
+	
 
 	</script>
 		
