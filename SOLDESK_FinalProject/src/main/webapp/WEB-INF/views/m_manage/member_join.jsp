@@ -21,37 +21,32 @@
 		<br><br>
 	</div>
 	
-	<form name="mem_info" id="mem_info" method="post">
+	<form name="mem_join" id="mem_join" method="post" onsubmit="return FormCheck();">
 	
 		<table class="table memTable" id="memTable">
 			
 		<tr>
 		    <th>아이디*</th>
 		    <td>
-		      <input type="text" class="form-control" name="mem_id" id="mem_id" size="10" required>
+		      <input type="text" class="form-control" name="mem_id" id="mem_id" size="10" required onblur="buttonCheck()">
 		      <font id="checkId" size="2"></font>
 		    </td>
 		    <td>
-		      <input type="button" class="btn" value="ID 중복확인" id="idcheck" onclick="idCheck()">
+		      <input type="button" class="btn btn-default" value="ID 중복확인" id="idcheck" onclick="return idCheck()">
 		    </td>
 		</tr>
 		<tr>
 		    <th>이메일*</th>
 		    <td>
-      		  <input type="email" class="form-control" name="mem_email" id="mem_email" required>
-		    </td>
-		    <td>
-		      <input type="button" class="btn" value="Email 중복확인" id="emailcheck" onclick="emailCheck()">
+      		  <input type="email" class="form-control" name="mem_email" id="mem_email" required onblur="emailCheck()">
+      		  <font id="checkEmail" size="2"></font>
 		    </td>
 		</tr>
 		<tr>
 		    <th>생년월일*</th>
 		    <td>
-		      <input type="text" class="form-control" name="mem_birth" id="mem_birth" size="8" placeholder="예) 800101-1" onmousedown="">
-		   
-		    </td>
-		    <td>  
-			  <input type="button" class ="btn" value="생일 유형 체크" onclick="birthCheck()">
+		      <input type="text" class="form-control" name="mem_birth" id="mem_birth" size="8" placeholder="예) 800101-1" onblur="birthCheck()">
+		   	  <font id="checkBirth" size="2"></font>	
 		    </td>
 		</tr>
 		<tr>
@@ -64,16 +59,14 @@
 		<tr>
 		    <th>비밀번호확인*</th>
 		    <td>
-		      <input type="password" class="form-control" name="re_pw" id="re_pw" size="20" required>
-		    </td>
-		    <td>
-		      <input type="button" class="btn" value="비밀번호 일치 " onclick="pwCheck()">
+		      <input type="password" class="form-control" name="re_pw" id="re_pw" size="20" onblur="pwCheck()" required>
+		      <font id="checkPw" size="2"></font>
 		    </td>
 		</tr>
 		<tr>
 		    <th>연락처*</th>
 		    <td>
-		      <input type="text" class="form-control" name="mem_phone" id="mem_phone" required>
+		      <input type="text" class="form-control" name="mem_phone" id="mem_phone" required onblur="phoneCheck()">
 		      <font id ="checkphone" size="2"></font>
 		    </td>
 		</tr>
@@ -86,8 +79,8 @@
 	
 		</table>
 				
-		<input type="submit" value="가입"  id="memBtn" class="btn"/>
-        <input type="reset"  value="취소"  id="memBtn" class="btn"/>
+		<input type="submit" value="가입"  id="memBtn" class="btn btn-danger">
+        <input type="reset"  value="취소"  id="cancle" class="btn btn-danger">
 		<br><br><br>
 		
 	</form>

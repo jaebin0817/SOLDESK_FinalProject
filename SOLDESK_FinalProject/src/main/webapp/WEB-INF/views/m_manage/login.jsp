@@ -31,7 +31,7 @@
 		    
 		    <input type="hidden" name="referrer" id="referrer">
 
-			<table class="table table-bordered" id="login_table">
+			<table class="table table-bordered" id="login_table" style="width:500px; margin:auto;">
 			<tr>
 			    <td>
 				   <input type="text" name="id" id="id" class="form-control" placeholder="아이디" maxlength="10" value="${ c_id }" required>

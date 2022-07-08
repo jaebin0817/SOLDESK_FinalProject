@@ -5,13 +5,13 @@
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>    
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>  
 
-<!-- 본문시작 noticelist.jsp -->
-  	<div class="container-fluid text-center">
+<!-- 본문시작 qnalist.jsp -->
+  	<div class="container text-center">
 	
 	<div class="pagetitle">
 		<br>
 		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
-		<span><strong> 공지사항 </strong></span>
+		<span><strong> 문의사항 </strong></span>
 		<br>
 	</div>	
 
@@ -22,7 +22,6 @@
 			<th>글제목</th>
 			<th>작성자</th>
 			<th>조회수</th>
-			<th>그룹번호</th>
 			<th>등록일</th>
 			
 		</tr>
@@ -31,8 +30,7 @@
 				<td><a href="../qna/qnaread.do?qna_num=${dto.qna_num}">${dto.qna_title}</a></td>
 				<td>${dto.mem_id}</td>
 				<td>${dto.qna_readcnt}</td>
-				<td>${dto.qna_grpno}</td>
-				<td>${dto.qna_date}</td>
+					<td>${dto.qna_date}</td>
 			</tr>
 		</c:forEach>
 			<tr>

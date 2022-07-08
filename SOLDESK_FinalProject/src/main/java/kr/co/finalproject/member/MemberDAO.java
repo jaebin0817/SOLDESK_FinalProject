@@ -4,9 +4,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import net.utility.DBclose;
 import net.utility.DBopen;
+import net.utility.MyAuthenticator;
 
 public class MemberDAO {
 
@@ -121,7 +131,7 @@ public class MemberDAO {
 			sql.append(" WHERE mem_pw = ? AND mem_id=? ");	
 			pstmt = con.prepareStatement(sql.toString());
 			
-			if(dto.getNew_pw() != null) {
+			if(!(dto.getNew_pw().equals(""))) {
             	pstmt.setString(1, dto.getNew_pw());
             } else {
             	pstmt.setString(1, dto.getMem_pw());
@@ -390,32 +400,122 @@ public class MemberDAO {
 		return result;
 	}
 
-	public int findId(String mem_phone, String mem_email) {
-		int result = 0;
+	public boolean findId(MemberDTO dto) {
+		boolean flag = false;
 		try {
 			con = dbopen.getConnection();
 			sql = new StringBuilder();
 			sql.append(" SELECT mem_id ");
 			sql.append(" FROM member_info ");
-			sql.append(" WHERE mem_email=? AND mem_phone=? ");
+			sql.append(" WHERE mem_phone=? AND mem_email=? ");
 			
 			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setString(1, mem_phone);
-			pstmt.setString(2, mem_email);
+			pstmt.setString(1, dto.getMem_phone());
+			pstmt.setString(2, dto.getMem_email());
 			
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				result = 0;
+				String mem_id = rs.getString("mem_id");
+				String content="※ 임시 비밀번호로 로그인 한후, 회원 정보 수정에서 비밀번호를 변경하시기 바랍니다";
+                content += "<hr>";
+                content += "<table border='1'>";
+                content += "<tr>";
+                content += "    <th>아이디</th>";
+                content += "    <td>" + mem_id + "</td>";
+                content += "</tr>";                    
+                content += "</table>";
+                
+                String mailServer="mw-002.cafe24.com"; //카페24 메일서버
+                Properties props=new Properties();  
+                props.put("mail.smtp.host", mailServer);
+                props.put("mail.smtp.auth", true);
+                Authenticator myAuth=new MyAuthenticator(); //다형성
+                Session sess=Session.getInstance(props, myAuth);
+                
+                InternetAddress[] address={ new InternetAddress(dto.getMem_email()) };
+                Message msg=new MimeMessage(sess);
+                msg.setRecipients(Message.RecipientType.TO, address);
+                msg.setFrom(new InternetAddress("pretyimo@studydesk.co.kr"));
+                msg.setSubject("MyWeb 아이디/비번 입니다");
+                msg.setContent(content, "text/html; charset=UTF-8");
+                msg.setSentDate(new Date());
+                Transport.send(msg);
+				flag= true;
 			}else {
-				result = 1;
+				flag = false;
 			}
 			
 		}catch (Exception e) {
-			System.out.println("이메일 체크 실패: "+e);
+			System.out.println("아이디 찾기 실패: "+e);
+		}finally {
+			DBclose.close(con, pstmt, rs);
 		}
 		
-		return result;
+		return flag;
+	}
+
+	public boolean findPw(MemberDTO dto) {
+		boolean flag = false;
+		try {
+			con = dbopen.getConnection();
+			String[] ch= {
+                    "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
+                    "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
+                    "0","1","2","3","4","5","6","7","8","9"
+            };//0~61 인덱스
+            
+            //ch배열에서 랜덤하게 10글자 발생
+            StringBuilder imsiPW=new StringBuilder(); //2)임시 비밀번호
+            for(int i=0; i<10; i++) {
+                int num=(int)(Math.random()*ch.length); //ch[0]~ch[61]까지 존재
+                imsiPW.append(ch[num]);
+            }//for end
+            
+            //임시비밀번호로 업데이트 하기
+            sql=new StringBuilder();
+            sql.append(" UPDATE member_info ");
+            sql.append(" SET mem_pw=? ");
+            sql.append(" WHERE mem_id=? AND mem_phone=? AND mem_email=? ");
+            pstmt=con.prepareStatement(sql.toString());
+            pstmt.setString(1, imsiPW.toString()); //임시비밀번호
+            pstmt.setString(2, dto.getMem_id());
+            pstmt.setString(3, dto.getMem_phone());
+            pstmt.setString(4, dto.getMem_email());
+             
+            int cnt=pstmt.executeUpdate();
+            if(cnt==1) { //임시 비밀번호로 업데이트 되었다면, 아이디와 임시비밀번호를 이메일 전송하기
+                String content="※ 임시 비밀번호로 로그인 한후, 회원 정보 수정에서 비밀번호를 변경하시기 바랍니다";
+                content += "<hr>";
+                content += "<table border='1'>";
+                content += "<tr>";
+                content += "    <th>임시비밀번호</th>";
+                content += "    <td>" + imsiPW.toString() + "</td>";
+                content += "</tr>";                    
+                content += "</table>";
+                
+                String mailServer="mw-002.cafe24.com"; //카페24 메일서버
+                Properties props=new Properties();  
+                props.put("mail.smtp.host", mailServer);
+                props.put("mail.smtp.auth", true);
+                Authenticator myAuth=new MyAuthenticator(); //다형성
+                Session sess=Session.getInstance(props, myAuth);
+                
+                InternetAddress[] address={ new InternetAddress(dto.getMem_email()) };
+                Message msg=new MimeMessage(sess);
+                msg.setRecipients(Message.RecipientType.TO, address);
+                msg.setFrom(new InternetAddress("pretyimo@studydesk.co.kr"));
+                msg.setSubject("MyWeb 아이디/비번 입니다");
+                msg.setContent(content, "text/html; charset=UTF-8");
+                msg.setSentDate(new Date());
+                Transport.send(msg);
+            }
+		}catch(Exception e) {
+			System.out.println("비밀번호 찾기 실패: " + e);
+		}finally {
+			DBclose.close(con, pstmt);
+		}
+		return flag;
 	}
 
 	

@@ -61,15 +61,29 @@
                    <option value="3">★★★☆☆</option>
                    <option value="2">★★☆☆☆</option>
                    <option value="1">★☆☆☆☆</option>
-                   <option value="0">★☆☆☆☆</option>
+                   <option value="0">☆☆☆☆☆</option>
                  </select>
                </td>
                <th class="searchFiedlTh"><button class="btn btn-danger" onclick="location.reload()">검색초기화</button></th>                
             </tr>
             <tr>
+	            <td style="text-align:right;" colspan="2">
+	            <select class="form-control" id="sorting" name="sorting">
+	               <option value="">정렬 방식</option>
+	               <option value="cri_like_low" id="cri_like_low">좋아요 낮은 순</option>
+	               <option value="cri_like_high" id="cri_like_high">좋아요 높은 순</option>
+	               <option value="mdate_low" id="mdate_low">제작연도 오름차 순</option>
+	               <option value="mdate_high" id="mdate_high">제작연도 내림차 순</option>
+	            </select>
+	            </td>
+	            <td colspan="5"></td>
+	         </tr>
+            <tr>
             	<td colspan="7"></td>
             </tr>
-         </table>		
+         </table>
+
+         		
 	</div>
 		
 	<div class="contents">
@@ -140,6 +154,7 @@
 				mdate : $('#mdate').children("option:selected").val(),
 				gerne : $('#gerne').children("option:selected").val(),
 				mrate : $('#mrate').children("option:selected").val(),	
+                sort : $('#sorting').children("option:selected").val(),                         
         	},		
             success:function(data){//success callback함수                
                 $(".contents").empty();
@@ -184,7 +199,8 @@
 				mdate : $('#mdate').children("option:selected").val(),
 				gerne : $('#gerne').children("option:selected").val(),
 				mrate : $('#mrate').children("option:selected").val(),	
-        	},   
+                sort : $('#sorting').children("option:selected").val(),                         
+			},   
 			success: function(data){				
 				$.each(data,function(index, value) {	      			
 					createContents(num, value);
@@ -230,7 +246,6 @@
     	searchResult(msg, col, word);
     })    
     
-    
  	
     function searchResult(msg, col, word){
         
@@ -247,6 +262,7 @@
                 	   word : word,
                    	   nowPage : $('#nowPage').val(),
                        ott : $('#ottbtnPushed').val(),           
+                       sort : $('#sorting').children("option:selected").val(),
                 },      
                 success:function(data){//success callback함수
                      $(".contents").empty();
@@ -263,7 +279,49 @@
               }
 		});//ajax() end
 	}
-    
+
+	
+    $("select[name=sorting]").change(function(){
+        
+        $('#nowPage').attr('value', 1);
+        $('#no').attr('value', 1);
+        var num=parseInt($("#no").val());
+        var msg= $(this).children("option:selected").text();
+      $.ajax({
+                 url:"sorting.do",  //요청명령어 
+                 type:"get",         //get방식
+                 data : {
+                     sort : $(this).val(),
+                     nowPage : $('#nowPage').val(),
+                     ott : $('#ottbtnPushed').val(),
+                     searchkey : searchParam('searchkey'),
+                     key_code : searchParam('key_code'),
+                     pno : searchParam('pno'),            
+                     mdate : $('#mdate').children("option:selected").val(),
+                     gerne : $('#gerne').children("option:selected").val(),
+                     mrate : $('#mrate').children("option:selected").val(),                         
+                },      
+                success: function(data){
+                   $(".contents").empty();
+                   $(".searchsort").empty();
+                   $(".searchsort").append(msg);
+                  
+                   
+                    $.each(data, function(index, value) {                  
+                       createContents(num, value);
+                       num++;                  
+                     })             
+                     
+                     $('#no').attr('value', num);   
+                   
+     
+                 },
+                    error:function(error){
+                    alert("에러: " + error);
+                    }   
+      });//ajax() end
+    })
+
     
     	
     function createContents(num, value){

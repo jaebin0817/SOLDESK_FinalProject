@@ -47,9 +47,6 @@
 	</form>
 
 
-
-
-
 	<div class="mrate">컨텐츠 평점 : ${dto.mrate}</div>
 	<div class="like">좋아요 수 : ${dto.cri_like}</div>
 	<hr> 
@@ -122,16 +119,6 @@
 
 	<!-- 리뷰 관련 -->
 
-		<!-- 리뷰 작성 버튼  -->	
-		<c:choose>
-			<c:when test="${ s_mem_lv=='B' || s_mem_lv=='A' }">
-				<button class="btn btn-danger" onclick="location.href='<%=request.getContextPath()%>/contlist/reviewForm.do?mcode=${ dto.mcode }'">리뷰작성하기</button>
-			</c:when>
-			<c:otherwise>
-				<h3>리뷰는 로그인 후 작성가능합니다</h3>
-			</c:otherwise>
-		</c:choose>
-
 	<div id="reviews">		
 	   <table id="reviews_tb" class="table" style="width:500px; margin:auto;">
 	   <c:forEach var="dto" items="${ reviewlist }">
@@ -158,12 +145,21 @@
 	</div>
    
    <br>
-   <!-- 리뷰 더보기 버튼 -->
+   <c:choose>
+		<c:when test="${ s_mem_lv=='B' || s_mem_lv=='A' }">
+			<button class="btn btn btn-default btn-lg" onclick="location.href='<%=request.getContextPath()%>/contlist/reviewForm.do?mcode=${ dto.mcode }'">
+			    리뷰작성하기
+			</button>
+		</c:when>
+		<c:otherwise>
+			<h4>리뷰는 로그인 후 작성가능합니다</h4>
+		</c:otherwise>
+   </c:choose>
    <c:if test="${ fn:length(reviewlist)!=0 }">
        <button class="btn btn-default btn-lg" onclick="location.href='<%=request.getContextPath()%>/contlist/reviewList.do?mcode=${ dto.mcode }'">
             리뷰 더 보기
        </button>
-    </c:if>
+   </c:if>
 
 
 </div>

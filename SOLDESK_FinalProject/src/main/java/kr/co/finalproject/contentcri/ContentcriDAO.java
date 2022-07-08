@@ -3,6 +3,7 @@ package kr.co.finalproject.contentcri;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import kr.co.finalproject.contlist.ContlistDTO;
 import net.utility.DBclose;
@@ -179,4 +180,90 @@ public class ContentcriDAO {
 		return dto;
 	}//read() end
 
-}
+	
+	public ArrayList<ContlistDTO> likecontent(String mem_id) {
+		ContlistDTO dto = null;
+		ArrayList<ContlistDTO> list = null;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT contlist.mcode, mthum, mtitle, netflix, watcha, tving, disney, mdate, mrate  ");
+			sql.append(" FROM contlist JOIN content_critic ");
+			sql.append(" ON contlist.mcode = content_critic.mcode ");
+			sql.append(" WHERE content_critic.cri_like = 1 AND mem_id = ? ");
+			sql.append(" ORDER BY contlist.mcode ASC ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, mem_id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				list=new ArrayList<ContlistDTO>();
+				do {
+					dto = new ContlistDTO();
+					dto.setMcode(rs.getInt("mcode"));
+					dto.setMthum(rs.getString("mthum"));
+					dto.setMtitle(rs.getString("mtitle"));
+					dto.setNetflix(rs.getString("netflix"));
+					dto.setWatcha(rs.getString("watcha"));
+					dto.setTving(rs.getString("tving"));
+					dto.setDisney(rs.getString("disney"));
+					dto.setMdate(rs.getString("mdate"));
+					dto.setMrate(rs.getDouble("mrate"));
+					list.add(dto);
+				}while(rs.next());
+			}
+			
+		}catch(Exception e) {
+			System.out.println("좋아요 목록 실패: "+ e);
+		}finally {
+			DBclose.close(con, pstmt, rs);
+		}
+		
+		return list;
+	}
+	
+	public ArrayList<ContlistDTO> pointcontent(String mem_id) {
+		ContlistDTO dto = null;
+		ArrayList<ContlistDTO> list = null;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT contlist.mcode, mthum, mtitle, netflix, watcha, tving, disney, mdate, mrate  ");
+			sql.append(" FROM contlist JOIN content_critic ");
+			sql.append(" ON contlist.mcode = content_critic.mcode ");
+			sql.append(" WHERE content_critic.cri_point = 1 AND mem_id = ? ");
+			sql.append(" ORDER BY contlist.mcode ASC ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, mem_id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				list=new ArrayList<ContlistDTO>();
+				do {
+					dto = new ContlistDTO();
+					dto.setMcode(rs.getInt("mcode"));
+					dto.setMthum(rs.getString("mthum"));
+					dto.setMtitle(rs.getString("mtitle"));
+					dto.setNetflix(rs.getString("netflix"));
+					dto.setWatcha(rs.getString("watcha"));
+					dto.setTving(rs.getString("tving"));
+					dto.setDisney(rs.getString("disney"));
+					dto.setMdate(rs.getString("mdate"));
+					dto.setMrate(rs.getDouble("mrate"));
+					list.add(dto);
+				}while(rs.next());
+			}
+			
+		}catch(Exception e) {
+			System.out.println("찜하기 목록 실패: "+ e);
+		}finally {
+			DBclose.close(con, pstmt, rs);
+		}
+		
+		return list;
+	}
+	
+	
+}//class end

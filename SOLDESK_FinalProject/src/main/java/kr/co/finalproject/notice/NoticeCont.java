@@ -33,7 +33,7 @@ public class NoticeCont {
 		word=Utility.checkNull(word);
 		col=Utility.checkNull(col);
 		
-		int recordPerPage=5;
+		int recordPerPage=10;
 		
 		int nowPage=1;
 		if(req.getParameter("nowPage")!=null){
@@ -48,16 +48,9 @@ public class NoticeCont {
 		mav.addObject("list", dao.list(col, word, nowPage, recordPerPage));
 		return mav;
 	}//notice() end
+
 	
-	@RequestMapping(value = "notice/noticemaster.do")
-	public ModelAndView master() {
-		ModelAndView mav=new ModelAndView();
-		mav.setViewName("notice/noticemaster");
-		mav.addObject("list", dao.list());
-		return mav;
-	}//master() end
-	
-	@RequestMapping(value = "notice/noticeForm.do", method = RequestMethod.POST)
+	@RequestMapping("notice/noticeForm.do")
 	public ModelAndView write() {
 		ModelAndView mav=new ModelAndView();
 		mav.setViewName("notice/noticeForm");
@@ -101,28 +94,9 @@ public class NoticeCont {
 		return mav;
 	}//read() end
 	
-	@RequestMapping(value = "notice/noticemasterread.do", method = RequestMethod.GET)
-	public ModelAndView masterread(@ModelAttribute NoticeDTO dto, HttpServletRequest req) {
-		ModelAndView mav=new ModelAndView();
-		mav.setViewName("notice/noticemasterread");
-		int n_num=Integer.parseInt(req.getParameter("n_num"));
-		
-			
-		dto=dao.read(n_num);
-		if(dto==null){
-			String msg="<p>해당 글 없음</p>";
-            mav.addObject("msg", msg);
-		}else{
-			dao.incrementCnt(n_num);
-			mav.addObject("dto", dto);
-			String msg="<p>글 불러옴</p>";
-            mav.addObject("msg", msg);
-		}//if end
-		
-		return mav;
-	}//read() end
+
 	
-	@RequestMapping(value = "notice/noticedelelte.do", method = RequestMethod.POST)
+	@RequestMapping("notice/noticedelelte.do")
 	public ModelAndView delete(HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
 		mav.setViewName("notice/msgView");
@@ -141,7 +115,7 @@ public class NoticeCont {
 	}//delete() end
 	
 	
-	@RequestMapping(value = "notice/noticeupdate.do", method = RequestMethod.POST)
+	@RequestMapping("notice/noticeupdate.do")
 	public ModelAndView update(@ModelAttribute NoticeDTO dto,HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
 		mav.setViewName("notice/noticeupdate");

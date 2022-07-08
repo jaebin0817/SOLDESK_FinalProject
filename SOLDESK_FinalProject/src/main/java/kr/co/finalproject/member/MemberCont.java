@@ -27,6 +27,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.finalproject.contentcri.ContentcriDAO;
+import kr.co.finalproject.contentcri.ContentcriDTO;
+import kr.co.finalproject.contlist.ContlistDTO;
 import kr.co.finalproject.contlist.WatchListDAO;
 import kr.co.finalproject.contlist.WatchListDTO;
 import kr.co.finalproject.party.PartyMemberDAO;
@@ -42,6 +45,7 @@ public class MemberCont {
 	private WatchListDAO watchdao=null;
 	private SearchKeyDAO skdao =null;
 	private PartyMemberDAO pmdao=null;
+	private ContentcriDAO cridao = null;
 	
 
 	public MemberCont() {
@@ -50,6 +54,7 @@ public class MemberCont {
 		watchdao = new WatchListDAO();
 		skdao = new SearchKeyDAO();
 		pmdao = new PartyMemberDAO();
+		cridao = new ContentcriDAO();
 		System.out.println("-----MemberCont() 객체 생성");
 	}
 
@@ -57,13 +62,7 @@ public class MemberCont {
 	@RequestMapping("/m_manage/mypage.do")
 	public String mypage() {
 		return "m_manage/mypage";
-	}
-	
-	
-	@RequestMapping("/m_manage/member_info.do")
-	public String member_info() {
-		return "m_manage/member_info";
-	}
+	}	
 	
 	
 	//http://localhost:9090/login.do
@@ -183,7 +182,7 @@ public class MemberCont {
 	}
 	
 	
-	@RequestMapping(value = "member_info.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/m_manage/member_info.do", method = RequestMethod.POST)
 	public ModelAndView member_infoProc(@ModelAttribute MemberDTO dto, HttpServletRequest req) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("m_manage/msgView");
@@ -209,9 +208,9 @@ public class MemberCont {
 			String msg="<p>회원 정보 수정 실패</p>";
 			String link1="<input type='button' value='다시시도' onclick='javascript:history.back()'>";
             String link2="<input type='button' value='마이페이지' onclick='location.href=\"member_info.do\"'>";
-            mav.addObject(msg);
-            mav.addObject(link1);
-            mav.addObject(link2);
+            mav.addObject("msg", msg);
+            mav.addObject("link1", link1);
+            mav.addObject("link2", link2);
 		}else {
 			String msg="<p>회원 정보 수정 성공</p>";
 			String link2="<input type='button' value='마이페이지' onclick='location.href=\"mypage.do\"'>";
@@ -368,6 +367,42 @@ public class MemberCont {
 	}
 
 	
+	@RequestMapping(value = "/likecontent.do", method = RequestMethod.GET)
+	public ModelAndView likecontent(HttpServletRequest req, ContentcriDTO dto) {
+		
+		ModelAndView mav = new ModelAndView();
+		HttpSession session = req.getSession();
+		String mem_id=session.getAttribute("s_mem_id").toString();
+		
+		List<ContlistDTO> likelist = new ArrayList<>();
+		likelist = cridao.likecontent(mem_id);
+		
+		mav.setViewName("m_manage/content/likedcontent");
+		mav.addObject("list", likelist);
+		mav.addObject("title", "좋아요");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/pointcontent.do", method = RequestMethod.GET)
+	public ModelAndView pointcontent(HttpServletRequest req, ContentcriDTO dto) {
+		
+		ModelAndView mav = new ModelAndView();
+		HttpSession session = req.getSession();
+		String mem_id=session.getAttribute("s_mem_id").toString();
+		
+		List<ContlistDTO> pointlist = new ArrayList<>();
+		pointlist = cridao.pointcontent(mem_id);
+		
+		mav.setViewName("m_manage/content/likedcontent");
+		mav.addObject("list", pointlist);
+		mav.addObject("title", "찜");
+		
+		return mav;
+	}
+	
+	
+	
 	@RequestMapping(value = "/watchlist.do", method = RequestMethod.GET)
 	public ModelAndView watchlist(HttpServletRequest req, WatchListDTO dto) {
 		
@@ -452,45 +487,67 @@ public class MemberCont {
 		return "m_manage/find_info";
 	}
 	
-	@RequestMapping(value = "/findidscr.do", method = RequestMethod.GET)
-	public String findid_form() {
-		return "m_manage/findidscr";
+	@RequestMapping(value = "/find_id.do", method = RequestMethod.GET)
+	public String findid() {
+		return "m_manage/find_id";
 	}
 	
-	@RequestMapping(value="/find_id.do", method = RequestMethod.POST)
-	public void findid_Proc(HttpServletRequest req, HttpServletResponse resp) {
-		try {
-			req.setCharacterEncoding("UTF-8");
-			resp.setCharacterEncoding("UTF-8");
+	@RequestMapping(value = "/find_id.do", method = RequestMethod.POST)
+	public ModelAndView findid_Proc(@ModelAttribute MemberDTO dto ,HttpServletRequest req) {
+		ModelAndView mav = new ModelAndView();
+		dto = new MemberDTO();
 			
-			String mem_email = req.getParameter("mem_email");
-			String mem_phone = req.getParameter("mem_phone");
-			PrintWriter out = resp.getWriter();
+		String mem_email = req.getParameter("mem_email").trim();
+		String mem_phone = req.getParameter("mem_phone").trim();
 			
-			MemberDAO dao = new MemberDAO();
-			
-			int result = dao.findId(mem_phone, mem_email);
-			if(result == 0) {
-				System.out.println("아이디를 찾았습니다.");
-			}else {
-				System.out.println("아이디가 없습니다.");
-			}
-			
-			System.out.println(result);
-			out.write(result + "");
-			out.flush(); 
-            out.close();
-			
-		}catch(Exception e) {
-			System.out.println("서버 연결 실패");
+		MemberDAO dao = new MemberDAO();
+		dto.setMem_phone(mem_phone);
+		dto.setMem_email(mem_email);	
+		boolean flag = dao.findId(dto);
+		if(flag==false){
+			String msg = "<p>이름/이메일을 다시 한번 확인해주세요!!</p>";
+			String link = "<p><a href='javascript:history.back()'>[다시시도]</a></p>";
+			mav.addObject(msg);
+			mav.addObject(link);
+		}else{
+			System.out.println(1);
 		}
+		mav.setViewName("index");
+		return mav;
 	}
 	
 	
-	@RequestMapping(value = "/findpwscr.do", method = RequestMethod.GET)
-	public String find_pw_form() {
-		return "m_manage/findpwscr";
+	@RequestMapping(value = "/find_pw.do", method = RequestMethod.GET)
+	public String find_pw() {
+		return "m_manage/find_pw";
 	}
+	
+	@RequestMapping(value = "/find_pw.do", method = RequestMethod.POST)
+	public ModelAndView find_pwProc(@ModelAttribute MemberDTO dto ,HttpServletRequest req) {
+		ModelAndView mav = new ModelAndView();
+		dto = new MemberDTO();
+			
+		String mem_id = req.getParameter("mem_id").trim();
+		String mem_email = req.getParameter("mem_email").trim();
+		String mem_phone = req.getParameter("mem_phone").trim();
+			
+		MemberDAO dao = new MemberDAO();
+		dto.setMem_id(mem_id);
+		dto.setMem_phone(mem_phone);
+		dto.setMem_email(mem_email);	
+		boolean flag = dao.findPw(dto);
+		if(flag==false){
+			String msg = "<p>입력한 정보를 다시 한번 확인해주세요!!</p>";
+			String link = "<p><a href='javascript:history.back()'>[다시시도]</a></p>";
+			mav.addObject(msg);
+			mav.addObject(link);
+		}else{
+			System.out.println(1);
+		}
+		mav.setViewName("index");
+		return mav;
+	}
+
 	
 	@RequestMapping(value="/IdCheck.do", method = RequestMethod.POST)
 	public void idcheck(HttpServletRequest req, HttpServletResponse resp) {

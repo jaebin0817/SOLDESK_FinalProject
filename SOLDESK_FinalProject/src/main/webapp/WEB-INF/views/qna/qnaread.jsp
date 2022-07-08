@@ -2,41 +2,35 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp"%>
 
-<!-- 본문시작 noticeread.jsp -->
+<!-- 본문시작 qnaread.jsp -->
 	
 	
 	<div class="container-fluid text-center">	
 		<div class="container text-center">	
-		<table class="table" >
+		<table class="table">
 		<tr>
-			<td colspan="2"><h1>${dto.qna_title}</h1></td>
+			<td colspan="3"><h1>${dto.qna_title}</h1></td>
 		</tr>
 		<tr>
-			<th>문의날짜</th>
-			<td>${dto.qna_date}</td>
-		</tr>
-		<tr>
-			<th colspan="2" ><h4>내용</h4></th>
+			<th>${dto.mem_id}</th>
+			<td style="text-align: right;">${dto.qna_date}&nbsp;&nbsp;&nbsp;<strong>조회수</strong>${dto.qna_readcnt}</td>
+			
 		</tr>
 		<tr height=500>
 			<td colspan="2"><h3>${dto.qna_content}</h3></td>
 		</tr>
 		<tr>
-			<th>작성자</th>
-			<td>${dto.mem_id}</td>
-		</tr>
-		<tr>
-			<th>조회수</th>
-			<td>${dto.qna_readcnt}</td>
+			<td colspan="2" style="text-align: center;">
+				<input type="button" value="홈으로"  onclick="location.href='/home.do'" class="btn btn-default">
+				<input type="button" value="Q&A목록" onclick="location.href='/qna/qna.do'" class="btn btn-default">			
+			</td>
 		</tr>
 		</table>
-		${mem_id}
-		${mem_pw}
-		${msg}
+
 		</div>
-		
-        <c:choose>
-	          <c:when test="${ mem_id=='webmaster' }">
+
+       <c:choose>
+	          <c:when test="${ s_mem_lv=='A' }">
 	            <form name="frm" id="frm" action="qnadelete.do" method="post" onsubmit="return IDlog()">
 		            <input type="hidden" id="mem_id" name="mem_id" value="${mem_id}">
 		            <input type="hidden" id="d_mem_id" name="d_mem_id" value="${dto.mem_id}">
@@ -64,9 +58,6 @@
 		        </form>
 	          </c:otherwise>
 	        </c:choose>
-	    <hr>
-	    <input type="button" value="홈으로"  onclick="location.href='/home.do'" class="btn btn-default">
-		<input type="button" value="Q&A목록" onclick="location.href='/qna/qna.do'" class="btn btn-default">
         
 
 	</div>

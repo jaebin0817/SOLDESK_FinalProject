@@ -2,26 +2,57 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp"%>
 
+<script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
+
 <!-- 본문시작 qnaform.jsp -->
-<!-- 스마트 에디터 넣기 !! -->	
+
+<div class="container text-center">	
 	
-	<div class="container-fluid text-center">	
+	
 	<div class="pagetitle">
 		<br>
 		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
-		<span><strong> 문의사항 등록 </strong></span>
+		<span><strong> 문의사항 작성 </strong></span>
 		<br><br>
 	</div>
-	<form name="frm" id="frm" method="post" action="qnaProc.do" autocomplete="off">
-		<input name="qna_pw" id="qna_pw" type="hidden" value=${mem_pw }>
-		<div class="container text-center">
-			<input name="qna_title" id="qna_title" type="text" class="form-control" size="20" placeholder="문의 제목을 적어주세요" required>
-			<textarea class="form-control" style="resize: none;" rows="5" name="qna_content" id="qna_content" placeholder="문의사항을 적어주세요"  required></textarea>
-		</div>
-		<input type="submit" value="입력"  class="btn btn-success">
-		<input type="reset"  value="취소"  class="btn btn-danger">
+
+	<form name="frm" id="frm" method="post" action="qnaProc.do">
+		<table class="table" style="margin:auto;">
+			<tr>
+			   <th>제목</th>
+			   <td colspan="2"><input type="text" name="qna_title" id="qna_title" class="form-control" size="20" placeholder="문의 제목을 적어주세요" required></td>
+			</tr>
+			<tr>
+			   <th>비밀번호</th>
+			   <td colspan="2"><input type="password" name="qna_pw" id="qna_pw" class="form-control" size="20" placeholder="비밀번호는 문의사항 수정 삭제 필요합니다" required></td>
+			</tr>	
+			<tr>
+			   <th colspan="3"></th>
+			</tr>
+		</table>
+		<textarea name="qna_content" id="qna_content"></textarea>
+		<br>
+		<input type="submit" value="등록"  class="btn btn-default">
+		<input type="reset"  value="취소"  class="btn btn-default">		
 	</form>
-	</div>
+	
+
+</div>
+
+<script> 
+
+	ClassicEditor 
+	.create( document.querySelector( '#qna_content' ),{
+		language: 'ko',
+		removePlugins: [ 'MediaEmbed', 'ImageUpload', 'EasyImage' ],		
+	} )
+	.then( newEditor => {
+		editor = newEditor;
+	} )
+	.catch( error => { console.error( error ); } 
+	); 
+	
+</script>
 
 
 

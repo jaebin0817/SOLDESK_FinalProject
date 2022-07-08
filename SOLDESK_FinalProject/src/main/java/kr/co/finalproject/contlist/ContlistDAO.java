@@ -31,7 +31,7 @@ public class ContlistDAO {
 			sql=new StringBuilder();
 			sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, cri_like, key_code, mcode ");
 			sql.append(" FROM contlist ");
-			sql.append(" ORDER BY mcode DESC ");
+			sql.append(" ORDER BY RAND() ");
 			pstmt = con.prepareStatement(sql.toString());
 			
 			rs = pstmt.executeQuery();
@@ -424,7 +424,7 @@ public class ContlistDAO {
 		
 		
 		
-		public ArrayList<ContlistDTO> ottRead(String ott, String col, String word,  int nowPage, int recordPerPage) {
+		public ArrayList<ContlistDTO> ottRead(String ott, String col, String word, String sort,  int nowPage, int recordPerPage) {
 			ContlistDTO dto=null;			
 			ArrayList<ContlistDTO> list=null;
 	        int startRow = ((nowPage-1) * recordPerPage);			
@@ -461,9 +461,20 @@ public class ContlistDAO {
 						search+= " AND (mrate>" + (mrate-1) + " AND mrate<="+ mrate+") ";
 					}					
 	            }	
-					
+				
+	            if(sort.length()!=0) { 
+					if(sort.equals("cri_like_high")) {//좋아요 많은 순
+						search+= " ORDER BY cri_like DESC ";						
+					}else if(sort.equals("cri_like_low")) {//좋아요 적은 순
+						search+= " ORDER BY cri_like ASC ";						
+					}else if(sort.equals("mdate_high")) {//최신 개봉 순
+						search+= " ORDER BY mdate DESC ";						
+					}else if(sort.equals("mdate_low")) {//오래된 개봉 순
+						search+= " ORDER BY mdate ASC ";						
+					}
+	            }	
+	            
 				sql.append(search);
-				sql.append(" ORDER BY mcode DESC ");
                 sql.append(" LIMIT " + startRow + ", " + recordPerPage);
 				
 				pstmt = con.prepareStatement(sql.toString());
@@ -532,8 +543,6 @@ public class ContlistDAO {
 	    	return cnt;
 	    }//end
 		
-		
-		
 		public ArrayList<ContlistDTO> list(String col, String word, int nowPage, int recordPerPage){
 	    	ArrayList<ContlistDTO> list=null;
 	    	
@@ -592,6 +601,86 @@ public class ContlistDAO {
 	    		
 	    	}catch (Exception e) {
 				System.out.println("목록 불러오기 실패 : " + e);
+			}finally {
+				DBclose.close(con,pstmt,rs);
+			}
+	    	
+	    	return list;
+	    }//list() end		
+		
+		public ArrayList<ContlistDTO> list(String col, String word, String sort, int nowPage, int recordPerPage){
+	    	ArrayList<ContlistDTO> list=null;
+	    	
+	    	int startRow = ((nowPage-1) * recordPerPage) ;
+	    	try {
+	    		con=dbopen.getConnection(); 
+				sql=new StringBuilder();
+
+				sql.append(" SELECT mtitle, mthum, mrate, netflix, watcha, tving, disney, mdate, key_code, cri_like, mcode, director, actor ");
+	            sql.append(" FROM contlist ");
+					            
+	            if(word.length()!=0) { 
+			        String search="";
+					if(col.equals("key_code")) {
+						search+= " WHERE key_code LIKE '%"+word+"%' ";						
+					}else if(col.equals("pno")) {						
+						search+= " WHERE actor LIKE '%" + word + "%' ";
+						search+= " OR director LIKE '%" + word + "%' ";
+					}else if(col.equals("mdate")) {						
+                        int mdate= Integer.parseInt(word);
+						search+= " WHERE mdate>=" + mdate + " AND mdate<="+ ( mdate+10 );
+					}else if(col.equals("mrate")) {						
+                        int mrate= Integer.parseInt(word);
+						search+= " WHERE mrate>" + (mrate-1) + " AND mrate<="+ mrate;
+					}
+					
+					sql.append(search);	            
+	            }	
+
+	            if(sort.length()!=0) { 
+			        String search="";
+					if(sort.equals("cri_like_high")) {//좋아요 많은 순
+						search+= " ORDER BY cri_like DESC ";						
+					}else if(sort.equals("cri_like_low")) {//좋아요 적은 순
+						search+= " ORDER BY cri_like ASC ";						
+					}else if(sort.equals("mdate_high")) {//최신 개봉 순
+						search+= " ORDER BY mdate DESC ";						
+					}else if(sort.equals("mdate_low")) {//오래된 개봉 순
+						search+= " ORDER BY mdate ASC ";						
+					}
+					
+					sql.append(search);	            
+	            }	
+	            
+
+	            sql.append(" LIMIT " + startRow + ", " + recordPerPage);
+				
+			pstmt=con.prepareStatement(sql.toString());
+		    rs=pstmt.executeQuery();
+		    if(rs.next()) {
+		    	list=new ArrayList<>();
+		    	do {
+		    		ContlistDTO dto = new ContlistDTO();//커서가 가리키는 한 줄 저장
+					dto.setMtitle(rs.getString("mtitle"));
+					dto.setMthum(rs.getString("mthum"));
+					dto.setMrate(rs.getDouble("mrate"));
+					dto.setNetflix(rs.getString("netflix"));
+					dto.setWatcha(rs.getString("watcha"));
+					dto.setTving(rs.getString("tving"));
+					dto.setDisney(rs.getString("disney"));
+					dto.setMdate(rs.getString("mdate"));
+					dto.setCri_like(rs.getInt("cri_like"));
+					dto.setKey_code(rs.getString("key_code"));
+					dto.setMcode(rs.getInt("mcode"));
+					dto.setActor(rs.getString("actor"));
+					dto.setDirector(rs.getString("director"));
+					
+					list.add(dto);
+		    	}while(rs.next());
+		    }
+	    		
+	    	}catch (Exception e) {
+				System.out.println("목록 정렬 불러오기 실패 : " + e);
 			}finally {
 				DBclose.close(con,pstmt,rs);
 			}

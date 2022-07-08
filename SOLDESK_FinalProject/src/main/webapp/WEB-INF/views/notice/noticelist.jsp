@@ -7,7 +7,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>  
 
 <!-- 본문시작 noticelist.jsp -->
-  	<div class="container-fluid text-center">
+  	<div class="container text-center">
 	
 	<div class="pagetitle">
 		<br>
@@ -55,6 +55,10 @@
 		</table>
 		</div>
 	</div>
+	
+	<c:if test="${ s_mem_lv=='A' }">
+		<input type="button" value="공지사항등록" onclick="location.href='/notice/noticeForm.do'" class="btn btn-default"><hr>	
+	</c:if>
 
 <!-- 본문끝 -->
 <%@ include file="../footer.jsp"%>

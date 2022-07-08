@@ -17,18 +17,18 @@
 	<div class="pagetitle">
 		<br>
 		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
-		<span><strong> 영화제목을 누르면 수정페이지로 이동합니다 </strong></span>
+		<span><strong> 제목을 누르면 수정페이지로 이동합니다 </strong></span>
 		<br>
 	</div>
 	
-	<input type="button" value="콘텐츠추가" onclick="location.href='/addcontent.do'" class="btn btn-danger"><br><br>
+	<input type="button" value="컨텐츠추가" onclick="location.href='/addcontent.do'" class="btn btn-danger"><br><br>
 	
 		
 	<table class="table">
 		<tr>
 
-			<th>콘텐츠코드</th>
-			<th>콘텐츠제목</th>
+			<th>컨텐츠코드</th>
+			<th>컨텐츠제목</th>
 		</tr>
 
 		<c:forEach var="dto" items="${list}"> 	
@@ -43,8 +43,8 @@
 			<td colspan='2' style='text-align:center; height: 50px'>
 				<form action="contmanage.do">
 					<select name="col">
-						<option value="mtitle" >콘텐츠제목
-						<option value="mcode">콘텐츠코드
+						<option value="mtitle" >컨텐츠제목
+						<option value="mcode">컨텐츠코드
 					</select>
 					<input type="text" name="word" id="word">
 					<input type="submit" value="검색" class="btn btn-danger">

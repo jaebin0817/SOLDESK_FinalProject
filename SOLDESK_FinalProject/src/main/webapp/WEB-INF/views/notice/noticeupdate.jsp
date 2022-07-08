@@ -2,23 +2,55 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp"%>
 
+<script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
+
 <!-- 본문시작 noticeupdate.jsp -->
-<!-- 스마트 에디터 넣기 !! -->	
+
+<div class="container text-center">	
 	
-	<div class="container-fluid text-center">	
-	<form name="frm" id="frm" method="post" action="noticeupdateproc.do?n_num=${n_num}">
-	<input type="hidden" id="n_num" name="n_num" value="${n_num}">	
-		<div class="container text-center">
-		<input name="n_title" id="n_title" type="text" class="form-control" size="20" value=${dto.n_title } required>
-		<input name="n_content" id="n_content" type="text" class="form-control" size="20" value=${dto.n_content } required>	
-		<input type="submit" value="입력"  class="btn btn-success">
-		<input type="reset"  value="취소"  class="btn btn-danger">
-		</div>
-	</form>
+	
+	<div class="pagetitle">
+		<br>
+		<span><img src="/images/pot_icon.png" alt="OPOT" width="50px"></span>
+		<span><strong> 공지사항 수정 </strong></span>
+		<br><br>
 	</div>
 
+	<form name="frm" id="frm" method="post" action="noticeupdate.do">
+		<input type="hidden" id="n_num" name="n_num" value="${n_num}">
+		<table class="table" style="margin:auto;">
+			<tr>
+			   <th>제목</th>
+			   <td colspan="2"><input type="text" name="n_title" id="n_title" class="form-control" size="20" value=${ dto.n_title } placeholder="공지제목" required></td>
+			</tr>	
+			<tr>
+			   <th colspan="3"></th>
+			</tr>
+		</table>
+		<textarea name="n_content" id="n_content">${ dto.n_content }</textarea>
+		<br>
+		<input type="submit" value="수정"  class="btn btn-default">
+		<input type="reset"  value="취소"  class="btn btn-default">		
+	</form>
+	
 
+</div>
 
+<script> 
+
+	ClassicEditor 
+	.create( document.querySelector( '#n_content' ),{
+		language: 'ko',
+		removePlugins: [ 'MediaEmbed', 'ImageUpload', 'EasyImage' ],		
+	} )
+	.then( newEditor => {
+		editor = newEditor;
+	} )
+	.catch( error => { console.error( error ); } 
+	); 
+	
+</script>
+	
 
 <!-- 본문끝 -->
 

@@ -25,8 +25,8 @@
 	<div style="text-align: center">
 	  <label><input type="checkbox" name="agree" id="agree"/> 약관에 동의합니다</label>
 	  <br>
-	  <input type="submit" value="회원가입" id="memBtn" class="btn"/> 
-	  <input type="button" value="취소"    id="memBtn" class="btn" onclick="javascript:history.back()"/>
+	  <input type="submit" value="회원가입" id="memBtn" class="btn btn-danger"> 
+	  <input type="button" value="취소"    id="memBtn" class="btn btn-danger" onclick="javascript:history.back()">
 	</div>
 	</form>
 	<br><br>
