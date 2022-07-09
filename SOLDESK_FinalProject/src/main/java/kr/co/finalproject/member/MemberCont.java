@@ -32,7 +32,11 @@ import kr.co.finalproject.contentcri.ContentcriDTO;
 import kr.co.finalproject.contlist.ContlistDTO;
 import kr.co.finalproject.contlist.WatchListDAO;
 import kr.co.finalproject.contlist.WatchListDTO;
+import kr.co.finalproject.party.PartyInfoDAO;
+import kr.co.finalproject.party.PartyInfoDTO;
 import kr.co.finalproject.party.PartyMemberDAO;
+import kr.co.finalproject.party.PaymentCardDAO;
+import kr.co.finalproject.party.PaymentCardDTO;
 import kr.co.finalproject.search.SearchKeyDAO;
 import net.utility.Utility;
 
@@ -46,6 +50,8 @@ public class MemberCont {
 	private SearchKeyDAO skdao =null;
 	private PartyMemberDAO pmdao=null;
 	private ContentcriDAO cridao = null;
+	private PaymentCardDAO carddao = null;
+	private PartyInfoDAO partydao = null;
 	
 
 	public MemberCont() {
@@ -221,9 +227,34 @@ public class MemberCont {
 	}
 	
 	
-	@RequestMapping("/m_manage/member_bank.do")
-	public String member_bank() {
-		return "m_manage/member_bank";
+	@RequestMapping("/m_manage/myaccount.do")
+	public ModelAndView myaccount(HttpServletRequest req) {
+		ModelAndView mav = new ModelAndView();
+		partydao = new PartyInfoDAO();
+		carddao = new PaymentCardDAO();
+		
+		HttpSession session = req.getSession();
+		String mem_id=(String) session.getAttribute("s_mem_id");
+		
+		PartyInfoDTO bankinfo = partydao.readBank(mem_id);
+		PaymentCardDTO cardinfo = carddao.cardRead(mem_id);
+		
+		if(bankinfo==null) {
+			mav.addObject("bankmsg1", "등록된 정산계좌가 없습니다");
+			mav.addObject("bankmsg2", "계좌는 파티생성시 등록가능합니다");
+		}else {
+			mav.addObject("bankinfo", bankinfo);
+		}
+		
+		if(cardinfo==null) {
+			mav.addObject("cardmsg1", "등록된 결제카드가 없습니다");
+			mav.addObject("cardmsg2", "등록 버튼을 눌러 카드를 추가해주세요");
+		}else {
+			mav.addObject("cardinfo", cardinfo);
+		}
+		
+		mav.setViewName("m_manage/myaccount");
+		return mav;
 	}
 	
 	

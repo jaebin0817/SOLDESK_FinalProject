@@ -28,7 +28,7 @@
 	    	<br><br>
 			<button type="button" class="btn btn-default btn-lg btn-block" onclick="location.href='mycontent.do'">나의 컨텐츠/시청 정보</button>	    		    	
 	    	<br><br>
-			<button type="button" class="btn btn-default btn-lg btn-block" onclick="location.href='member_bank.do'">계좌등록 및 변경</button>	    		    	
+			<button type="button" class="btn btn-default btn-lg btn-block" onclick="location.href='myaccount.do'">결제카드/정산계좌</button>	    		    	
 	    	
 	    	<hr>
 	    	<input type="submit" value="로그아웃" class="btn btn-danger btn-lg">
