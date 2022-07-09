@@ -452,7 +452,7 @@ public class ContlistController {
     }
    
     
-    @RequestMapping(value = "contlist/reviewdelete.do", method = RequestMethod.POST)
+    @RequestMapping({"reviewdelete.do", "contlist/reviewdelete.do"})
     public ModelAndView delete(@ModelAttribute ReviewDTO dto2, ContlistDTO dto, HttpServletRequest req) {
        ModelAndView mav=new ModelAndView();
        mav.setViewName("review/msgView");//어디로 보낼지 바꾸기
@@ -471,15 +471,15 @@ public class ContlistController {
     }//delete() end
     
     
-    @RequestMapping(value = "reviewupdate.do", method = RequestMethod.POST)
-    public ModelAndView update(@ModelAttribute ReviewDTO dto2, HttpServletRequest req) {
+    @RequestMapping({"reviewupdate.do", "contlist/reviewupdate.do"})
+    public ModelAndView update(@ModelAttribute ReviewDTO dto, HttpServletRequest req) {
        ModelAndView mav=new ModelAndView();
        int rev_code=Integer.parseInt(req.getParameter("rev_code"));
-       dto2= revdao.readReviewOne(rev_code);
+       dto= revdao.readReviewOne(rev_code);
        
        HttpSession session = req.getSession();      
        String s_mem_id=session.getAttribute("s_mem_id").toString();
-       String mem_id=dto2.getMem_id();
+       String mem_id=dto.getMem_id();
        
        if(!(s_mem_id.equals(mem_id))) {//세션정보의 글의 작성자가 일치하지 않을때는 수정페이지로 넘어가지 않음
           
@@ -488,7 +488,7 @@ public class ContlistController {
            mav.setViewName("review/msgView");
 
        }else {
-          mav.addObject("dto2", dto2);
+          mav.addObject("dto", dto);
            mav.setViewName("review/reviewUpdate");
        }
        

@@ -21,11 +21,11 @@ public class ReviewDAO {
    }// end
 
    public ReviewDTO reviewAll(int mcode) {  // rev_read랑 동일하게봄
-      ReviewDTO dto2 = null;
+      ReviewDTO dto = null;
       try {
          con = dbopen.getConnection();
          sql = new StringBuilder();
-         sql.append(" SELECT * ");
+         sql.append(" SELECT rev_code, mem_id, rev_title, rev_reg, rev_cont, rev_spo, rev_rate ");
          sql.append(" FROM review ");
          sql.append(" WHERE mcode=? ");
          sql.append(" ORDER BY rev_code ASC ");
@@ -35,15 +35,15 @@ public class ReviewDAO {
 
          rs = pstmt.executeQuery();
          if (rs.next()) {
-            dto2 = new ReviewDTO();
-            dto2.setMcode(mcode);
-            dto2.setRev_code(rs.getInt("rev_code"));
-            dto2.setMem_id(rs.getString("mem_id"));
-            dto2.setRev_title(rs.getString("rev_title"));
-            dto2.setRev_reg(rs.getString("rev_reg"));
-            dto2.setRev_cont(rs.getString("rev_cont"));
-            dto2.setRev_spo(rs.getString("rev_spo"));
-            dto2.setRev_rate(rs.getInt("rev_rate"));
+            dto = new ReviewDTO();
+            dto.setMcode(mcode);
+            dto.setRev_code(rs.getInt("rev_code"));
+            dto.setMem_id(rs.getString("mem_id"));
+            dto.setRev_title(rs.getString("rev_title"));
+            dto.setRev_reg(rs.getString("rev_reg"));
+            dto.setRev_cont(rs.getString("rev_cont"));
+            dto.setRev_spo(rs.getString("rev_spo"));
+            dto.setRev_rate(rs.getInt("rev_rate"));
 
          }
          while (rs.next())
@@ -54,11 +54,11 @@ public class ReviewDAO {
       } finally {
          DBclose.close(con, pstmt, rs);
       } // end
-      return dto2;
+      return dto;
    }// class end
    
    
-    public int rev_ins(ReviewDTO dto2) {
+    public int rev_ins(ReviewDTO dto) {
           int cnt=0;
          try {
             con=dbopen.getConnection();
@@ -68,12 +68,12 @@ public class ReviewDAO {
             sql.append(" values( ?, ?, ?, now(), ?, ?, ?) ");
             
             pstmt=con.prepareStatement(sql.toString());
-            pstmt.setString(1, dto2.getMem_id());   
-            pstmt.setInt(2, dto2.getMcode());   
-            pstmt.setString(3, dto2.getRev_title());
-            pstmt.setString(4, dto2.getRev_cont());
-            pstmt.setString(5, dto2.getRev_spo());
-            pstmt.setInt(6, dto2.getRev_rate());
+            pstmt.setString(1, dto.getMem_id());   
+            pstmt.setInt(2, dto.getMcode());   
+            pstmt.setString(3, dto.getRev_title());
+            pstmt.setString(4, dto.getRev_cont());
+            pstmt.setString(5, dto.getRev_spo());
+            pstmt.setInt(6, dto.getRev_rate());
             cnt=pstmt.executeUpdate();
             
          } catch (Exception e) {
@@ -135,7 +135,7 @@ public class ReviewDAO {
     
     
       public ReviewDTO readReviewOne(int rev_code) {  // rev_read랑 동일하게봄
-         ReviewDTO dto2 = null;
+         ReviewDTO dto = null;
          try {
             con = dbopen.getConnection();
             sql = new StringBuilder();
@@ -148,15 +148,15 @@ public class ReviewDAO {
 
             rs = pstmt.executeQuery();
             if (rs.next()) {
-               dto2 = new ReviewDTO();
-               dto2.setMcode(rs.getInt("mcode"));
-               dto2.setRev_code(rs.getInt("rev_code"));
-               dto2.setMem_id(rs.getString("mem_id"));
-               dto2.setRev_title(rs.getString("rev_title"));
-               dto2.setRev_reg(rs.getString("rev_reg"));
-               dto2.setRev_cont(rs.getString("rev_cont"));
-               dto2.setRev_spo(rs.getString("rev_spo"));
-               dto2.setRev_rate(rs.getInt("rev_rate"));
+               dto = new ReviewDTO();
+               dto.setMcode(rs.getInt("mcode"));
+               dto.setRev_code(rs.getInt("rev_code"));
+               dto.setMem_id(rs.getString("mem_id"));
+               dto.setRev_title(rs.getString("rev_title"));
+               dto.setRev_reg(rs.getString("rev_reg"));
+               dto.setRev_cont(rs.getString("rev_cont"));
+               dto.setRev_spo(rs.getString("rev_spo"));
+               dto.setRev_rate(rs.getInt("rev_rate"));
 
             }
 
@@ -165,12 +165,12 @@ public class ReviewDAO {
          } finally {
             DBclose.close(con, pstmt, rs);
          } // end
-         return dto2;
+         return dto;
       }// class end
     
     
     
-    public int updateproc(ReviewDTO dto2, int rev_code, String mem_id) {
+    public int updateproc(ReviewDTO dto, int rev_code, String mem_id) {
          int cnt=0; //성공 또는 실패 여부 반환
          try {
 
@@ -181,11 +181,11 @@ public class ReviewDAO {
             sql.append(" WHERE rev_code=? AND mem_id = ?");
             
             pstmt=con.prepareStatement(sql.toString());
-            pstmt.setInt(1, dto2.getRev_rate());
-            pstmt.setString(2, dto2.getRev_title());
-            pstmt.setString(3, dto2.getRev_cont());
-            pstmt.setString(4, dto2.getRev_spo());
-            pstmt.setInt(5, dto2.getRev_code());
+            pstmt.setInt(1, dto.getRev_rate());
+            pstmt.setString(2, dto.getRev_title());
+            pstmt.setString(3, dto.getRev_cont());
+            pstmt.setString(4, dto.getRev_spo());
+            pstmt.setInt(5, dto.getRev_code());
             pstmt.setString(6, mem_id);
             
             cnt=pstmt.executeUpdate(); 
@@ -219,18 +219,18 @@ public class ReviewDAO {
            if(rs.next()) {
         	   list=new ArrayList<>();
         	   do {
-        		   ReviewDTO dto2 = new ReviewDTO();//커서가 가리키는 한 줄 저장
-        		   dto2 = new ReviewDTO();
-                   dto2.setMcode(rs.getInt("mcode"));
-                   dto2.setRev_code(rs.getInt("rev_code"));
-                   dto2.setMem_id(rs.getString("mem_id"));
-                   dto2.setRev_title(rs.getString("rev_title"));
-                   dto2.setRev_reg(rs.getString("rev_reg"));
-                   dto2.setRev_cont(rs.getString("rev_cont"));
-                   dto2.setRev_spo(rs.getString("rev_spo"));
-                   dto2.setRev_rate(rs.getInt("rev_rate"));
+        		   ReviewDTO dto = new ReviewDTO();//커서가 가리키는 한 줄 저장
+        		   dto = new ReviewDTO();
+                   dto.setMcode(rs.getInt("mcode"));
+                   dto.setRev_code(rs.getInt("rev_code"));
+                   dto.setMem_id(rs.getString("mem_id"));
+                   dto.setRev_title(rs.getString("rev_title"));
+                   dto.setRev_reg(rs.getString("rev_reg"));
+                   dto.setRev_cont(rs.getString("rev_cont"));
+                   dto.setRev_spo(rs.getString("rev_spo"));
+                   dto.setRev_rate(rs.getInt("rev_rate"));
              
-             list.add(dto2);
+             list.add(dto);
            }while(rs.next());
         }
            

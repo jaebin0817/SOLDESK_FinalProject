@@ -9,7 +9,7 @@
     
     <div class="content">
     	<dl>
-    		<dd>${ msg != null ? img : "" } ${ msg }</dd> <!-- requestScope생략 -->
+    		<dd>${ msg }</dd> <!-- requestScope생략 -->
     		<dd>${ link1 }</dd>
     		<dd>${ link2 }</dd>
     	</dl>

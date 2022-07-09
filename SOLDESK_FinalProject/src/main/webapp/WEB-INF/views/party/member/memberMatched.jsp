@@ -18,8 +18,7 @@
 		<h3>가입된 정보는 my구독관리에서 확인 할 수 있습니다</h3>
 		
 		<br>
-		<input type="button" value="이동하기"  class="btn btn-danger">
-		<input type="button" value="홈화면"  class="btn btn-danger" onclick="location.href='<%=request.getContextPath()%>/home.do'">
+		<input type="button" value="홈화면"  class="w-btn w-btn-red" onclick="location.href='<%=request.getContextPath()%>/home.do'">
 	</form>
 	</div>
 

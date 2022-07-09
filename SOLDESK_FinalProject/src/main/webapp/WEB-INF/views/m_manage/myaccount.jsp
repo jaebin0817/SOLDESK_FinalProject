@@ -33,10 +33,10 @@
 				<div class="account-btn">
 					<c:choose>
 						<c:when test="${ cardmsg1 != null }">
-							<button class="btn" onclick="location.href'member_card.do?mem_id=${ s_mem_id }'">등록</button>
+							<button class="btn" onclick="location.href='member_card.do?mem_id=${ s_mem_id }'">등록</button>
 						</c:when>
 						<c:otherwise>
-							<button class="btn" onclick="location.href'member_card.do?mem_id=${ s_mem_id }'">수정</button>
+							<button class="btn" onclick="location.href='member_card.do?mem_id=${ s_mem_id }'">수정</button>
 						</c:otherwise>
 					</c:choose>		
 				
@@ -60,7 +60,7 @@
 				</div>
 				<div class="account-btn">
 					<c:if test="${ bankmsg1 == null }">
-						<button class="btn" onclick="location.href'member_bank.do?mem_id=${ s_mem_id }'">수정</button>
+						<button class="btn" onclick="location.href='member_bank.do?mem_id=${ s_mem_id }'">수정</button>
 					</c:if>	
 				</div>	
 			</div>			

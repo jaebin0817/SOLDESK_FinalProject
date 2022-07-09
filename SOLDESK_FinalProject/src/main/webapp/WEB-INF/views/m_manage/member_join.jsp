@@ -28,11 +28,11 @@
 		<tr>
 		    <th>아이디*</th>
 		    <td>
-		      <input type="text" class="form-control" name="mem_id" id="mem_id" size="10" required onblur="buttonCheck()">
+		      <input type="text" class="form-control" name="mem_id" id="mem_id" size="10" onblur="idClickCheck()" required>
 		      <font id="checkId" size="2"></font>
 		    </td>
 		    <td>
-		      <input type="button" class="btn btn-default" value="ID 중복확인" id="idcheck" onclick="return idCheck()">
+		      <input type="button" class="btn" value="ID 중복확인" id="idcheck" onclick="return idCheck()">
 		    </td>
 		</tr>
 		<tr>
@@ -66,8 +66,8 @@
 		<tr>
 		    <th>연락처*</th>
 		    <td>
-		      <input type="text" class="form-control" name="mem_phone" id="mem_phone" required onblur="phoneCheck()">
-		      <font id ="checkphone" size="2"></font>
+		      <input type="text" class="form-control" name="mem_phone" id="mem_phone"  onblur="phoneCheck()" required>
+		      <font id ="checkPhone" size="2"></font>
 		    </td>
 		</tr>
 
@@ -79,8 +79,8 @@
 	
 		</table>
 				
-		<input type="submit" value="가입"  id="memBtn" class="btn btn-danger">
-        <input type="reset"  value="취소"  id="cancle" class="btn btn-danger">
+		<input type="submit" value="가입"  id="memBtn" class="btn"/>
+        <input type="reset"  value="취소"  id="cancle" class="btn"/>
 		<br><br><br>
 		
 	</form>

@@ -342,6 +342,23 @@
 		--background: yellow;			
 	}
 
+	.my-btns{
+		width:80%;
+		height:500px;		
+		--background: white;
+		position: absolute;
+		
+	}
+	
+	#my-wrapper{
+		width:50%;
+		height:1000px;		
+		position: relative;
+		margin: auto;
+		--background: grey;
+		padding:5%;		
+	}
+
 
   @keyframes slide {
     0% {

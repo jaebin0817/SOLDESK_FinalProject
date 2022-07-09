@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.finalproject.member.SubscribeInfoDAO;
@@ -245,17 +246,22 @@ public class PartyInfoCont {
 		mav.setViewName("party/host/msgView");
 		
 		int cnt=dao.insert(dto);
+		String msg="";
 	
 		if(cnt==0) {
 			
-			String msg="<p>파티 등록 실패</p>";
-			mav.addObject("msg", msg);
+			msg+="<script>";
+			msg+="    alert('수정 실패\\n정보를 다시 확인해 주세요');";
+			msg+="    location.href='javascript:history.back();'";
+			msg+="</script>";
 
 		
 		}else {
 			
-			String msg="<p>파티 등록 성공</p>";
-			mav.addObject("msg", msg);
+			msg+="<script>";
+			msg+="    alert('파티 등록 및 대기인원 자동매칭 되었습니다');";
+			msg+="    $(location).attr('href', 'http://localhost:9090/home.do');";	 
+			msg+="</script>";
 			
 			//구독 OTT정보 행추가
 			subdao=new SubscribeInfoDAO();
@@ -293,13 +299,24 @@ public class PartyInfoCont {
 			}
 			
 		}//if end
-		
+		mav.addObject("msg", msg);
 		return mav;
 	
 	}//create() end
 	
 	
-	
+	@RequestMapping(value = "/party/partyajax.do", method = RequestMethod.GET)
+	@ResponseBody
+	public String message(HttpServletRequest req) {		
+		String ott_name="";
+		try {			
+			ott_name=req.getParameter("ott_name");			
+		} catch (Exception e) {
+			System.out.println("응답실패 : " + e);
+		}//end
+		System.out.println(ott_name);
+		return ott_name;
+	}//message() end	
 	
 
 	

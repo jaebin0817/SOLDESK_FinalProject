@@ -2,6 +2,18 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../../header.jsp"%>
 
+<script type="text/javascript">
+
+ function noBack(){
+	 
+	 window.history.forward();
+	 }
+ 
+</script>
+<body onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="back()">
+
+
+
 <!-- 본문시작 memberMatch.jsp -->
 	
 	<!-- 파티원 정보 입력 -->
@@ -14,14 +26,17 @@
 		<input type="hidden" id="party_pcost" name="party_pcost" value="${ party_pcost }">
 		<h1>${ ott_name }</h1>
 		
-		<h3>${ ott_name } 기존 프리미엄 서비스 이용가격 ${ott_price} 에서</h3> <br>
-		<h3>${payback_amount} 원 절약하여</h3>
-		<h3>${party_pcost} 원 으로 절약하시게 됩니다~</h3>
+	
+		<h3>${ ott_name }프리미엄 기존 프리미엄 서비스</h3> <br>
+		<h3> ${ott_price}원-> ${party_pcost}원</h3>
+		<h3>${payback_amount}원 절약!!</h3>
+		<br>
+		<h4>${ dto.card_com }카드로 결제 및 매칭진행 하시겠습니까?</h4>
 		
 		<br>
 		파티 매칭을 시작하시겠습니까?
 		<br>
-		<input type="submit" value="시작하기"  class="btn btn-danger">
+		<input type="submit" value="시작하기"  class="w-btn-neon2">
 	</form>
 	</div>
 

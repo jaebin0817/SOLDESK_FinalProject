@@ -17,9 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class PartyMemCont {
 
 	PaymentCardDAO dao=new PaymentCardDAO();
-	PartyWaitingDAO dao2 = new PartyWaitingDAO();
-	PartyInfoDAO dao3 = new PartyInfoDAO();
-	PartyMemberDAO dao4 = new PartyMemberDAO();
+	PartyWaitingDAO partydao = new PartyWaitingDAO();
+	PartyInfoDAO pinfodao = new PartyInfoDAO();
+	PartyMemberDAO pmemdao = new PartyMemberDAO();
 
 	public PartyMemCont() {
 		System.out.println("-----PartyMemCont() 객체 생성");
@@ -71,10 +71,10 @@ public class PartyMemCont {
 		return mav;
 	}//memberMatch() end
 	
+	
 	@RequestMapping(value = "party/membermatch.do" , method = RequestMethod.POST)
-	public ModelAndView memberMatchWait(@ModelAttribute  PartyWaitingDTO dto, PartyInfoDTO dto2 , PartyMemberDTO dto3, HttpServletRequest req) {
-		ModelAndView mav=new ModelAndView();
-		
+	public ModelAndView memberMatchWait(@ModelAttribute  PartyWaitingDTO dto, PartyInfoDTO pinfodto , PartyMemberDTO pmemdto, HttpServletRequest req) {
+		ModelAndView mav=new ModelAndView();		
 		
 		String ott_name=req.getParameter("ott_name");
 		int ott_price=Integer.parseInt(req.getParameter("ott_price"));
@@ -83,24 +83,14 @@ public class PartyMemCont {
 
 		Date now = new Date();
 	    SimpleDateFormat dateFrm = new SimpleDateFormat("yyyyMMddHHmmss");
+	    String nowStr = dateFrm.format(now);
+	    
+		PartyWaitingDAO waitdao=new PartyWaitingDAO();
+		String party_ordnumber=waitdao.ordnoCreate(nowStr);		
 
-	    String dateToStr = dateFrm.format(now);
-		
-	    String party_ordnumber= dateToStr;
-	    
-	    /*
-		for(int i=0; i<=8000; i++) {
-			if(cnt3==0) {
-				int
-			} 누군가 심심하면 고쳐줘~~
-			String party_ordnumber= dateToStr+i;
-			
-		}//for end
-		*/
-	    dto3.setParty_ordnumber(party_ordnumber);
-	    dto3.setParty_pcost(party_pcost);
-	    dto3.setMem_id(mem_id);//세션으로 아이디 가져오기
-	    
+	    pmemdto.setParty_ordnumber(party_ordnumber);
+	    pmemdto.setParty_pcost(party_pcost);
+	    pmemdto.setMem_id(mem_id);//세션으로 아이디 가져오기	    
 		
 		mav.addObject("ott_name", ott_name);
 		mav.addObject("ott_price", ott_price);
@@ -110,9 +100,9 @@ public class PartyMemCont {
 		
 		dto.setMem_id(mem_id);//세션으로 아이디 가져오기
 		
-		dto2=dao3.read(ott_name);
-		if(dto2==null){
-			int cnt=dao2.memberwait(dto);
+		pinfodto=pinfodao.read(ott_name);
+		if(pinfodto==null){
+			int cnt=partydao.memberwait(dto);
 			if(cnt==0) {
 	            String msg="<h3>매칭 대기 실패</h3>";
 	            mav.addObject("msg", msg);
@@ -121,13 +111,13 @@ public class PartyMemCont {
 	            mav.setViewName("party/member/memberMatching");
 			}//if end
 		}else {
-			int cntmatch=dao3.match(dto2);
+			int cntmatch=pinfodao.match(pinfodto);
 			if(cntmatch==0) {
 				String msg="<p>매칭 실패</p>";
 	            mav.addObject("msg", msg);
 	            mav.setViewName("party/member/msgView");
 			}else {
-				int result=dao4.ordersheet(dto2, dto3);
+				int result=pmemdao.ordersheet(pinfodto, pmemdto);
 				if(result==0){
 					String msg="<p>매칭만 성공 되었습니다 주문서 발급은 아직입니다</p>";
 		            mav.addObject("msg", msg);
@@ -156,29 +146,10 @@ public class PartyMemCont {
 		return mav;
 	}//cardupdate() end
 
+	
 	@RequestMapping(value = "party/cardupdateproc.do" , method = RequestMethod.POST)
 	public ModelAndView cardupdateproc(@ModelAttribute PaymentCardDTO dto, HttpServletRequest req) {
 		ModelAndView mav=new ModelAndView();
-		/*
-		String ott_name=req.getParameter("ott_name");
-		int ott_price=Integer.parseInt(req.getParameter("ott_price"));
-		
-		int service_fee=500; //파티원 수수료
-		
-		int payback_amount=0;
-		int party_pcost=0;
-		
-		payback_amount=(ott_price/4)*3;
-		
-		party_pcost=(ott_price/4)*1+service_fee;
-		
-		mav.addObject("ott_name", ott_name);
-		mav.addObject("ott_price", ott_price);
-		mav.addObject("party_pcost", party_pcost);
-		mav.addObject("payback_amount", payback_amount);
-		*/
-
-		//String mem_id="kimkim12";//session정보 받아오기
 		HttpSession session = req.getSession();
 		String s_mem_id=session.getAttribute("s_mem_id").toString();
 
@@ -187,19 +158,24 @@ public class PartyMemCont {
 		String card_exp= card_m + "/" + card_y;
 		dto.setCard_exp(card_exp);
 		dto.setMem_id(s_mem_id);
+		String msg="";
 
 		mav.addObject("mem_id",s_mem_id);
 
 		int cnt=dao.updatecard(dto);
 		if(cnt==0) {
-            String msg="<p>카드 수정 실패하였습니다 처음부터 다시확인 바립니다</p>";
-            mav.addObject("msg", msg);
-            mav.setViewName("party/member/msgView");
+			msg+="<script>";
+			msg+="    alert('수정 실패\\n정보를 다시 확인해 주세요');";
+			msg+="    location.href='javascript:history.back();'";
+			msg+="</script>";
 		}else {
-			String msg="<p>카드 수정 성공하였습니다 \n 처음부터 다시 진행해 주세요</p>";
-            mav.addObject("msg", msg);
-            mav.setViewName("party/member/msgView");
+			msg+="<script>";
+			msg+="    alert('카드정보가 변경 되었습니다');";
+			msg+="    location.href='javascript:history.go(-2);'";
+			msg+="</script>";
 		}//if end
+		mav.setViewName("party/member/msgView");
+		mav.addObject("msg", msg);
 		return mav;
 	}//cardupdateproc() end
 	

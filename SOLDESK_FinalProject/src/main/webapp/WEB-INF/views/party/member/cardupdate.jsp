@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../../header.jsp"%>
-
-<!-- 본문시작 memberIns.jsp -->
+<!-- 본문시작 cardupdate.jsp -->
 
 <!-- 파티원 정보 입력 -->
 <script>
@@ -72,18 +71,29 @@
 
 	function check() {
 		var cardcom = document.getElementById("cardcom").value;
+		var card_m = document.getElementById("card_m").value;
 		if (cardcom == null) {
 			alert("유효하지 않는 카드 번호입니다 \n카드번호를 확인 바랍니다");
+			alert(card_y);
 			document.getElementById("card_no").focus();
 			return false;
 		}
-
-		var card_com = document.getElementById("card_com").value;
-		if (card_com == '00') {
-			alert("카드사를 선택 바랍니다");
-			document.getElementById("card_com").focus();
+		
+		var card_y = docuyent.getEleyentById("card_y").value;
+		
+		if (card_y == "YY") {
+			alert("카드 정보를 입력바랍니다");
+			docuyent.getEleyentById("card_y").focus();
 			return false;
 		}
+		
+		
+		if (card_m == "MM") {
+			alert("카드 정보를 입력바랍니다");
+			document.getElementById("card_m").focus();
+			return false;
+		}
+
 
 		var card_pw = document.getElementById("card_pw").value;
 		if (card_pw == null) {
@@ -91,96 +101,283 @@
 			document.getElementById("card_pw").focus();
 			return false;
 		}
-
+		alert(card_y);
 		return true;
 	}//check() end
-	
 </script>
 
 
-<div class="container-fluid text-center">
-	<h1>${ ott_name }</h1>
-	<form name="cardfrm" id="cardfrm" method="post" action="cardupdateproc.do" onsubmit="return check()">
 
-		<hr>
-		<hr>
-		<hr>
-		<h3>카드 정보를 입력해주세요</h3>
-		<div class="container text-center">
-			<input type="text" autocomplete="off" size="20" name="card_no"
-				id="card_no" class="form-control" name="cardnumber"
-				onkeyup="validatecardnumber(this.value)" size="20" maxlength="16"
-				placeholder="카드 번호를 입력 해 주세요"
-				oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-				required />
-			<div id='notice'></div>
-			<br>
-			<strong>카드 유효기간을 입력해주세요</strong>
-			<table class="table">
-				<tr>
-					<td>
-						<select class="form-control" name="card_m" id="card_m">
-							<option value="MM">MM</option>
-							<option value="01">01</option>
-							<option value="02">02</option>
-							<option value="03">03</option>
-							<option value="04">04</option>
-							<option value="05">05</option>
-							<option value="06">06</option>
-							<option value="07">07</option>
-							<option value="08">08</option>
-							<option value="09">09</option>
-							<option value="10">10</option>
-							<option value="11">11</option>
-							<option value="12">12</option>
-						</select> 
-					</td>
-					<td>
-						<select class="form-control" name="card_y" id="card_y">
-				                <option value="YY">YY</option>
-				                <option value="22">22</option>
-				                <option value="23">23</option>
-				                <option value="24">24</option>
-				                <option value="25">25</option>
-				                <option value="26">26</option>
-				                <option value="27">27</option>
-				                <option value="28">28</option>
-				                <option value="29">29</option>
-				                <option value="30">30</option>
-				                <option value="31">31</option>
-				                <option value="32">32</option>
-				                <option value="33">33</option>            
-				        </select>
-					</td>
-				</tr>
-			</table>
 
-			<strong>카드 비밀번호 앞 2자리를 입력해주세요</strong>
-			<input class="form-control" type="password"
-				name="card_pw" id="card_pw" maxlength="2" autocomplete="off"
-				oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-				required /> 
-			<br> 
-			<strong>카드사를 선택해주세요</strong>
-			<select class="form-control"
-				name="card_com" id="card_com">
-				<option value="00">선택해주세요</option>
-				<option value="신한">신한</option>
-				<option value="국민">국민</option>
-				<option value="삼성">삼성</option>
-				<option value="케이뱅크">케이뱅크</option>
-				<option value="카카오">카카오</option>
-				<option value="BC">BC</option>
-				<option value="외환">외환</option>
-				<option value="기업">기업</option>
-			</select> 
-			<br> 
-			<input type="submit" value="입력" class="btn btn-success">
-			<input type="reset" value="취소" class="btn btn-danger">
-		</div>
-	</form>
 
+
+
+
+<h1>${ ott_name }</h1>
+
+<div class="container">
+	<div class="col-sm-4" id="bank_citi">
+		<br> <a href="#form_set" data-toggle="collapse">
+			<button class="w-btn w-btn-gra2 w-btn-gra-anim" type="button"
+				id="bank_select" name="bank_select" value="씨티"
+				onclick="bank_check(this.value)">
+				<img src="../../images/bank_citi.png" alt="Random Name" width="80"
+					height="80"><br> <span>씨티은행</span>
+			</button>
+		</a>
+	</div>
+	<div class="col-sm-4" id="bank_epost">
+		<br> <a href="#form_set" data-toggle="collapse">
+			<button class="w-btn w-btn-gra2 w-btn-gra-anim" type="button"
+				id="bank_select" name="bank_select" value="우체국"
+				onclick="bank_check(this.value)">
+				<img src="../../images/bank_epost.png" alt="Random Name" width="80"
+					height="80"><br> <span>우체국은행</span>
+			</button>
+		</a>
+	</div>
+	<div class="col-sm-4" id="bank_hana">
+		<br> <a href="#form_set" data-toggle="collapse">
+			<button class="w-btn w-btn-gra2 w-btn-gra-anim" type="button"
+				id="bank_select" name="bank_select" value="하나"
+				onclick="bank_check(this.value)">
+				<img src="../../images/bank_hana.png" alt="Random Name" width="80"
+					height="80"><br> <span>하나은행</span>
+			</button>
+		</a>
+	</div>
+	<div class="col-sm-4" id="bank_ibk">
+		<br> <a href="#form_set" data-toggle="collapse">
+			<button class="w-btn w-btn-gra2 w-btn-gra-anim" type="button"
+				id="bank_select" name="bank_select" value="기업"
+				onclick="bank_check(this.value)">
+				<img src="../../images/bank_ibk.png" alt="Random Name" width="80"
+					height="80"><br> <span>기업은행</span>
+			</button>
+		</a>
+	</div>
+	<div class="col-sm-4" id="bank_kakao">
+		<br> <a href="#form_set" data-toggle="collapse">
+			<button class="w-btn w-btn-gra2 w-btn-gra-anim" type="button"
+				id="bank_select" name="bank_select" value="카카오"
+				onclick="bank_check(this.value)">
+				<img src="../../images/bank_kakao.png" alt="Random Name" width="80"
+					height="80"><br> <span>카카오뱅크</span>
+			</button>
+		</a>
+	</div>
+	<div class="col-sm-4" id="bank_kb">
+		<br> <a href="#form_set" data-toggle="collapse">
+			<button class="w-btn w-btn-gra2 w-btn-gra-anim" type="button"
+				id="bank_select" name="bank_select" value="국민"
+				onclick="bank_check(this.value)">
+				<img src="../../images/bank_kb.png" alt="Random Name" width="80"
+					height="80"><br> <span>국민은행</span>
+			</button>
+		</a>
+	</div>
+	<div class="col-sm-4" id="bank_nh">
+		<br> <a href="#form_set" data-toggle="collapse">
+			<button class="w-btn w-btn-gra2 w-btn-gra-anim" type="button"
+				id="bank_select" name="bank_select" value="농협"
+				onclick="bank_check(this.value)">
+				<img src="../../images/bank_nh.png" alt="Random Name" width="80"
+					height="80"><br> <span>농협은행</span>
+			</button>
+		</a>
+	</div>
+	<div class="col-sm-4" id="bank_shinhan">
+		<br> <a href="#form_set" data-toggle="collapse">
+			<button class="w-btn w-btn-gra2 w-btn-gra-anim" type="button"
+				id="bank_select" name="bank_select" value="신한"
+				onclick="bank_check(this.value)">
+				<img src="../../images/bank_shinhan.png" alt="Random Name"
+					width="80" height="80"><br> <span>신한은행</span>
+			</button>
+		</a>
+	</div>
+	<div class="col-sm-4" id="bank_woori">
+		<br> <a href="#form_set" data-toggle="collapse">
+			<button class="w-btn w-btn-gra2 w-btn-gra-anim" type="button"
+				id="bank_select" name="bank_select" value="우리"
+				onclick="bank_check(this.value)">
+				<img src="../../images/bank_woori.png" alt="Random Name" width="80"
+					height="80"><br> <span>우리은행</span>
+			</button>
+		</a>
+	</div>
 </div>
+
+
+<div class="container text-center">
+	<div id="form_set" class="collapse">
+		<form name="cardfrm" id="cardfrm" method="post"
+			action="cardupdateproc.do" onsubmit="return check()">
+			<hr>
+			<hr>
+			<hr>
+			<h3>카드 정보를 입력해주세요</h3>
+			<div class="container text-center">
+				<input type="text" autocomplete="off" size="20" name="card_no"
+					id="card_no" class="form-control input-lg" name="cardnumber"
+					onkeyup="validatecardnumber(this.value)" size="20" maxlength="16"
+					placeholder="카드 번호를 입력 해 주세요"
+					oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+					required />
+				<div id='notice'></div>
+				<br> <strong>카드 유효기간을 입력해주세요</strong>
+				<table class="table">
+					<tr>
+						<td><select class="form-control input-lg" name="card_m" id="card_m">
+								<option value="01">01</option>
+								<option value="02">02</option>
+								<option value="03">03</option>
+								<option value="04">04</option>
+								<option value="05">05</option>
+								<option value="06">06</option>
+								<option value="07">07</option>
+								<option value="08">08</option>
+								<option value="09">09</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+						</select></td>
+						<td><select class="form-control input-lg" name="card_y" id="card_y">
+								<option value="22">22</option>
+								<option value="23">23</option>
+								<option value="24">24</option>
+								<option value="25">25</option>
+								<option value="26">26</option>
+								<option value="27">27</option>
+								<option value="28">28</option>
+								<option value="29">29</option>
+								<option value="30">30</option>
+								<option value="31">31</option>
+								<option value="32">32</option>
+								<option value="33">33</option>
+						</select></td>
+					</tr>
+				</table>
+
+				<strong>카드 비밀번호 앞 2자리를 입력해주세요</strong> <input class="form-control input-lg"
+					type="password" name="card_pw" id="card_pw" maxlength="2"
+					autocomplete="off"
+					oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+					required /> 
+					<input type="hidden" name="card_com" id="card_com">
+					
+					 <br> <input type="submit" value="입력" class="w-btn-neon2">
+				
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+	function bank_check(bank_select) {
+		if (bank_select == '농협') {
+			document.getElementById('bank_citi').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='씨티' onclick='bank_check(this.value)'><img src='../../images/bank_citi.png' alt='Random Name' width='80' height='80'><br><span>씨티은행</span></button>"
+			document.getElementById('bank_epost').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우체국' onclick='bank_check(this.value)'><img src='../../images/bank_epost.png' alt='Random Name' width='80' height='80'><br><span>우체국은행</span></button>"
+			document.getElementById('bank_hana').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='하나' onclick='bank_check(this.value)'><img src='../../images/bank_hana.png' alt='Random Name' width='80' height='80'><br><span>하나은행</span></button>"
+			document.getElementById('bank_ibk').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='기업' onclick='bank_check(this.value)'><img src='../../images/bank_ibk.png' alt='Random Name' width='80' height='80'><br><span>기업은행</span> </button>"
+			document.getElementById('bank_kakao').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='카카오' onclick='bank_check(this.value)'><img src='../../images/bank_kakao.png' alt='Random Name' width='80' height='80'><br><span>카카오뱅크</span></button>"
+			document.getElementById('bank_kb').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='국민' onclick='bank_check(this.value)'><img src='../../images/bank_kb.png' alt='Random Name' width='80' height='80'><br><span>국민은행</span></button>"
+			document.getElementById('bank_nh').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='농협' onclick='bank_check(this.value)'><span style='position: absolute; right: 10px;'><img src='../../images/check.png' width='30' ></span><img src='../../images/bank_nh.png' alt='Random Name' width='80' height='80'><br><span>농협은행</span></button>"
+			document.getElementById('bank_shinhan').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='신한' onclick='bank_check(this.value)'><img src='../../images/bank_shinhan.png' alt='Random Name' width='80' height='80'><br><span>신한은행</span></button>"
+			document.getElementById('bank_woori').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우리' onclick='bank_check(this.value)'><img src='../../images/bank_woori.png' alt='Random Name' width='80' height='80'><br><span>우리은행</span></button>"
+			document.getElementById('card_com').value = bank_select;
+
+		} else if (bank_select == '씨티') {
+			document.getElementById('bank_citi').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='씨티' onclick='bank_check(this.value)'><span style='position: absolute; right: 10px;'><img src='../../images/check.png' width='30' ></span><img src='../../images/bank_citi.png' alt='Random Name' width='80' height='80'><br><span>씨티은행</span></button>"
+			document.getElementById('bank_epost').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우체국' onclick='bank_check(this.value)'><img src='../../images/bank_epost.png' alt='Random Name' width='80' height='80'><br><span>우체국은행</span></button>"
+			document.getElementById('bank_hana').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='하나' onclick='bank_check(this.value)'><img src='../../images/bank_hana.png' alt='Random Name' width='80' height='80'><br><span>하나은행</span></button>"
+			document.getElementById('bank_ibk').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='기업' onclick='bank_check(this.value)'><img src='../../images/bank_ibk.png' alt='Random Name' width='80' height='80'><br><span>기업은행</span> </button>"
+			document.getElementById('bank_kakao').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='카카오' onclick='bank_check(this.value)'><img src='../../images/bank_kakao.png' alt='Random Name' width='80' height='80'><br><span>카카오뱅크</span></button>"
+			document.getElementById('bank_kb').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='국민' onclick='bank_check(this.value)'><img src='../../images/bank_kb.png' alt='Random Name' width='80' height='80'><br><span>국민은행</span></button>"
+			document.getElementById('bank_nh').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='농협' onclick='bank_check(this.value)'><img src='../../images/bank_nh.png' alt='Random Name' width='80' height='80'><br><span>농협은행</span></button>"
+			document.getElementById('bank_shinhan').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='신한' onclick='bank_check(this.value)'><img src='../../images/bank_shinhan.png' alt='Random Name' width='80' height='80'><br><span>신한은행</span></button>"
+			document.getElementById('bank_woori').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우리' onclick='bank_check(this.value)'><img src='../../images/bank_woori.png' alt='Random Name' width='80' height='80'><br><span>우리은행</span></button>"
+			document.getElementById('card_com').value = bank_select;
+		} else if (bank_select == '우체국') {
+			document.getElementById('bank_citi').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='씨티' onclick='bank_check(this.value)'><img src='../../images/bank_citi.png' alt='Random Name' width='80' height='80'><br><span>씨티은행</span></button>"
+			document.getElementById('bank_epost').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우체국' onclick='bank_check(this.value)'><span style='position: absolute; right: 10px;'><img src='../../images/check.png' width='30' ></span><img src='../../images/bank_epost.png' alt='Random Name' width='80' height='80'><br><span>우체국은행</span></button>"
+			document.getElementById('bank_hana').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='하나' onclick='bank_check(this.value)'><img src='../../images/bank_hana.png' alt='Random Name' width='80' height='80'><br><span>하나은행</span></button>"
+			document.getElementById('bank_ibk').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='기업' onclick='bank_check(this.value)'><img src='../../images/bank_ibk.png' alt='Random Name' width='80' height='80'><br><span>기업은행</span> </button>"
+			document.getElementById('bank_kakao').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='카카오' onclick='bank_check(this.value)'><img src='../../images/bank_kakao.png' alt='Random Name' width='80' height='80'><br><span>카카오뱅크</span></button>"
+			document.getElementById('bank_kb').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='국민' onclick='bank_check(this.value)'><img src='../../images/bank_kb.png' alt='Random Name' width='80' height='80'><br><span>국민은행</span></button>"
+			document.getElementById('bank_nh').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='농협' onclick='bank_check(this.value)'><img src='../../images/bank_nh.png' alt='Random Name' width='80' height='80'><br><span>농협은행</span></button>"
+			document.getElementById('bank_shinhan').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='신한' onclick='bank_check(this.value)'><img src='../../images/bank_shinhan.png' alt='Random Name' width='80' height='80'><br><span>신한은행</span></button>"
+			document.getElementById('bank_woori').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우리' onclick='bank_check(this.value)'><img src='../../images/bank_woori.png' alt='Random Name' width='80' height='80'><br><span>우리은행</span></button>"
+			document.getElementById('card_com').value = bank_select;
+		} else if (bank_select == '하나') {
+			document.getElementById('bank_citi').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='씨티' onclick='bank_check(this.value)'><img src='../../images/bank_citi.png' alt='Random Name' width='80' height='80'><br><span>씨티은행</span></button>"
+			document.getElementById('bank_epost').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우체국' onclick='bank_check(this.value)'><img src='../../images/bank_epost.png' alt='Random Name' width='80' height='80'><br><span>우체국은행</span></button>"
+			document.getElementById('bank_hana').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='하나' onclick='bank_check(this.value)'><span style='position: absolute; right: 10px;'><img src='../../images/check.png' width='30' ></span><img src='../../images/bank_hana.png' alt='Random Name' width='80' height='80'><br><span>하나은행</span></button>"
+			document.getElementById('bank_ibk').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='기업' onclick='bank_check(this.value)'><img src='../../images/bank_ibk.png' alt='Random Name' width='80' height='80'><br><span>기업은행</span> </button>"
+			document.getElementById('bank_kakao').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='카카오' onclick='bank_check(this.value)'><img src='../../images/bank_kakao.png' alt='Random Name' width='80' height='80'><br><span>카카오뱅크</span></button>"
+			document.getElementById('bank_kb').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='국민' onclick='bank_check(this.value)'><img src='../../images/bank_kb.png' alt='Random Name' width='80' height='80'><br><span>국민은행</span></button>"
+			document.getElementById('bank_nh').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='농협' onclick='bank_check(this.value)'><img src='../../images/bank_nh.png' alt='Random Name' width='80' height='80'><br><span>농협은행</span></button>"
+			document.getElementById('bank_shinhan').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='신한' onclick='bank_check(this.value)'><img src='../../images/bank_shinhan.png' alt='Random Name' width='80' height='80'><br><span>신한은행</span></button>"
+			document.getElementById('bank_woori').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우리' onclick='bank_check(this.value)'><img src='../../images/bank_woori.png' alt='Random Name' width='80' height='80'><br><span>우리은행</span></button>"
+			document.getElementById('card_com').value = bank_select;
+		} else if (bank_select == '기업') {
+			document.getElementById('bank_citi').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='씨티' onclick='bank_check(this.value)'><img src='../../images/bank_citi.png' alt='Random Name' width='80' height='80'><br><span>씨티은행</span></button>"
+			document.getElementById('bank_epost').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우체국' onclick='bank_check(this.value)'><img src='../../images/bank_epost.png' alt='Random Name' width='80' height='80'><br><span>우체국은행</span></button>"
+			document.getElementById('bank_hana').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='하나' onclick='bank_check(this.value)'><img src='../../images/bank_hana.png' alt='Random Name' width='80' height='80'><br><span>하나은행</span></button>"
+			document.getElementById('bank_ibk').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='기업' onclick='bank_check(this.value)'><span style='position: absolute; right: 10px;'><img src='../../images/check.png' width='30' ></span><img src='../../images/bank_ibk.png' alt='Random Name' width='80' height='80'><br><span>기업은행</span> </button>"
+			document.getElementById('bank_kakao').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='카카오' onclick='bank_check(this.value)'><img src='../../images/bank_kakao.png' alt='Random Name' width='80' height='80'><br><span>카카오뱅크</span></button>"
+			document.getElementById('bank_kb').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='국민' onclick='bank_check(this.value)'><img src='../../images/bank_kb.png' alt='Random Name' width='80' height='80'><br><span>국민은행</span></button>"
+			document.getElementById('bank_nh').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='농협' onclick='bank_check(this.value)'><img src='../../images/bank_nh.png' alt='Random Name' width='80' height='80'><br><span>농협은행</span></button>"
+			document.getElementById('bank_shinhan').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='신한' onclick='bank_check(this.value)'><img src='../../images/bank_shinhan.png' alt='Random Name' width='80' height='80'><br><span>신한은행</span></button>"
+			document.getElementById('bank_woori').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우리' onclick='bank_check(this.value)'><img src='../../images/bank_woori.png' alt='Random Name' width='80' height='80'><br><span>우리은행</span></button>"
+			document.getElementById('card_com').value = bank_select;
+		} else if (bank_select == '카카오') {
+			document.getElementById('bank_citi').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='씨티' onclick='bank_check(this.value)'><img src='../../images/bank_citi.png' alt='Random Name' width='80' height='80'><br><span>씨티은행</span></button>"
+			document.getElementById('bank_epost').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우체국' onclick='bank_check(this.value)'><img src='../../images/bank_epost.png' alt='Random Name' width='80' height='80'><br><span>우체국은행</span></button>"
+			document.getElementById('bank_hana').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='하나' onclick='bank_check(this.value)'><img src='../../images/bank_hana.png' alt='Random Name' width='80' height='80'><br><span>하나은행</span></button>"
+			document.getElementById('bank_ibk').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='기업' onclick='bank_check(this.value)'><img src='../../images/bank_ibk.png' alt='Random Name' width='80' height='80'><br><span>기업은행</span> </button>"
+			document.getElementById('bank_kakao').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='카카오' onclick='bank_check(this.value)'><span style='position: absolute; right: 10px;'><img src='../../images/check.png' width='30' ></span><img src='../../images/bank_kakao.png' alt='Random Name' width='80' height='80'><br><span>카카오뱅크</span></button>"
+			document.getElementById('bank_kb').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='국민' onclick='bank_check(this.value)'><img src='../../images/bank_kb.png' alt='Random Name' width='80' height='80'><br><span>국민은행</span></button>"
+			document.getElementById('bank_nh').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='농협' onclick='bank_check(this.value)'><img src='../../images/bank_nh.png' alt='Random Name' width='80' height='80'><br><span>농협은행</span></button>"
+			document.getElementById('bank_shinhan').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='신한' onclick='bank_check(this.value)'><img src='../../images/bank_shinhan.png' alt='Random Name' width='80' height='80'><br><span>신한은행</span></button>"
+			document.getElementById('bank_woori').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우리' onclick='bank_check(this.value)'><img src='../../images/bank_woori.png' alt='Random Name' width='80' height='80'><br><span>우리은행</span></button>"
+			document.getElementById('card_com').value = bank_select;
+		} else if (bank_select == '국민') {
+			document.getElementById('bank_citi').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='씨티' onclick='bank_check(this.value)'><img src='../../images/bank_citi.png' alt='Random Name' width='80' height='80'><br><span>씨티은행</span></button>"
+			document.getElementById('bank_epost').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우체국' onclick='bank_check(this.value)'><img src='../../images/bank_epost.png' alt='Random Name' width='80' height='80'><br><span>우체국은행</span></button>"
+			document.getElementById('bank_hana').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='하나' onclick='bank_check(this.value)'><img src='../../images/bank_hana.png' alt='Random Name' width='80' height='80'><br><span>하나은행</span></button>"
+			document.getElementById('bank_ibk').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='기업' onclick='bank_check(this.value)'><img src='../../images/bank_ibk.png' alt='Random Name' width='80' height='80'><br><span>기업은행</span> </button>"
+			document.getElementById('bank_kakao').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='카카오' onclick='bank_check(this.value)'><img src='../../images/bank_kakao.png' alt='Random Name' width='80' height='80'><br><span>카카오뱅크</span></button>"
+			document.getElementById('bank_kb').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='국민' onclick='bank_check(this.value)'><span style='position: absolute; right: 10px;'><img src='../../images/check.png' width='30' ></span><img src='../../images/bank_kb.png' alt='Random Name' width='80' height='80'><br><span>국민은행</span></button>"
+			document.getElementById('bank_nh').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='농협' onclick='bank_check(this.value)'><img src='../../images/bank_nh.png' alt='Random Name' width='80' height='80'><br><span>농협은행</span></button>"
+			document.getElementById('bank_shinhan').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='신한' onclick='bank_check(this.value)'><img src='../../images/bank_shinhan.png' alt='Random Name' width='80' height='80'><br><span>신한은행</span></button>"
+			document.getElementById('bank_woori').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우리' onclick='bank_check(this.value)'><img src='../../images/bank_woori.png' alt='Random Name' width='80' height='80'><br><span>우리은행</span></button>"
+			document.getElementById('card_com').value = bank_select;
+		} else if (bank_select == '신한') {
+			document.getElementById('bank_citi').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='씨티' onclick='bank_check(this.value)'><img src='../../images/bank_citi.png' alt='Random Name' width='80' height='80'><br><span>씨티은행</span></button>"
+			document.getElementById('bank_epost').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우체국' onclick='bank_check(this.value)'><img src='../../images/bank_epost.png' alt='Random Name' width='80' height='80'><br><span>우체국은행</span></button>"
+			document.getElementById('bank_hana').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='하나' onclick='bank_check(this.value)'><img src='../../images/bank_hana.png' alt='Random Name' width='80' height='80'><br><span>하나은행</span></button>"
+			document.getElementById('bank_ibk').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='기업' onclick='bank_check(this.value)'><img src='../../images/bank_ibk.png' alt='Random Name' width='80' height='80'><br><span>기업은행</span> </button>"
+			document.getElementById('bank_kakao').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='카카오' onclick='bank_check(this.value)'><img src='../../images/bank_kakao.png' alt='Random Name' width='80' height='80'><br><span>카카오뱅크</span></button>"
+			document.getElementById('bank_kb').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='국민' onclick='bank_check(this.value)'><img src='../../images/bank_kb.png' alt='Random Name' width='80' height='80'><br><span>국민은행</span></button>"
+			document.getElementById('bank_nh').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='농협' onclick='bank_check(this.value)'><img src='../../images/bank_nh.png' alt='Random Name' width='80' height='80'><br><span>농협은행</span></button>"
+			document.getElementById('bank_shinhan').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='신한' onclick='bank_check(this.value)'><span style='position: absolute; right: 10px;'><img src='../../images/check.png' width='30' ></span><img src='../../images/bank_shinhan.png' alt='Random Name' width='80' height='80'><br><span>신한은행</span></button>"
+			document.getElementById('bank_woori').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우리' onclick='bank_check(this.value)'><img src='../../images/bank_woori.png' alt='Random Name' width='80' height='80'><br><span>우리은행</span></button>"
+			document.getElementById('card_com').value = bank_select;
+		} else if (bank_select == '우리') {
+			document.getElementById('bank_citi').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='씨티' onclick='bank_check(this.value)'><img src='../../images/bank_citi.png' alt='Random Name' width='80' height='80'><br><span>씨티은행</span></button>"
+			document.getElementById('bank_epost').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우체국' onclick='bank_check(this.value)'><img src='../../images/bank_epost.png' alt='Random Name' width='80' height='80'><br><span>우체국은행</span></button>"
+			document.getElementById('bank_hana').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='하나' onclick='bank_check(this.value)'><img src='../../images/bank_hana.png' alt='Random Name' width='80' height='80'><br><span>하나은행</span></button>"
+			document.getElementById('bank_ibk').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='기업' onclick='bank_check(this.value)'><img src='../../images/bank_ibk.png' alt='Random Name' width='80' height='80'><br><span>기업은행</span> </button>"
+			document.getElementById('bank_kakao').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='카카오' onclick='bank_check(this.value)'><img src='../../images/bank_kakao.png' alt='Random Name' width='80' height='80'><br><span>카카오뱅크</span></button>"
+			document.getElementById('bank_kb').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='국민' onclick='bank_check(this.value)'><img src='../../images/bank_kb.png' alt='Random Name' width='80' height='80'><br><span>국민은행</span></button>"
+			document.getElementById('bank_nh').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='농협' onclick='bank_check(this.value)'><img src='../../images/bank_nh.png' alt='Random Name' width='80' height='80'><br><span>농협은행</span></button>"
+			document.getElementById('bank_shinhan').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='신한' onclick='bank_check(this.value)'><img src='../../images/bank_shinhan.png' alt='Random Name' width='80' height='80'><br><span>신한은행</span></button>"
+			document.getElementById('bank_woori').innerHTML = "<br><button class='w-btn w-btn-gra2 w-btn-gra-anim' type='button' id='bank_select' name='bank_select' value='우리' onclick='bank_check(this.value)'><span style='position: absolute; right: 10px;'><img src='../../images/check.png' width='30' ></span><img src='../../images/bank_woori.png' alt='Random Name' width='80' height='80'><br><span>우리은행</span></button>"
+			document.getElementById('card_com').value = bank_select;
+		}
+
+	}//end
+</script>
 
 
 

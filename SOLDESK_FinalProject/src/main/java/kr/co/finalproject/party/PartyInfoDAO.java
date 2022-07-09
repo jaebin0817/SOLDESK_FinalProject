@@ -430,7 +430,55 @@ public class PartyInfoDAO {
     	
     	return list;
     }//list() end
+
 	
+	public int updatebank(PartyInfoDTO dto) {
+		int cnt = 0;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" UPDATE party_info ");
+			sql.append(" SET bank_name = ?, bank_account = ? ");
+			sql.append(" WHERE mem_id = ? ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, dto.getBank_name());
+			pstmt.setString(2, dto.getBank_account());
+			pstmt.setString(3, dto.getMem_id());
+			
+			cnt = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("계좌 변경 실패: "+ e);
+		}finally {
+			DBclose.close(con, pstmt);
+		}
+		return cnt;
+	}
+
+
+	public int insertbank(PartyInfoDTO dto) {
+		int cnt = 0;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" INSERT INTO party_info(mem_id, bank_name, bank_account) ");
+			sql.append(" VALUES(?,?,?) ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, dto.getMem_id());
+			pstmt.setString(2, dto.getBank_name());
+			pstmt.setString(3, dto.getBank_account());
+			
+			cnt = pstmt.executeUpdate();
+			
+		}catch (Exception e) {
+			System.out.println("계좌등록 실패: "+ e);
+		}finally {
+			DBclose.close(con, pstmt);
+		}
+		return cnt;
+	}
 	
 	
 	

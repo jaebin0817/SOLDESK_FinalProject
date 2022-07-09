@@ -135,8 +135,8 @@
 			</tr>
 			<tr class="review-btns" id="review-btns${ no }">
 				<td colspan="2" style="text-align:right;" id="review-btn${ no }">
-					<button class="btn btn-default btn-sm" onclick="href='reviewupdate.do?mcode=${ dto.mcode }&rev_code=${ dto.rev_code }'">수정</button>
-					<button class="btn btn-default btn-sm" onclick="href='reviewdelete.do?mcode=${ dto.mcode }&rev_code=${ dto.rev_code }'">삭제</button>
+					<button class="btn btn-default btn-sm" onclick="location.href='reviewupdate.do?mcode=${ dto.mcode }&rev_code=${ dto.rev_code }'">수정</button>
+					<button class="btn btn-default btn-sm" onclick="location.href='reviewdelete.do?mcode=${ dto.mcode }&rev_code=${ dto.rev_code }'">삭제</button>
 		   		</td>
 	   		</tr>
 	   		<tr><td colspan="2"></td></tr>
