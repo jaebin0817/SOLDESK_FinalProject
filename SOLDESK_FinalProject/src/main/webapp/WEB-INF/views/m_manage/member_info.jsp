@@ -5,6 +5,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>    
     
 <%@ include file="../header.jsp"%>
+
+<script type="text/javascript" src="../js/member_action.js"></script>
 <!-- 본문시작 member_info.jsp -->
 
 <!-- 회원 정보 수정 시작 -->
@@ -18,7 +20,7 @@
 		<br><br>
 	</div>
 	
-	<form name="mem_info" id="mem_info" method="post" action="member_info.do" >
+	<form name="mem_info" id="mem_info" method="post" onsubmit="return FormCheck();">
 	
 		<table class="table memTable" id="memTable">
 			
@@ -41,27 +43,26 @@
 		    <th>현재비밀번호*</th>
 		    <td>
 		      <input type="password" class="form-control" name="mem_pw" id="mem_pw" size="20" required>
+		      <font id="checkPw" size="2"></font>
 		    </td>
-		    <td></td>
 		</tr>
 		<tr>
 		    <th>신규비밀번호</th>
 		    <td>
 		      <input type="password" class="form-control" name="new_pw" id="new_pw" size="20">
 		    </td>
-		    <td></td>
 		</tr>
 		<tr>
 		    <th>비밀번호 확인</th>
 		    <td>
-		      <input type="password" class="form-control" name="new_pw" id="new_pw" size="20">
+		      <input type="password" class="form-control" name="newre_pw" id="newre_pw" size="20" onblur="newpwCheck()">
+		      <font id="checknPw" size="2"></font>
 		    </td>
-		    <td></td>
 		</tr>
 		<tr>
 		    <th>연락처*</th>
 		    <td>
-		      <input type="text" class="form-control" name="mem_phone" id="mem_phone" value="${ dto.mem_phone }" required>
+		      <input type="text" class="form-control" name="mem_phone" id="mem_phone" value="${ dto.mem_phone }" required onblur="phoneCheck()">
 		    </td>
 		    <td></td>
 		</tr>
@@ -86,8 +87,8 @@
 	
 		</table>
 				
-		<input type="submit" value="수정"  id="memBtn" class="btn btn-danger">
-        <input type="reset"  value="취소"  id="cancle" class="btn btn-danger">
+		<input type="submit" value="수정"  id="memBtn" class="btn"/>
+        <input type="reset"  value="취소"  id="cancle" class="btn"/>
 		<br><br><br>
 		
 	</form>

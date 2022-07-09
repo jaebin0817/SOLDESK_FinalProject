@@ -19,7 +19,7 @@
 			혼자 사용할 때 금액 : ${ ott_price }<br><hr>
 		    
 		    <div>
-		      <input type="submit" value="시작하기" class="btn btn-danger">
+		      <input type="submit" value="시작하기" class="w-btn-neon2">
 		    </div>  
 	    </form>
 	

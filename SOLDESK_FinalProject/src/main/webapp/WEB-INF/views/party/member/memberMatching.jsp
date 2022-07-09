@@ -13,10 +13,14 @@
 		<input type="hidden" id="ott_price" name="ott_price" value="${ ott_price }">
 		<h1>${ ott_name }</h1>
 		
-		<h3>${ mem_id }님! 현재 가입 가능한 ${ ott_name } 파티가 없습니다</h3>
-		<h3> 매칭이 완료되면 결제 후 마이페이지에서 가입한 파티의 정보(ID,PW)를 확인 할 수 있습니다</h3>
 		<br>
-		<input type="button" value="홈화면"  class="btn btn-danger" onclick="location.href='<%=request.getContextPath()%>/home.do'">
+		<br>
+		<h3>${ mem_id }님! 현재 가입 가능한 ${ ott_name } 파티가 없습니다</h3>
+		<h3>결제는 매칭이 완료되면 진행됩니다~</h3>
+		<h3>매칭이 완료되면 결제 후 마이페이지에서</h3>
+		<h3>가입한 파티의 정보(ID,PW)를 확인 할 수 있습니다</h3>
+		<br>
+		<input type="button" value="홈화면"  class="w-btn w-btn-red" onclick="location.href='<%=request.getContextPath()%>/home.do'">
 	</form>
 	</div>
 

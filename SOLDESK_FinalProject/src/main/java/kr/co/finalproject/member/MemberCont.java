@@ -123,9 +123,7 @@ public class MemberCont {
 			
 			session.setAttribute("s_mem_id", mem_id);
 			session.setAttribute("s_mem_pw", mem_pw);
-			session.setAttribute("s_mem_lv", mem_lv);
-			
-			
+			session.setAttribute("s_mem_lv", mem_lv);			
 			
 			String c_id=Utility.checkNull(req.getParameter("c_id"));	
 			Cookie cookie=null;
@@ -256,6 +254,66 @@ public class MemberCont {
 		mav.setViewName("m_manage/myaccount");
 		return mav;
 	}
+
+	
+	@RequestMapping(value="/m_manage/member_bank.do", method = RequestMethod.GET)
+	public ModelAndView member_bank(HttpServletRequest req) {
+		ModelAndView mav = new ModelAndView();
+		partydao = new PartyInfoDAO();
+		
+		HttpSession session = req.getSession();
+		String mem_id = (String) session.getAttribute("s_mem_id");
+		mav.setViewName("m_manage/member_bank");
+		mav.addObject("bankdto", partydao.readBank(mem_id));
+		
+		return mav;
+	}
+	
+	@RequestMapping(value= "/m_manage/member_bank.do", method = RequestMethod.POST)
+	public ModelAndView member_bankProc(@ModelAttribute PartyInfoDTO dto, HttpServletRequest req) {
+		ModelAndView mav = new ModelAndView();
+		partydao = new PartyInfoDAO();
+		PartyInfoDTO checkdto = null;
+		checkdto = new PartyInfoDTO();
+		dto = new PartyInfoDTO();
+		
+		HttpSession session = req.getSession();
+		String mem_id = (String) session.getAttribute("s_mem_id");
+		String bank_name= req.getParameter("bank_name");
+		String bank_account = req.getParameter("bank_account");
+		
+		checkdto = dto;
+		checkdto.setBank_name(bank_name);
+		checkdto.setBank_account(bank_account);
+		checkdto.setMem_id(mem_id);
+		
+		dto = partydao.readBank(mem_id);
+		if(dto == null) {
+			System.out.println("등록된 계좌가 없습니다");
+		}else {
+			int cnt = partydao.updatebank(checkdto);
+			System.out.println(checkdto);
+			if(cnt == 0) {
+				String msg="<p>계좌 수정 실패</p>";
+				String link1="<input type='button' value='다시시도' onclick='javascript:history.back()'>";
+	            String link2="<input type='button' value='마이페이지' onclick='location.href=\"mypage.do\"'>";
+	            mav.addObject("msg", msg);
+	            mav.addObject("link1", link1);
+	            mav.addObject("link2", link2);
+			}else {
+				String msg="<p>계좌 수정 성공</p>";
+				String link2="<input type='button' value='마이페이지' onclick='location.href=\"mypage.do\"'>";
+				mav.addObject("msg", msg);
+				mav.addObject("link2", link2);   
+			}
+		}
+		
+		mav.addObject("bankdto", dto);
+		mav.setViewName("m_manage/msgView");
+				
+		return mav;
+	}	
+	
 	
 	
 	@RequestMapping("/m_manage/mysubscribe.do")
@@ -339,7 +397,6 @@ public class MemberCont {
 		dto.setMem_phone(mem_phone);
 		dto.setMem_email(mem_email);
 		dto.setMem_birth(mem_birth);
-
 
 		int cnt=dao.insert(dto);
 
@@ -637,6 +694,35 @@ public class MemberCont {
 		}
 	}
 
+
+	@RequestMapping(value="PhoneCheck.do", method = RequestMethod.POST)
+	public void phonecheck(HttpServletRequest req, HttpServletResponse resp) {
+		
+		try {
+			req.setCharacterEncoding("UTF-8");
+			resp.setCharacterEncoding("UTF-8");
+			
+			String mem_phone = req.getParameter("mem_phone");
+			PrintWriter out=resp.getWriter();
+			
+			MemberDAO dao = new MemberDAO();
+			
+			int result = dao.ckPhone(mem_phone);
+			if(result ==1){
+				System.out.println("사용 가능한 전화번호입니다");
+			}else if(result == 0){
+				System.out.println("기존에 있는 전화번호입니다");
+			}
+			System.out.println(result);
+			out.write(result + "");
+			out.flush(); 
+            out.close();
+		}catch (Exception e) {
+			System.out.println("응답실패: "+ e);
+		}
+	}//phonecheck() end
+
+	
 	
 	@RequestMapping(value = "/m_manage/partymemexit.do", method = RequestMethod.POST)
 	public ModelAndView partymemexit(HttpServletRequest req) {

@@ -400,6 +400,35 @@ public class MemberDAO {
 		return result;
 	}
 
+	
+	public int ckPhone(String mem_phone) {
+		int result = -1;
+		try {
+			con = dbopen.getConnection();
+			sql = new StringBuilder();
+			sql.append(" SELECT mem_phone ");
+			sql.append(" FROM member_info ");
+			sql.append(" WHERE mem_phone=? ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, mem_phone);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = 0;
+			}else {
+				result = 1;
+			}
+			
+		}catch (Exception e) {
+			System.out.println("전화번호 체크 실패: "+e);
+		}
+		
+		return result;
+	}
+	
+	
 	public boolean findId(MemberDTO dto) {
 		boolean flag = false;
 		try {

@@ -10,6 +10,7 @@
   <meta charset="utf-8">
   <link rel="shortcut icon" href="#">
   <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/button.css">  
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
@@ -73,7 +74,7 @@
 	</div>
 	<div id="searchbtns" class="container"><br>&nbsp;&nbsp;   
 		<c:forEach var="dto" items="${ keywords }" begin="1" end="8" step="1">
-				<button class="btn btn-danger" onclick="location.href='/keysearch.do?key_name=${ dto.key_name }&key_code=${ dto.key_code }'">#${ dto.key_name }</button>&nbsp;&nbsp;
+			<button class="w-btn w-btn-red" onclick="location.href='/keysearch.do?key_name=${ dto.key_name }&key_code=${ dto.key_code }'">#${ dto.key_name }</button>&nbsp;&nbsp;
 		</c:forEach>	
 	</div>
 	<!-- 컨텐츠 검색 끝 -->
