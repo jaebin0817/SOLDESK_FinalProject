@@ -195,7 +195,7 @@
 <div class="container text-center">
 	<div id="form_set" class="collapse">
 		<form name="cardfrm" id="cardfrm" method="post"
-			action="cardupdateproc.do" onsubmit="return check()">
+			action="member_cardregproc.do" onsubmit="return check()">
 			<hr>
 			<hr>
 			<hr>

@@ -33,7 +33,7 @@
 				<div class="account-btn">
 					<c:choose>
 						<c:when test="${ cardmsg1 != null }">
-							<button class="btn" onclick="location.href='member_card.do?mem_id=${ s_mem_id }'">등록</button>
+							<button class="btn" onclick="location.href='member_cardreg.do?mem_id=${ s_mem_id }'">등록</button>
 						</c:when>
 						<c:otherwise>
 							<button class="btn" onclick="location.href='member_card.do?mem_id=${ s_mem_id }'">수정</button>
@@ -68,11 +68,6 @@
 		
 
 	</div>
-	<!-- 계좌등록/변경 끝 -->
-
-
-
-
 	
 
 <!-- 본문끝 -->
