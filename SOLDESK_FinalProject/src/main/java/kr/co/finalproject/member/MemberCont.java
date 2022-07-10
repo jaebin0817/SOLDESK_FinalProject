@@ -254,65 +254,6 @@ public class MemberCont {
 		mav.setViewName("m_manage/myaccount");
 		return mav;
 	}
-
-	
-	@RequestMapping(value="/m_manage/member_bank.do", method = RequestMethod.GET)
-	public ModelAndView member_bank(HttpServletRequest req) {
-		ModelAndView mav = new ModelAndView();
-		partydao = new PartyInfoDAO();
-		
-		HttpSession session = req.getSession();
-		String mem_id = (String) session.getAttribute("s_mem_id");
-		mav.setViewName("m_manage/member_bank");
-		mav.addObject("bankdto", partydao.readBank(mem_id));
-		
-		return mav;
-	}
-	
-	@RequestMapping(value= "/m_manage/member_bank.do", method = RequestMethod.POST)
-	public ModelAndView member_bankProc(@ModelAttribute PartyInfoDTO dto, HttpServletRequest req) {
-		ModelAndView mav = new ModelAndView();
-		partydao = new PartyInfoDAO();
-		PartyInfoDTO checkdto = null;
-		checkdto = new PartyInfoDTO();
-		dto = new PartyInfoDTO();
-		
-		HttpSession session = req.getSession();
-		String mem_id = (String) session.getAttribute("s_mem_id");
-		String bank_name= req.getParameter("bank_name");
-		String bank_account = req.getParameter("bank_account");
-		
-		checkdto = dto;
-		checkdto.setBank_name(bank_name);
-		checkdto.setBank_account(bank_account);
-		checkdto.setMem_id(mem_id);
-		
-		dto = partydao.readBank(mem_id);
-		if(dto == null) {
-			System.out.println("등록된 계좌가 없습니다");
-		}else {
-			int cnt = partydao.updatebank(checkdto);
-			System.out.println(checkdto);
-			if(cnt == 0) {
-				String msg="<p>계좌 수정 실패</p>";
-				String link1="<input type='button' value='다시시도' onclick='javascript:history.back()'>";
-	            String link2="<input type='button' value='마이페이지' onclick='location.href=\"mypage.do\"'>";
-	            mav.addObject("msg", msg);
-	            mav.addObject("link1", link1);
-	            mav.addObject("link2", link2);
-			}else {
-				String msg="<p>계좌 수정 성공</p>";
-				String link2="<input type='button' value='마이페이지' onclick='location.href=\"mypage.do\"'>";
-				mav.addObject("msg", msg);
-				mav.addObject("link2", link2);   
-			}
-		}
-		
-		mav.addObject("bankdto", dto);
-		mav.setViewName("m_manage/msgView");
-				
-		return mav;
-	}	
 	
 	
 	
@@ -763,7 +704,158 @@ public class MemberCont {
 		return mav;
 
 	}
+
 	
+	@RequestMapping(value = "/m_manage/member_cardreg.do" , method = RequestMethod.GET)
+	public ModelAndView cardreg(@ModelAttribute PaymentCardDTO dto, HttpServletRequest req) {
+		ModelAndView mav=new ModelAndView();
+		HttpSession session = req.getSession();
+		String mem_id=session.getAttribute("s_mem_id").toString();
+
+		dto=carddao.cardRead(mem_id);
+		mav.addObject("dto", dto);
+		mav.setViewName("m_manage/member_cardreg");
+		return mav;
+	}//cardreg() end
+	
+	@RequestMapping(value = "/m_manage/member_cardregproc.do" , method = RequestMethod.POST)
+	public ModelAndView memberaccount(@ModelAttribute PaymentCardDTO dto, HttpServletRequest req) {
+		ModelAndView mav=new ModelAndView();
+			
+		HttpSession session = req.getSession();
+		String s_mem_id=session.getAttribute("s_mem_id").toString();
+		
+		String card_m = req.getParameter("card_m");
+		String card_y = req.getParameter("card_y");
+		String card_exp= card_m + "/" + card_y;
+		dto.setCard_exp(card_exp);
+		dto.setMem_id(s_mem_id);
+		String msg="";
+		
+		mav.addObject("mem_id",s_mem_id);
+
+		int cnt=carddao.cardIns(dto);
+		if(cnt==0) {
+			msg+="<script>";
+			msg+="    alert('등록실패 \n정보를 다시 확인해 주세요');";
+			msg+="    location.href='javascript:history.back();'";
+			msg+="</script>";
+		}else {
+			msg+="<script>";
+			msg+="    alert('카드가 등록 되었습니다');";
+			msg+="    location.href='javascript:history.go(-2);'";
+			msg+="</script>";
+		}//if end
+		mav.setViewName("party/member/msgView");
+		mav.addObject("msg", msg);
+		return mav;
+	}//cardupdateproc() end
+	
+	
+
+	@RequestMapping(value = "/m_manage/member_card.do" , method = RequestMethod.GET)
+	public ModelAndView cardupdate2(@ModelAttribute PaymentCardDTO dto, HttpServletRequest req) {
+		ModelAndView mav=new ModelAndView();
+		HttpSession session = req.getSession();
+		String mem_id=session.getAttribute("s_mem_id").toString();
+
+		dto=carddao.cardRead(mem_id);
+		mav.addObject("dto", dto);
+		mav.setViewName("m_manage/member_card");
+		return mav;
+	}//cardupdate() end
+	
+	@RequestMapping(value = "/m_manage/cardupdateproc.do" , method = RequestMethod.POST)
+	public ModelAndView cardupdateproc(@ModelAttribute PaymentCardDTO dto, HttpServletRequest req) {
+		ModelAndView mav=new ModelAndView();
+		HttpSession session = req.getSession();
+		String s_mem_id=session.getAttribute("s_mem_id").toString();
+
+		String card_m = req.getParameter("card_m");
+		String card_y = req.getParameter("card_y");
+		String card_exp= card_m + "/" + card_y;
+		dto.setCard_exp(card_exp);
+		dto.setMem_id(s_mem_id);
+		String msg="";
+
+		mav.addObject("mem_id",s_mem_id);
+
+		int cnt=carddao.updatecard(dto);
+		if(cnt==0) {
+			msg+="<script>";
+			msg+="    alert('수정 실패\\n정보를 다시 확인해 주세요');";
+			msg+="    location.href='javascript:history.back();'";
+			msg+="</script>";
+		}else {
+			msg+="<script>";
+			msg+="    alert('카드정보가 변경 되었습니다');";
+			msg+="    location.href='javascript:history.go(-2);'";
+			msg+="</script>";
+		}//if end
+		mav.setViewName("party/member/msgView");
+		mav.addObject("msg", msg);
+		return mav;
+	}//cardupdateproc() end
+	
+	
+	@RequestMapping(value="/m_manage/member_bank.do", method = RequestMethod.GET)
+	public ModelAndView member_bank(HttpServletRequest req) {
+		ModelAndView mav = new ModelAndView();
+		partydao = new PartyInfoDAO();
+		
+		HttpSession session = req.getSession();
+		String mem_id = (String) session.getAttribute("s_mem_id");
+		mav.setViewName("m_manage/member_bank");
+		mav.addObject("bankdto", partydao.readBank(mem_id));
+		
+		return mav;
+	}
+	
+	
+	@RequestMapping(value= "/m_manage/member_bank.do", method = RequestMethod.POST)
+	public ModelAndView member_bankProc(@ModelAttribute PartyInfoDTO dto, HttpServletRequest req) {
+		ModelAndView mav = new ModelAndView();
+		partydao = new PartyInfoDAO();
+		PartyInfoDTO checkdto = null;
+		checkdto = new PartyInfoDTO();
+		dto = new PartyInfoDTO();
+		
+		HttpSession session = req.getSession();
+		String mem_id = (String) session.getAttribute("s_mem_id");
+		String bank_name= req.getParameter("bank_name");
+		String bank_account = req.getParameter("bank_account");
+		
+		checkdto = dto;
+		checkdto.setBank_name(bank_name);
+		checkdto.setBank_account(bank_account);
+		checkdto.setMem_id(mem_id);
+		String msg="";
+		
+		dto = partydao.readBank(mem_id);
+		if(dto == null) {
+			System.out.println("등록된 계좌가 없습니다");
+		}else {
+			int cnt = partydao.updatebank(checkdto);
+			System.out.println(checkdto);
+			if(cnt==0) {
+				msg+="<script>";
+				msg+="    alert('수정 실패\\n정보를 다시 확인해 주세요');";
+				msg+="    location.href='javascript:history.back();'";
+				msg+="</script>";
+			}else {
+				msg+="<script>";
+				msg+="    alert('카드정보가 변경 되었습니다');";
+				msg+="    location.href='javascript:history.go(-2);'";
+				msg+="</script>";
+			}//if end
+		}
+		
+		mav.addObject("bankdto", dto);
+		mav.addObject("msg", msg);
+		mav.setViewName("m_manage/msgView");
+				
+		return mav;
+	}	
 		
 		
 	

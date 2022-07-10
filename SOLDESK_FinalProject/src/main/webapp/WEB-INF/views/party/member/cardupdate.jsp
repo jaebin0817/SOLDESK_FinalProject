@@ -30,31 +30,31 @@
 					//해당 그룹에 대한 카드 종류를 표시
 					document.getElementById('notice').innerHTML = '<div class="alert alert-success"><p id="card"></p><p id="cardcom"></p><div>';
 					if (types[i - 1] == 'Visa') {
-						document.getElementById('card').innerHTML = " <img src='../../images/Visa.png' width='40px'>  ";
+						document.getElementById('card').innerHTML = " <img src='../../images/card_Visa.png' width='40px'>  ";
 						document.getElementById('cardcom').value = types[i - 1];
 						document.getElementById('cardcom').innerHTML = types[i - 1];
 					} else if (types[i - 1] == 'BC') {
-						document.getElementById('card').innerHTML = " <img src='../../images/bccard.png' width='40px'>  ";
+						document.getElementById('card').innerHTML = " <img src='../../images/card_bccard.png' width='40px'>  ";
 						document.getElementById('cardcom').value = types[i - 1];
 						document.getElementById('cardcom').innerHTML = types[i - 1];
 					} else if (types[i - 1] == 'MasterCard') {
-						document.getElementById('card').innerHTML = " <img src='../../images/master.png' width='40px'>  ";
+						document.getElementById('card').innerHTML = " <img src='../../images/card_master.png' width='40px'>  ";
 						document.getElementById('cardcom').value = types[i - 1];
 						document.getElementById('cardcom').innerHTML = types[i - 1];
 					} else if (types[i - 1] == 'Discover') {
-						document.getElementById('card').innerHTML = " <img src='../../images/discover.jpg' width='40px'>  ";
+						document.getElementById('card').innerHTML = " <img src='../../images/card_discover.jpg' width='40px'>  ";
 						document.getElementById('cardcom').value = types[i - 1];
 						document.getElementById('cardcom').innerHTML = types[i - 1];
 					} else if (types[i - 1] == 'American Express') {
-						document.getElementById('card').innerHTML = " <img src='../../images/American_Expres.png' width='40px'>  ";
+						document.getElementById('card').innerHTML = " <img src='../../images/card_American_Expres.png' width='40px'>  ";
 						document.getElementById('cardcom').value = types[i - 1];
 						document.getElementById('cardcom').innerHTML = types[i - 1];
 					} else if (types[i - 1] == 'Diners Club') {
-						document.getElementById('card').innerHTML = " <img src='../../images/dinersclub.jpg' width='40px'>  ";
+						document.getElementById('card').innerHTML = " <img src='../../images/card_dinersclub.jpg' width='40px'>  ";
 						document.getElementById('cardcom').value = types[i - 1];
 						document.getElementById('cardcom').innerHTML = types[i - 1];
 					} else if (types[i - 1] == 'JCB') {
-						document.getElementById('card').innerHTML = " <img src='../../images/jcb.png' width='40px'>  ";
+						document.getElementById('card').innerHTML = " <img src='../../images/card_jcb.png' width='40px'>  ";
 						document.getElementById('cardcom').value = types[i - 1];
 						document.getElementById('cardcom').innerHTML = types[i - 1];
 					}//if end
