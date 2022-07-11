@@ -38,6 +38,7 @@ public class ContentcriCont {
 			String mem_id=(String)session.getAttribute("s_mem_id").toString();
 			
 			dto = new ContentcriDTO();
+			
 			ContentcriDTO cri_dto = dto;
 			cri_dto.setMem_id(mem_id);
 			cri_dto.setMcode(mcode);
@@ -48,6 +49,7 @@ public class ContentcriCont {
 			//System.out.println(mem_id);
 			
 			dto = dao.read(mcode, mem_id);
+			
 			if(dto == null) {
 				like_check = 1;
 				cri_dto.setCri_like(like_check);
@@ -65,11 +67,11 @@ public class ContentcriCont {
 				dao.like_update(cri_dto);
 				dao.listlike_update(listdto, like_check);
 			}
-			
 			System.out.println("like_check: "+like_check+" watch_check: "+ watch_check + " point_check: " + point_check);
 			
 			PrintWriter out = resp.getWriter();
-			out.println("서버 응답 성공");
+			int result = like_check;
+			out.println(result + "");
 			out.flush();
 			out.close();
 			
@@ -105,8 +107,9 @@ public class ContentcriCont {
 			}else {
 				if(watch_check == 1) 
 					watch_check = 0;
-				else 
+				else {
 					watch_check = 1;
+				}
 				System.out.println(watch_check);
 				cri_dto.setCri_watch(watch_check);
 				dao.watch_update(cri_dto);
@@ -115,7 +118,8 @@ public class ContentcriCont {
 			System.out.println("like_check: "+like_check+" watch_check: "+ watch_check + " point_check: " + point_check);
 			
 			PrintWriter out = resp.getWriter();
-			out.println("서버 응답 성공");
+			int result = watch_check;
+			out.println(result + "");
 			out.flush();
 			out.close();
 		} catch (Exception e) {
@@ -164,7 +168,8 @@ public class ContentcriCont {
 			System.out.println("like_check: "+like_check+" watch_check: "+ watch_check + " point_check: " + point_check);
 			
 			PrintWriter out = resp.getWriter();
-			out.println("서버 응답 성공");
+			int result = point_check;
+			out.println(result + "");
 			out.flush();
 			out.close();
 			

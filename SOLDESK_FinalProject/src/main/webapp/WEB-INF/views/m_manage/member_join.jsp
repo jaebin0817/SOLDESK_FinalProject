@@ -21,18 +21,18 @@
 		<br><br>
 	</div>
 	
-	<form name="mem_join" id="mem_join" method="post" onsubmit="return FormCheck();">
+	<form name="mem_join" id="mem_join" method="post" action="/member_join.do" onsubmit="return FormCheck();">
 	
 		<table class="table memTable" id="memTable">
 			
 		<tr>
 		    <th>아이디*</th>
 		    <td>
-		      <input type="text" class="form-control" name="mem_id" id="mem_id" size="10" onblur="idClickCheck()" required>
+		      <input type="text" class="form-control" name="mem_id" id="mem_id" size="10" required>
 		      <font id="checkId" size="2"></font>
 		    </td>
 		    <td>
-		      <input type="button" class="btn" value="ID 중복확인" id="idcheck" onclick="return idCheck()">
+		    	<button type="button" class="btn btn-default" id="idcheck" onclick="return idCheck()">ID 중복확인</button>
 		    </td>
 		</tr>
 		<tr>
@@ -79,8 +79,8 @@
 	
 		</table>
 				
-		<input type="submit" value="가입"  id="memBtn" class="btn"/>
-        <input type="reset"  value="취소"  id="cancle" class="btn"/>
+		<input type="submit" value="가입"  id="memBtn" class="btn btn-danger"/>
+        <input type="reset"  value="취소"  id="cancle" class="btn btn-danger"/>
 		<br><br><br>
 		
 	</form>

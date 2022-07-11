@@ -46,7 +46,7 @@
 		</c:if>
 	</form>
 
-
+	<div class="mdate"><h4>${dto.mdate}년 작품</h4></div>
 	<div class="mrate">컨텐츠 평점 : ${dto.mrate}</div>
 	<div class="like">좋아요 수 : ${dto.cri_like}</div>
 	<hr> 
@@ -61,7 +61,6 @@
 		<c:otherwise>
 			<div class="btn-group">
 				<button class="btn btn-danger btn-lg" type="button" id="likeBtn" onclick="likeCheck()">😍 좋아요</button>
-				<button class="btn btn-danger btn-lg" type="button" id="watchBtn" onclick="watchCheck()">✔ 봤어요</button>
 				<button class="btn btn-danger btn-lg" type="button" id="pointBtn" onclick="pointCheck()">♥ 찜하기</button>
 		 	</div>
 		</c:otherwise>

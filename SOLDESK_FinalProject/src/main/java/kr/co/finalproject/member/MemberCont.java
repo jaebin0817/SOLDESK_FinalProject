@@ -65,7 +65,7 @@ public class MemberCont {
 	}
 
 	
-	@RequestMapping("/m_manage/mypage.do")
+	@RequestMapping({"/m_manage/mypage.do", "/mypage.do"})
 	public String mypage() {
 		return "m_manage/mypage";
 	}	
@@ -186,7 +186,7 @@ public class MemberCont {
 	}
 	
 	
-	@RequestMapping(value = "/m_manage/member_info.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/member_info.do", method = RequestMethod.POST)
 	public ModelAndView member_infoProc(@ModelAttribute MemberDTO dto, HttpServletRequest req) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("m_manage/msgView");
@@ -217,7 +217,8 @@ public class MemberCont {
             mav.addObject("link2", link2);
 		}else {
 			String msg="<p>회원 정보 수정 성공</p>";
-			String link2="<input type='button' value='마이페이지' onclick='location.href=\"mypage.do\"'>";
+			//String link2="<input type='button' value='마이페이지' onclick='location.href=\"mypage.do\"'>";
+			String link2="";
 			mav.addObject("msg", msg);
 			mav.addObject("link2", link2);   
 		}
@@ -257,7 +258,7 @@ public class MemberCont {
 	
 	
 	
-	@RequestMapping("/m_manage/mysubscribe.do")
+	@RequestMapping({"/m_manage/mysubscribe.do", "/mysubscribe.do"})
 	public ModelAndView mysubscribe(HttpServletRequest req, HttpServletResponse resp, SubscribeInfoDTO dto) {
 		ModelAndView mav = new ModelAndView();
 		
@@ -358,13 +359,13 @@ public class MemberCont {
 	}
 	
 	
-	@RequestMapping(value = "/member_retire.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/m_manage/member_retire.do", method = RequestMethod.GET)
 	public String member_retire() {
 		return "m_manage/member_retire";
 	}
 
 	
-	@RequestMapping(value = "/member_retire.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/m_manage/member_retire.do", method = RequestMethod.POST)
 	public ModelAndView mem_reitreProc(HttpServletRequest req) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("m_manage/msgView");
