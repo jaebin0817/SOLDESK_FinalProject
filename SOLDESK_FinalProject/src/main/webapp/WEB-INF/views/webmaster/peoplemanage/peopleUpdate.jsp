@@ -25,6 +25,7 @@
 
 			
 	<form name="peoplefrm" id="peoplefrm" method="post" action="peopleupdateproc.do?pno=${ dto.pno }" enctype="multipart/form-data">
+		<input type="hidden" name="referrer" id="referrer">
 		<table class="table" style="margin:auto;">
 			<tr>
 			   <th>이름</th>
@@ -52,6 +53,11 @@
 
   </div>	
 	
+	<script>
+		var referrer= document.referrer;
+		$('#referrer').attr('value', referrer);
+		
+	</script>	
 
 
 

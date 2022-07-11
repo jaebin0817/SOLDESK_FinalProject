@@ -169,6 +169,7 @@ public class RecommendCont {
 	    ModelAndView mav = new ModelAndView();
 	    ContlistDAO contdao = new ContlistDAO();
 
+	    String referrer=req.getParameter("referrer");
 	    String basePath=req.getSession().getServletContext().getRealPath("/storage");
 	    MultipartFile r_photoMF=dto.getR_photoMF();
 	    
@@ -204,7 +205,7 @@ public class RecommendCont {
          }else {        	 			
  			msg+="<script>";
  			msg+="    alert('추천글 등록 성공');";
- 			msg+="    location.href='javascript:history.go(-2);'";
+ 			msg+="    location.href='"+referrer+"';";
  			msg+="</script>";
          }
         
@@ -222,8 +223,7 @@ public class RecommendCont {
 	    
 	    dto=dao.readRecTheme(r_num);
 	    String folder=req.getSession().getServletContext().getRealPath("/storage");
-	    String r_photo=dto.getR_photo();
-	    
+	    String r_photo=dto.getR_photo();	    
 	    
 	    int cnt= dao.recDelete(r_num);
 		String msg="";
@@ -239,7 +239,7 @@ public class RecommendCont {
 
  			msg+="<script>";
  			msg+="    alert('추천글 삭제 성공');";
- 			msg+="    location.href='javascript:history.go(-2);'";
+ 			msg+="    location.href='/themelist.do'";
  			msg+="</script>";
          }
         
@@ -288,7 +288,8 @@ public class RecommendCont {
 	public ModelAndView recupdateproc(RecommendDTO dto, ThemesDTO tdto, HttpServletRequest req) {
 	    ModelAndView mav = new ModelAndView();
 	    ContlistDAO contdao = new ContlistDAO();
-	    
+
+	    String referrer=req.getParameter("referrer");
 		int r_num = Integer.parseInt(req.getParameter("r_num"));
 	    String t_title=req.getParameter("t_title");
 		
@@ -339,7 +340,7 @@ public class RecommendCont {
          }else {        	 			
  			msg+="<script>";
  			msg+="    alert('추천글 수정 성공');";
- 			msg+="    location.href='javascript:history.go(-2);'";
+ 			msg+="    location.href='"+referrer+"';";
  			msg+="</script>";
          }
         

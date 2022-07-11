@@ -205,7 +205,8 @@ public class PeopleDAO {
 			sql.append(" SELECT pno, pname, pname_eng, pphoto ");
 			sql.append(" FROM people ");
 			sql.append(" WHERE pno LIKE '%"+pcode+"%' ");
-            sql.append(" LIMIT " + startRow + ", " + recordPerPage);
+			sql.append(" ORDER BY pno DESC ");
+			sql.append(" LIMIT " + startRow + ", " + recordPerPage);
 
 			pstmt = con.prepareStatement(sql.toString());
 

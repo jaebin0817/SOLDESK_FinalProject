@@ -81,7 +81,7 @@ public class ContentcriDAO {
 			sql = new StringBuilder();
 			if(like_check == 1) {
 				sql.append(" UPDATE contlist ");
-				sql.append(" SET cri_like = cri_like +1 ");
+				sql.append(" SET cri_like = IFNULL(cri_like +1, 1) ");
 				sql.append(" WHERE mcode = ? ");
 			} else {
 				sql.append(" UPDATE contlist ");
