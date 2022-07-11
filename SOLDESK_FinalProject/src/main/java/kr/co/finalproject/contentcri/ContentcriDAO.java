@@ -46,6 +46,7 @@ public class ContentcriDAO {
 		return cnt;
     		
     }//insert() end    
+
     
     public int like_update(ContentcriDTO dto) {
     	int cnt = 0;
@@ -72,22 +73,24 @@ public class ContentcriDAO {
     	return cnt;
     }//like_update() end
     
-    public int listlike_update(ContentcriDTO dto, ContlistDTO dto2) {
+    	
+    public int listlike_update(ContlistDTO dto, int like_check) {
     	int cnt = 0;
     	try {
     		con = dbopen.getConnection();
 			sql = new StringBuilder();
-			sql.append(" UPDATE contlist JOIN content_critic ");
-			sql.append(" ON contlist.mcode = content_critic.mcode ");
-			sql.append(" SET contlist.cri_like = "
-					+ "(SELECT SUM(content_critic.cri_like) FROM content_critic "
-					+ "WHERE content_critic.mcode = ?) ");
-			sql.append(" WHERE contlist.mcode = ? ");
+			if(like_check == 1) {
+				sql.append(" UPDATE contlist ");
+				sql.append(" SET cri_like = cri_like +1 ");
+				sql.append(" WHERE mcode = ? ");
+			} else {
+				sql.append(" UPDATE contlist ");
+				sql.append(" SET cri_like = cri_like-1 ");
+				sql.append(" WHERE mcode = ? ");
+			}
 			
 			pstmt=con.prepareStatement(sql.toString());
-			
 			pstmt.setInt(1, dto.getMcode());
-			pstmt.setInt(2, dto2.getMcode());
 			
 			cnt = pstmt.executeUpdate();
 			System.out.println("dao 성공");
@@ -99,6 +102,8 @@ public class ContentcriDAO {
     	
     	return cnt;
     }//listlike_update() end
+
+    
     
     public int watch_update(ContentcriDTO dto) {
 		int cnt = 0;

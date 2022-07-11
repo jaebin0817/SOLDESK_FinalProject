@@ -51,8 +51,9 @@ public class ContlistController {
 	      int recordPerPage=8;
 	      String col ="";
 	      String word="";
+	      String sort="";
 	      
-	      list = dao.list(col, word, nowPage, recordPerPage);
+	      list = dao.list(col, word, sort, nowPage, recordPerPage);
 	      
 	      mav.setViewName("contlist/contlist");
 	      mav.addObject("list", list);
