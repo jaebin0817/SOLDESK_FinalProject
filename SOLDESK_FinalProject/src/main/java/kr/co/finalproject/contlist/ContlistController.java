@@ -435,18 +435,59 @@ public class ContlistController {
           System.out.println("리뷰  입력 실패");
        }
        
-          ArrayList<ContlistDTO> list = null;
-
-	      int nowPage=1;
-	      int recordPerPage=8;
-	      String col ="";
-	      String word="";
-	      
-	      list = dao.list(col, word, nowPage, recordPerPage);
+        
+       dto=dao.contlistread(mcode);
+       String key_code = dto.getKey_code();
        
-          mav.setViewName("contlist/contlist");
-          mav.addObject("list", list);
-          mav.addObject("mcode", mcode);
+       ArrayList<SearchKeyDTO> keylist=new ArrayList<>() ;
+
+       StringTokenizer kc = new StringTokenizer(key_code, " || ");      
+       while(kc.hasMoreTokens()) { //토큰할 문자가 있는지?          
+     	  keylist.add(skdao.SearchKey(kc.nextToken()));    	  
+       }
+       
+       if(session.getAttribute("s_mem_id")!=null && session.getAttribute("s_mem_lv")!=null && session.getAttribute("s_mem_pw")!=null) {
+
+ 			String mem_lv=session.getAttribute("s_mem_lv").toString();
+ 			mav.addObject("mem_lv", mem_lv);    	  
+       }
+       
+       pdao=new PeopleDAO();
+       
+       String directors = dto.getDirector();
+       String actors = dto.getActor();
+       ArrayList<PeopleDTO> directorlist = new ArrayList<>();
+       ArrayList<PeopleDTO> actorlist = new ArrayList<>();
+     
+       
+       StringTokenizer dirSt = new StringTokenizer(directors, ", ");
+       while(dirSt.hasMoreTokens()) { //토큰할 문자가 있는지?
+           
+     	  directorlist.add(pdao.readPeople(dirSt.nextToken()));
+     	  
+       }
+       
+       StringTokenizer actSt = new StringTokenizer(actors, ", ");
+       while(actSt.hasMoreTokens()) { //토큰할 문자가 있는지?
+           
+     	  String pno = actSt.nextToken();
+     	  //System.out.println(pno);
+
+     	  actorlist.add(pdao.readPeople(pno));
+       }
+       
+       ArrayList<ReviewDTO> reviewlist = new ArrayList<ReviewDTO>();
+       
+       int nowPage=1;
+       int recordPerPage=3;
+       
+       reviewlist = revdao.list(nowPage, recordPerPage, mcode);
+       mav.setViewName("contlist/contlistread");
+       mav.addObject("dto", dto);
+       mav.addObject("keylist", keylist);
+       mav.addObject("directorlist", directorlist);
+       mav.addObject("actorlist", actorlist);
+       mav.addObject("reviewlist", reviewlist);
 
        return mav;
 
@@ -478,18 +519,24 @@ public class ContlistController {
        int rev_code=Integer.parseInt(req.getParameter("rev_code"));
        dto= revdao.readReviewOne(rev_code);
        
-       HttpSession session = req.getSession();      
-       String s_mem_id=session.getAttribute("s_mem_id").toString();
+       HttpSession session = req.getSession();
+       
+       String s_mem_id="";
+       
+       if(session.getAttribute("s_mem_id")!=null) {
+    	   s_mem_id=session.getAttribute("s_mem_id").toString();
+       }
+       
        String mem_id=dto.getMem_id();
        
        if(!(s_mem_id.equals(mem_id))) {//세션정보의 글의 작성자가 일치하지 않을때는 수정페이지로 넘어가지 않음
           
           String msg="<p> 작성자 본인만 글을 수정할 수 있습니다</p>";
              mav.addObject("msg", msg);
-           mav.setViewName("review/msgView");
+             mav.setViewName("review/msgView");
 
        }else {
-          mav.addObject("dto", dto);
+           mav.addObject("dto", dto);
            mav.setViewName("review/reviewUpdate");
        }
        

@@ -18,7 +18,7 @@
 
 
 <div class="container-fluid text-center" style="display: inline-block;" align="left">
-	<form name="frm" id="frm" method="post" action="contlistins.do">
+	<form name="frm" id="frm" method="post" action="contlistins.do?mcode=${ mcode }">
 		<input type="hidden" id="mcode" class="form-control" name="mcode" value="${ mcode }">
 
 			<table class="table">
