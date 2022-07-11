@@ -20,7 +20,7 @@
 		<br><br>
 	</div>
 	
-	<form name="mem_info" id="mem_info" method="post" onsubmit="return FormCheck();">
+	<form name="mem_info" id="mem_info" method="post" action="/member_info.do" onsubmit="return updateFormCheck();">
 	
 		<table class="table memTable" id="memTable">
 			
@@ -87,8 +87,9 @@
 	
 		</table>
 				
-		<input type="submit" value="수정"  id="memBtn" class="btn"/>
-        <input type="reset"  value="취소"  id="cancle" class="btn"/>
+		<input type="submit" value="수정"  id="memBtn" class="btn btn-default"/>
+        <input type="reset"  value="취소"  id="cancle" class="btn btn-default"/>
+        <input type="button" value="탈퇴" id="retire" class="btn btn-default" onclick="location.href='member_retire.do'"/>
 		<br><br><br>
 		
 	</form>

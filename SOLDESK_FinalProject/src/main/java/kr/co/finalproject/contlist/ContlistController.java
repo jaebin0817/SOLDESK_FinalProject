@@ -106,24 +106,28 @@ public class ContlistController {
 			}else if(!(gerne.equals(""))) {				
 				col="key_code";
 				word=gerne;
-			}else if(!(mrate.equals(""))) {				
+			}else if(!(mrate.equals(""))) {	
+				//System.out.println(mrate);
 				col="mrate";
 				word=mrate;
 			}
 			
 			list=dao.list(col, word, sort, nowPage, recordPerPage);
 			
-			if(ott!="N") {//ott버튼을 누른 상태일 때
+			//System.out.println(ott);
+			
+			if(!(ott.equals("N"))) {//ott버튼을 누른 상태일 때
 									
 				if(!(searchkey.equals(""))) {
 				      pno=dao.readPno(searchkey);
 				      if(pno==null) { pno=""; }
+				      list = dao.mainottsearch(ott, searchkey, pno, nowPage, recordPerPage);
+				}else {
+					  list = dao.ottRead(ott, col, word, sort, nowPage, recordPerPage);
 				}				
-								
-				  list = dao.ottRead(ott, col, word, sort, nowPage, recordPerPage);
+
 			}
-			
-		    
+					    
 		}catch (Exception e) {
 			System.out.println("응답실패: " + e);
 		}
@@ -277,8 +281,9 @@ public class ContlistController {
       int nowPage=1;
       int recordPerPage=8;
       String col ="key_code";
+      String sort="";
       
-      list = dao.list(col, word, nowPage, recordPerPage);
+      list = dao.list(col, word, sort, nowPage, recordPerPage);
       
       mav.setViewName("contlist/contlist");
       mav.addObject("list", list);
@@ -341,8 +346,19 @@ public class ContlistController {
 				col="mrate";
 				word=mrate;
 			}	      
-			
-			  list = dao.ottRead(ott, col, word, sort, nowPage, recordPerPage);
+				
+			if(!(searchkey.equals(""))) {
+			      pno=dao.readPno(searchkey);
+			      if(pno==null) { 
+			    	  list=dao.mainottsearch(ott, searchkey, nowPage, recordPerPage);
+			      }else {
+			    	  list = dao.mainottsearch(ott, searchkey, pno, nowPage, recordPerPage);
+			      }
+			      
+			}else {
+				  list = dao.ottRead(ott, col, word, sort, nowPage, recordPerPage);
+			}				
+
 			
 		}catch (Exception e) {
 			System.out.println("응답실패: " + e);
@@ -371,8 +387,9 @@ public class ContlistController {
        int nowPage=1;
        int recordPerPage=8;
        String col ="pno";
+       String sort="";
        
-       list = dao.list(col, word, nowPage, recordPerPage);
+       list = dao.list(col, word, sort, nowPage, recordPerPage);
 
        mav.setViewName("contlist/contlist");
        mav.addObject("list", list);
@@ -495,20 +512,39 @@ public class ContlistController {
    
     
     @RequestMapping({"reviewdelete.do", "contlist/reviewdelete.do"})
-    public ModelAndView delete(@ModelAttribute ReviewDTO dto2, ContlistDTO dto, HttpServletRequest req) {
+    public ModelAndView delete(@ModelAttribute ReviewDTO revdto, ContlistDTO dto, HttpServletRequest req) {
        ModelAndView mav=new ModelAndView();
        mav.setViewName("review/msgView");//어디로 보낼지 바꾸기
        int rev_code=Integer.parseInt(req.getParameter("rev_code"));
        
-       int cnt=revdao.delete(rev_code, dto2.getMcode());
-       if(cnt==0) {   
-          String msg="<p>해당 글 삭제 실패</p>";
-            mav.addObject("msg", msg);
-       }else {
-          String msg="<p>해당 글 삭제 성공</p>";
-            mav.addObject("msg", msg);
-       }//if end
+       revdto= revdao.readReviewOne(rev_code);
        
+       HttpSession session = req.getSession();
+       
+       String s_mem_id="";
+       
+       if(session.getAttribute("s_mem_id")!=null) {
+    	   s_mem_id=session.getAttribute("s_mem_id").toString();
+       }
+       
+       String mem_id=revdto.getMem_id();
+       String msg="";
+       if(!(s_mem_id.equals(mem_id))) {//세션정보의 글의 작성자가 일치하지 않을때는 수정페이지로 넘어가지 않음
+          
+          msg="<p> 작성자 본인만 글을 삭제할 수 있습니다</p>";
+
+       }else {
+           int cnt=revdao.delete(rev_code, revdto.getMcode());
+           if(cnt==0) {   
+              msg="<p>해당 글 삭제 실패</p>";
+           }else {
+              msg="<p>해당 글 삭제 성공</p>";
+           }//if end
+       }
+
+       mav.addObject("msg", msg);
+       mav.setViewName("review/msgView");
+
        return mav;
     }//delete() end
     

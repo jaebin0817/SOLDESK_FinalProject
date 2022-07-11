@@ -185,7 +185,10 @@
 	
 	
 	
-	function loadNext(){  
+	function loadNext(){
+		
+		//alert($('#mrate').children("option:selected").val());
+		//alert($('#nowPage').val());  
 		var num=parseInt($("#no").val());		
 		$.ajax({
 			url: "morecontents.do",
@@ -238,6 +241,8 @@
     
     
     $("select[name=mrate]").change(function(){
+    	
+    	
     	$('#mdate').children("option:selected").prop("selected", false);
     	$('#gerne').children("option:selected").prop("selected", false);
     	var col= "mrate";

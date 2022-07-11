@@ -176,7 +176,11 @@
 	      </a>
 		  <p>Copyright &copy; OPOT</p> 
 		  <p>SOLDESK 1조</p>
-		  <p>조원들 Contact Info</p>
+		  <p>김건일 oreeyo00@gmail.com</p>
+		  <p>김도현 ehch103@gmail.com</p>
+		  <p>김승현 shkim0922@naver.com</p>
+		  <p>김재빈 jaebin0817@gmail.com</p>
+		  
 	  </div>
 	  
 
