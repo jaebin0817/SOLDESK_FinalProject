@@ -52,7 +52,7 @@ public class ContentcriCont {
 				like_check = 1;
 				cri_dto.setCri_like(like_check);
 				dao.insert(cri_dto);
-				dao.listlike_update(cri_dto, listdto);
+				dao.listlike_update(listdto, like_check);
 			}else {
 				if(like_check == 1) {
 					like_check = 0;
@@ -63,7 +63,7 @@ public class ContentcriCont {
 				System.out.println(like_check);
 				cri_dto.setCri_like(like_check);
 				dao.like_update(cri_dto);
-				dao.listlike_update(cri_dto, listdto);
+				dao.listlike_update(listdto, like_check);
 			}
 			
 			System.out.println("like_check: "+like_check+" watch_check: "+ watch_check + " point_check: " + point_check);
@@ -73,14 +73,12 @@ public class ContentcriCont {
 			out.flush();
 			out.close();
 			
-		} catch (Exception e) {
-			
-			System.out.println("서버 응답 실패");
-			
+		} catch (Exception e) {			
+			System.out.println("서버 응답 실패");			
 		}
-
 		
 	}//cri_like() end
+	
 
 	@ResponseBody
 	@RequestMapping(value= "/content_criwatch.do", method = RequestMethod.POST)
