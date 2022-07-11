@@ -466,7 +466,7 @@ public class MemberDAO {
                 Message msg=new MimeMessage(sess);
                 msg.setRecipients(Message.RecipientType.TO, address);
                 msg.setFrom(new InternetAddress("pretyimo@studydesk.co.kr"));
-                msg.setSubject("MyWeb 아이디/비번 입니다");
+                msg.setSubject("OPOT 아이디입니다");
                 msg.setContent(content, "text/html; charset=UTF-8");
                 msg.setSentDate(new Date());
                 Transport.send(msg);
@@ -534,7 +534,7 @@ public class MemberDAO {
                 Message msg=new MimeMessage(sess);
                 msg.setRecipients(Message.RecipientType.TO, address);
                 msg.setFrom(new InternetAddress("pretyimo@studydesk.co.kr"));
-                msg.setSubject("MyWeb 아이디/비번 입니다");
+                msg.setSubject("OPOT 임시 비밀번호 입니다");
                 msg.setContent(content, "text/html; charset=UTF-8");
                 msg.setSentDate(new Date());
                 Transport.send(msg);
