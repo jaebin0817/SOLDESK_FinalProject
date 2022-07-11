@@ -25,14 +25,18 @@ function likeCheck(){
 			contentType: 'application/x-www-form-urlencoded; charset=utf-8',
 			success: function (result){
 				isRun = false;
-				alert("좋아요 평가가 반영되었습니다");
+				if(result == 1){
+					alert("좋아요 평가가 반영되었습니다");
+				}else {
+					alert("좋아요가 취소되었습니다");
+				}
 				
 				reloadDivArea();
 				
 			},
 			error : function(error){
 				isRun = false;
-				alert("좋아요 평가가 반영에 실패하였습니다."+error);
+				alert("좋아요 평가 반영에 실패하였습니다."+error);
 				
 			}
 			
@@ -57,7 +61,11 @@ function watchCheck(){
 			contentType: 'application/x-www-form-urlencoded; charset=utf-8',
 			success: function (result){
 				isRun = false;
-				alert("내가 본 작품에 목록에 추가되었습니다");
+				if(result == 1){
+					alert("내가 본 작품에 목록에 추가되었습니다");
+				}else {
+					alert("내가 본 작품에 목록에서 삭제되었습니다");
+				}
 				
 				reloadDivArea();
 			},
@@ -88,7 +96,11 @@ function pointCheck(){
 			contentType: 'application/x-www-form-urlencoded; charset=utf-8',
 			success: function (result){
 				isRun = false;
-				alert("찜한 작품 목록에 추가되었습니다");
+				if(result == 1){
+					alert("찜한 작품 목록에 추가되었습니다");
+				}else {
+					alert("찜한 작품 목록에서 삭제되었습니다");
+				}
 				
 				reloadDivArea();
 			},
