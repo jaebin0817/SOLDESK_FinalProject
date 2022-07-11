@@ -31,6 +31,7 @@
 	<div id="recfrmarea">
 	
 		<form name="recfrm" id="recfrm" method="post" action="recupdateproc.do?r_num=${ dto.r_num }" enctype="multipart/form-data" onsubmit="return recCheck()"> <!-- myscript.js에 함수 작성함 -->
+		<input type="hidden" name="referrer" id="referrer">	
 		<table class="table" style="margin:auto;">
 			<tr>
 			   <th>테마</th>
@@ -189,7 +190,8 @@
         }
     });
 
-
+	var referrer= document.referrer;
+	$('#referrer').attr('value', referrer);
 
 </script>
 

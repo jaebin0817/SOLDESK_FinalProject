@@ -250,6 +250,7 @@ public class WebmasterCont {
       ModelAndView mav=new ModelAndView();
       contdao = new ContlistDAO();
       
+      String referrer=req.getParameter("referrer");
       String basePath=req.getSession().getServletContext().getRealPath("/storage");
       MultipartFile mthumMF=dto.getMthumMF();
       
@@ -370,16 +371,23 @@ public class WebmasterCont {
       contdao = new ContlistDAO();
       int cnt=contdao.insert(dto);
       
-      if(cnt==0){
-         String msg="<p>컨텐츠 등록 실패</p>";
-         mav.addObject("msg", msg);
-      }else {
-         String msg="<p>컨텐츠 등록 성공</p>";
-         mav.addObject("msg", msg);
-      }
-      
-      
-      mav.setViewName("webmaster/msgView");
+		String msg="";
+	    
+        if(cnt==0){
+			msg+="<script>";
+			msg+="    alert('컨텐츠 등록 실패');";
+			msg+="    location.href='javascript:history.back();'";
+			msg+="</script>";	
+
+         }else {        	 			
+ 			msg+="<script>";
+ 			msg+="    alert('컨텐츠 등록 성공');";
+ 			msg+="    location.href='"+referrer+"';";
+ 			msg+="</script>";
+         }
+        
+        mav.addObject("msg", msg);
+	    mav.setViewName("webmaster/msgView");
       
       return mav;
 
@@ -390,7 +398,7 @@ public class WebmasterCont {
    @RequestMapping(value = "/contupdate.do", method = RequestMethod.GET)
    public ModelAndView contupdate(ContlistDTO dto, HttpServletRequest req) {
       ModelAndView mav=new ModelAndView();
-      
+            
       int mcode = Integer.parseInt(req.getParameter("mcode"));
        
       contdao = new ContlistDAO();
@@ -445,7 +453,8 @@ public class WebmasterCont {
       ModelAndView mav=new ModelAndView();
       
       contdao = new ContlistDAO();
-
+      
+      String referrer=req.getParameter("referrer");
       String netflix=Utility.checkNull(req.getParameter("netflix"));   
       String watcha=Utility.checkNull(req.getParameter("watcha"));   
       String tving=Utility.checkNull(req.getParameter("tving"));   
@@ -578,16 +587,23 @@ public class WebmasterCont {
       int cnt=0;
       cnt=contdao.contUpdate(dto);
 
-      if(cnt==0){
-          String msg="<p>컨텐츠 수정 실패</p>";
-          mav.addObject("msg", msg);
-       }else {
-          String msg="<p>컨텐츠 수정 성공</p>";
-          mav.addObject("msg", msg);
-       }
-       
-       
-       mav.setViewName("webmaster/msgView");
+		String msg="";
+	    
+        if(cnt==0){
+			msg+="<script>";
+			msg+="    alert('컨텐츠 수정 실패');";
+			msg+="    location.href='javascript:history.back();'";
+			msg+="</script>";	
+
+         }else {        	 			
+ 			msg+="<script>";
+ 			msg+="    alert('컨텐츠 수정 성공');";
+ 			msg+="    location.href='"+referrer+"';";
+ 			msg+="</script>";
+         }
+        
+        mav.addObject("msg", msg);
+	    mav.setViewName("webmaster/msgView");
       
       return mav;
 
@@ -714,6 +730,7 @@ public class WebmasterCont {
 	    ModelAndView mav = new ModelAndView();
         pdao= new PeopleDAO();
 	    
+        String referrer=req.getParameter("referrer");
         String pno= req.getParameter("pno");		
 	    dto.setPno(pno);
 		
@@ -745,7 +762,7 @@ public class WebmasterCont {
          }else {        	 			
  			msg+="<script>";
  			msg+="    alert('배우/감독 수정 성공');";
- 			msg+="    location.href='javascript:history.go(-2);'";
+ 			msg+="    location.href='"+referrer+"';";
  			msg+="</script>";
          }
         

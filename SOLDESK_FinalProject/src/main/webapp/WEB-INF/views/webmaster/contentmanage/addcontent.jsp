@@ -17,6 +17,7 @@
 	</div>
 
 <form name="contfrm" id="contfrm" method="post" action="contins.do" enctype="multipart/form-data" onsubmit="">
+<input type="hidden" name="referrer" id="referrer">	
 	<table class="table">
 	<tr>
 	    <th>컨텐츠제목</th>
@@ -184,7 +185,10 @@
         		alert("최소 1명 이상의 배우를 입력해주세요");
         	}
         });    
-     
+     	
+		var referrer= document.referrer;
+		$('#referrer').attr('value', referrer);
+        
     </script>
 
 <!-- 본문끝 -->

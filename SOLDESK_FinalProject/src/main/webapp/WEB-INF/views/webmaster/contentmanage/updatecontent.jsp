@@ -16,6 +16,7 @@
 		<br><br>
 	</div>
 <form name="contfrm" id="contfrm" method="post" action="contupdate.do" enctype="multipart/form-data" onsubmit="">
+	<input type="hidden" name="referrer" id="referrer">
 	<input type="hidden" name="mcode" value=${dto.mcode }><!-- 내글번호 -->
 	<table class="table">
 	<tr>
@@ -251,6 +252,8 @@
         	}
         });    
         
+		var referrer= document.referrer;
+		$('#referrer').attr('value', referrer);
      
     </script>
 

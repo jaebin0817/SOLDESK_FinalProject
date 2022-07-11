@@ -777,9 +777,9 @@ public class ContlistDAO {
 					}					
 					sql.append(search);	            
 	            }	
-
+	            String search="";
 	            if(sort.length()!=0) { 
-			        String search="";
+			        
 					if(sort.equals("cri_like_high")) {//좋아요 많은 순
 						search+= " ORDER BY cri_like DESC ";						
 					}else if(sort.equals("cri_like_low")) {//좋아요 적은 순
@@ -789,10 +789,10 @@ public class ContlistDAO {
 					}else if(sort.equals("mdate_low")) {//오래된 개봉 순
 						search+= " ORDER BY mdate ASC ";						
 					}
-					
-					sql.append(search);	            
-	            }		            
-
+	            }else {
+					search+= " ORDER BY mcode DESC ";
+				}		            
+				sql.append(search);
 	            sql.append(" LIMIT " + startRow + ", " + recordPerPage);
 					            
 			pstmt=con.prepareStatement(sql.toString());
